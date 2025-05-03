@@ -21,7 +21,7 @@ h1 {
     text-align: center;
     margin-top: 0; /* Remove top margin for header h1 */
     margin-bottom: 0;
-    padding: 0.5em 0;
+    padding: 0.15em 0;
 }
 
 h2 {
@@ -46,7 +46,7 @@ a:hover {
 
 /* Layout Wrappers */
 .content-wrapper {
-    max-width: 1200px; /* Limit content width for readability */
+    max-width: 95%; /* Limit content width for readability */
     margin: 20px auto; /* Center content horizontally */
     padding: 0 20px; /* Add padding on sides */
 }
@@ -55,7 +55,8 @@ a:hover {
 .site-header {
     background-color: #5a4a3e; /* Dark leather/wood color */
     color: #f4f1eb; /* Off-white text on dark background */
-    padding: 10px 0;
+    padding: 0px 0;
+    height: 8%;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
@@ -73,6 +74,24 @@ a:hover {
     border: 1px solid #e0d9cd; /* Subtle border */
     border-radius: 3px; /* Slightly rounded corners */
 }
+.abstract-section,
+.map-section,
+.support-section {  /* Include support-section  */
+    background-color: #ffffff;
+    padding: 20px 30px;
+    margin-bottom: 30px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e0d9cd;
+    border-radius: 3px;
+}
+
+.support-section{
+    display: flex;
+    justify-content: space-between; /* Push items to edges  */
+    align-items: center; /* Vertically center items  */
+}
+
+.coffee{justify-content: right;}
 
 /* Map Section Specifics */
 .map-section {
