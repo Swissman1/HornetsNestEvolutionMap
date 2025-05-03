@@ -160,7 +160,7 @@ lyr_1900Roads_3.set('fieldLabels', {'Name': 'inline label - visible with data', 
 lyr_1900MissingRoads_4.set('fieldLabels', {'id': 'hidden field', });
 lyr_1877Roads_5.set('fieldLabels', {'Name': 'inline label - visible with data', 'Date Added': 'inline label - visible with data', 'Comments': 'inline label - visible with data', });
 lyr_1877MissingRoads_6.set('fieldLabels', {'Name': 'inline label - visible with data', 'Date Added': 'inline label - visible with data', 'Last Seen': 'inline label - visible with data', });
-lyr_1877Rail_7.set('fieldLabels', {'Active': 'inline label - visible with data', 'Removed': 'inline label - visible with data', });
+lyr_1877Rail_7.set('fieldLabels', {'Active': 'inline label - visible with data', 'Removed': 'header label - always visible', });
 lyr_1877Rail_7.on('precompose', function(evt) {
     evt.context.globalCompositeOperation = 'normal';
 });
