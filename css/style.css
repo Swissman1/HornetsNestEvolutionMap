@@ -65,7 +65,7 @@ a:hover {
 }
 
 /* Section Styling */
-.abstract-section,
+.opener-section,
 .map-section {
     background-color: #ffffff; /* White background for content sections */
     padding: 20px 30px;
@@ -74,7 +74,7 @@ a:hover {
     border: 1px solid #e0d9cd; /* Subtle border */
     border-radius: 3px; /* Slightly rounded corners */
 }
-.abstract-section,
+.opener-section,
 .map-section,
 .support-section {  /* Include support-section  */
     background-color: #ffffff;
