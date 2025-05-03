@@ -21,7 +21,7 @@ var style_1910Roads_1 = function(feature, resolution){
         labelText = String("");
     }
     var style = [ new ol.style.Style({
-        stroke: new ol.style.Stroke({color: 'rgba(255,255,44,1.0)', lineDash: null, lineCap: 'round', lineJoin: 'round', width: 3.268}),
+        stroke: new ol.style.Stroke({color: 'rgba(36,187,32,1.0)', lineDash: null, lineCap: 'round', lineJoin: 'round', width: 3.268}),
         text: createTextStyle(feature, resolution, labelText, labelFont,
                               labelFill, placement, bufferColor,
                               bufferWidth)
