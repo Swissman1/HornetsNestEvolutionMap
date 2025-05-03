@@ -56,12 +56,18 @@ a:hover {
     background-color: #5a4a3e; /* Dark leather/wood color */
     color: #f4f1eb; /* Off-white text on dark background */
     padding: 0px 0;
-    height: 8%;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);     
+    flex-wrap: nowrap; /* Prevent items from wrapping to the next line */
 }
 
 .site-header h1 {
-    color: #f4f1eb; /* Ensure header text is light */
+    background-color: #5a4a3e;
+    color: #f4f1eb;
+    margin-left: 10px; /* Add space between the logo and title */
+    font-size: 2.5em; /* Make the title size consistent */
+    flex: 1 1 auto; /* Allow the title to take up remaining space */
+    min-width: 0;  /*Important, prevents long titles from overflowing*/
+    line-height: 1; /* added */
 }
 
 /* Section Styling */
@@ -83,20 +89,41 @@ a:hover {
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
     border: 1px solid #e0d9cd;
     border-radius: 3px;
+    align-items: center;
 }
-
+.info-button{
+    justify-content: right;
+}
+#support-text{
+    margin-right: auto;
+}
 .support-section{
     display: flex;
-    justify-content: space-between; /* Push items to edges  */
-    align-items: center; /* Vertically center items  */
+    justify-content: flex-end; /* Align items to the right */
+    align-items: center; /* Vertically center items */
+    gap: 10px; /* Add space between the elements */
+    background-color: #ffffff;
+    padding: 20px 30px;
+    margin-bottom: 30px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e0d9cd;
+    border-radius: 3px;
 }
-
-.coffee{justify-content: right;}
+.logo-image {
+    max-height: 80px; /* Adjust as needed, but keep it constrained */
+    margin-top: 5px;
+    margin-right: 10px; /* Add some space to the right of the logo */
+}        .site-header h1 {
+    color: #f4f1eb;
+    margin-left: 10px; /* Add space between the logo and title */
+    font-size: 2.5em; /* Make the title size consistent */
+}
 
 /* Map Section Specifics */
 .map-section {
     /* Give the map container a specific height */
     /* You can adjust this value as needed */
+    padding: 15px 30px 5px 30px;
     height: 600px;
     /* Or use viewport height for more dynamic sizing: */
     /* height: 70vh; */

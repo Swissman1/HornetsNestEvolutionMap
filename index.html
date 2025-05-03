@@ -6,7 +6,7 @@
     <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
-
+    <link rel="icon" href="./images/HNEP Logo.png" type="image/png">
     <link rel="stylesheet" href="./resources/ol.css">
     <link rel="stylesheet" href="resources/fontawesome-all.min.css">
     <link rel="stylesheet" href="./resources/ol-layerswitcher.css">
@@ -53,28 +53,22 @@
 <body>
 
     <header class="site-header">
+    <div>
         <h1>Hornets Nest Evolution Project</h1>
+
+    </div>
     </header>
 
     <main class="content-wrapper">
         <section id="opener" class="opener-section">
+            <p>The Hornets Nest Evolution Project (HNEP) is a (presently solo) Citizen lead, Geographic Information Systems (GIS) project dedicated to digitizing the historical evolution of Mecklenburg County, and surrounding areas, via physical infrastructure, primarily roads and railways, and other traces left in the present.</p>
             
             <p>At first glance, it may appear to many that Charlotte has few historical remnants still standing, and a confusing road network. It does have history, and it is still with us today in the paths and names our roads take. This is owed to the fact that for the first ~150 years of its existence, it was a small city the size of the current uptown, surrounded by neighboring communities, often organized around a church, with the road of the day serving to connect them. As Charlotte grew, in this environment, its roads were forced to work with that backdrop, oriented on incremental evolution, rather than a master plan like other cities such as New York. This leads to a large number of historical easter eggs that are still here today.</p>
-            <p>The Hornets Nest Evolution Project (HNEP) is a (presently solo) Citizen lead, Geographic Information Systems (GIS) project dedicated to digitizing the historical evolution of Mecklenburg County, and surrounding areas, via physical infrastructure, primarily roads and railways, and other traces left in the present.</p>
-            <p>The project is ongoing, with new data being pulled in from multiple sources for different time periods. I am starting as early back as I have good data for and working forward. Please keep checking back for new data to see how it evolves!</p>
-            <p>I am always looking for fellow appreciators of history interested in contributing to the project, whether that be via tracking down sources, pulling those into the map, or just suggestions. Get more info and reach out on the project's github by "opening an issue"!</p>
             
         </section>
-        <section class="support-section"><div>Last Update: 5/3/2025 This is the first release! Coming soon: more data from 1910 and a slice of 1800!</div>
-            <div class="support-buttons"> 
-                <a class="github-button" href="https://github.com/Swissman1/HornetsNestEvolutionMap" data-color-scheme="no-preference: light; light: light; dark: dark;" data-size="large" aria-label="Follow HNEP on GitHub">HNEP on GitHub</a> 
-                <a class="github-button" href="https://github.com/swissman1/hornets-nest-evolution-project/issues" data-color-scheme="no-preference: light; light: light; dark: dark;" data-icon="octicon-issue-opened" data-size="large" aria-label="Issue swissman1/hornets-nest-evolution-project on GitHub">Open an Issue/Reach out</a>
-                <script type="text/javascript" src="https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js" data-name="bmc-button" data-slug="hornetsnestevoproject" data-color="#FFDD00" data-emoji=""  data-font="Cookie" data-text="Support the Project" data-outline-color="#000000" data-font-color="#000000" data-coffee-color="#ffffff" ></script>
-            </div>
-        </section>
+        
 
         <section id="map-container" class="map-section">
-            <h2>Interactive Map</h2>
             <div id="map">
                 <div id="popup" class="ol-popup">
                     <a href="#" id="popup-closer" class="ol-popup-closer"></a>
@@ -83,7 +77,23 @@
             </div>
         </section>
     </main>
+    <section class="support-section">
+        <div id="support-text">
+            <p>The project is ongoing, with new data being pulled in from multiple sources for different time periods. I am starting as early back as I have good data for and working forward. Please keep checking back for new data to see how it evolves!</p>
+            <p>I am always looking for fellow appreciators of history interested in contributing to the project, whether that be via tracking down sources, pulling those into the map, or just suggestions. Get more info and reach out on the project's github by "opening an issue"!</p>
+            <p>You can also support by buying me a coffee. As a token of gratitude I will prioritize researching a neighborhood of your choice, providing a quick report about it, and adding an info point crediting you as a patron
+            </p><p>Thank you in advance for any and all support, even if it is just admiring the hidden history of Charlotte! </p>
+            
+            <p>Last Update: 5/3/2025 This is the first release! <br>
+                Coming soon: more data from 1910 and a slice of 1800!</p>
+        </div>
+       <div>
+           <a class="github-button info-button" href="https://github.com/Swissman1/HornetsNestEvolutionMap" data-color-scheme="no-preference: light; light: light; dark: dark;" data-size="large" aria-label="Follow HNEP on GitHub">HNEP on GitHub</a> 
+           <a class="github-button info-button" href="https://github.com/swissman1/hornets-nest-evolution-project/issues" data-color-scheme="no-preference: light; light: light; dark: dark;" data-icon="octicon-issue-opened" data-size="large" aria-label="Issue swissman1/hornets-nest-evolution-project on GitHub">Open an Issue/Reach out</a>
+           <script type="text/javascript" class="info-button" src="https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js" data-name="bmc-button" data-slug="hornetsnestevoproject" data-color="#FFDD00" data-emoji=""  data-font="Cookie" data-text="Buy me a coffee" data-outline-color="#000000" data-font-color="#000000" data-coffee-color="#ffffff" ></script>
+        </div>
 
+    </section>
     <footer class="site-footer">  <p>&copy;  2025 Hornets Nest Evolution Project. Map data generated via QGIS & OpenLayers. Last update: 5/3/2025</p>
     </footer>
 
@@ -91,6 +101,7 @@
     <script src="./resources/functions.js"></script>
     <script src="./resources/ol.js"></script>
     <script src="./resources/ol-layerswitcher.js"></script>
+    <script src="resources/ol-geocoder.js"></script>
     <script src="layers/1910Roads_1.js"></script>
     <script src="layers/1910Missingroads_2.js"></script>
     <script src="layers/1900Roads_3.js"></script>
