@@ -63,9 +63,20 @@
       </div>
     </header>
 
-    <main class="content-wrapper">
-      <section id="opener" class="opener-section">
-        <p >
+    <main class="content-wrapper main-container">
+
+
+      <section id="map-container" class="map-section">
+        <div id="map">
+          <div id="popup" class="ol-popup">
+            <a href="#" id="popup-closer" class="ol-popup-closer"></a>
+            <div id="popup-content"></div>
+          </div>
+        </div>
+      </section>      
+       
+      <section id="opener" class="opener-section map-overlay">
+        <p id="opener-text">
           It may appear to many that Charlotte has few
           historical remnants still standing, and a confusing road network. Dig deeper, and 
           does have history, it is with us today in the paths and
@@ -79,16 +90,7 @@
         </p>
        
 
-       
-      </section>
-
-      <section id="map-container" class="map-section">
-        <div id="map">
-          <div id="popup" class="ol-popup">
-            <a href="#" id="popup-closer" class="ol-popup-closer"></a>
-            <div id="popup-content"></div>
-          </div>
-        </div>
+       <button id="toggle-opener" class="opener-toggle">Hide Info</button>
       </section>
     </main>
     <section class="support-section">
@@ -181,5 +183,6 @@
         <script src="./resources/Autolinker.min.js"></script>
         <script src="./resources/qgis2web.js"></script>
         <script src="./resources/main.js"></script>
+        <script src="./scripts/main.js"></script>
   </body>
 </html>
