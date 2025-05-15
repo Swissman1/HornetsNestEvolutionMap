@@ -256,7 +256,7 @@ a:hover {
         margin: 10px auto;
     }
     .map-section {
-        height: 1200px; /* Reduced map height on mobile */
+        height: 900px; /* Reduced map height on mobile */
     }
     .support-section {
         flex-direction: column; /* Stack items vertically */
