@@ -1,0 +1,73 @@
+/* Hamburger button in header */
+.header-hamburger {
+  background: #f8f8f8;
+  border: none;
+  font-size: 2rem;
+  cursor: pointer;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+  margin-right: 1rem;
+  margin-left: 0.5rem;
+  align-self: flex-start;
+}
+
+.hamburger-icon {
+  display: inline-block;
+}
+
+/* Flyout menu overlay */
+#flyout-menu {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(30, 30, 30, 0.45);
+  z-index: 2000;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  transition: opacity 0.2s ease, pointer-events 0.2s ease;
+  opacity: 1;
+  pointer-events: auto;
+}
+
+#flyout-menu.collapsed {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.flyout-menu-content {
+  background: #fff;
+  min-width: 220px;
+  max-width: 90vw;
+  margin: 2.5rem 0 0 0.5rem;
+  border-radius: 6px;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.18);
+  padding: 1.5rem 0;
+  border: 1px solid #ccc;
+}
+
+#flyout-menu ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+#flyout-menu li {
+  margin: 0;
+  padding: 0;
+}
+
+#flyout-menu a {
+  display: block;
+  padding: 0.75rem 2rem;
+  color: #333;
+  text-decoration: none;
+  font-size: 1.1em;
+}
+
+#flyout-menu a:hover {
+  background: #f0f0f0;
+}
