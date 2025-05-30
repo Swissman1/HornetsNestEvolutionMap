@@ -36,11 +36,13 @@ p {
 }
 
 a {
-    color: #8b4513;
+    color: #6a5acd; /* Subtle, soft blue-violet for links */
     text-decoration: none;
+    transition: color 0.2s;
 }
 
-a:hover {
+a:hover, a:focus {
+    color: #483d8b; /* Slightly deeper shade on hover/focus */
     text-decoration: underline;
 }
 
@@ -66,8 +68,21 @@ a:hover {
     flex: 1 1 auto;
     min-width: 0;
     line-height: 1;
+}
 
-    
+.header-link {
+    margin-left: 1em;
+    font-family: 'Merriweather', serif;
+    color: #f4f1eb !important;
+    font-size: 1em;
+    font-weight: 700;
+    background: none;
+    text-decoration: none;
+    margin-right: 16px;
+    transition: text-decoration 0.2s;
+}
+.header-link:hover {
+    text-decoration: underline;
 }
 
 
