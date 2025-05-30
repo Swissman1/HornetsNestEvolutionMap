@@ -21,7 +21,7 @@ var style_18001860MissingRoads_4 = function(feature, resolution){
         labelText = String("");
     }
     var style = [ new ol.style.Style({
-        stroke: new ol.style.Stroke({color: 'rgba(106,90,205,1.0)', lineDash: null, lineCap: 'square', lineJoin: 'round', width: 1.634}),
+        stroke: new ol.style.Stroke({color: 'rgba(92,64,51,1.0)', lineDash: null, lineCap: 'square', lineJoin: 'round', width: 1.634}),
         text: createTextStyle(feature, resolution, labelText, labelFont,
                               labelFill, placement, bufferColor,
                               bufferWidth)
