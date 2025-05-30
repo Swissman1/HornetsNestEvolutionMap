@@ -182,6 +182,7 @@ a:hover, a:focus {
     border-radius: 3px;
     align-items: center;
 }
+
 .map-overlay {
     position: absolute; /* Absolutely position within map-section */
     top: 20px;
