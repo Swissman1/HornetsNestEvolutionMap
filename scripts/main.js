@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
     
-    addHamburger();
+    //addHamburger();
     const toggleOpenerButton = document.getElementById('toggle-opener');
     const openerSection = document.getElementById('opener');
     const openerContent = document.getElementById('opener-content');
