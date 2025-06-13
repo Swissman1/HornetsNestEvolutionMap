@@ -6,6 +6,8 @@ var wms_layers = [];
 // var map = new ol.Map({ ... });
 // Make sure 'map' is globally available or passed in.
 
+
+
 // This helper function creates a style function for each layer.
 // It wraps your original layer-specific style (e.g., style_Pre1800Roads)
 // and applies visibility rules based on the feature's "Road Type" attribute and the current zoom level.
@@ -19,7 +21,7 @@ function createDynamicRoadStyle(layerBaseStyle) {
         }
 
         const roadType = feature.get('Road Type'); // Get the "Road Type" attribute from the feature
-        const currentZoom = map.getView().getZoom(); // Get the current map zoom level
+        const currentZoom = map.getView().getZoom();;
 
         let isVisible = false;
 
@@ -81,305 +83,205 @@ function createDynamicRoadStyle(layerBaseStyle) {
     };
 }
 
-
-        var lyr_OpenStreetmap_0 = new ol.layer.Tile({
-            'title': 'Open Street map',
-            'opacity': 1.000000,
-            
-            
-            source: new ol.source.XYZ({
-            attributions: ' &nbsp &middot; <a href="https://www.openstreetmap.org/copyright">© OpenStreetMap contributors, CC-BY-SA</a>',
-                url: 'http://tile.openstreetmap.org/{z}/{x}/{y}.png'
-            })
-        });
-
-// Apply the createDynamicRoadStyle helper to all relevant road layers,
-// passing their original style definitions.
-// IMPORTANT: Ensure your GeoJSON features have a "Road Type" attribute.
-var format_Pre1800MissingRoads = new ol.format.GeoJSON();
-var features_Pre1800MissingRoads = format_Pre1800MissingRoads.readFeatures(json_Pre1800MissingRoads, 
-            {dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857'});
-var jsonSource_Pre1800MissingRoads= new ol.source.Vector({
-    attributions: ' ',
+var lyr_OpenStreetmap_0 = new ol.layer.Tile({
+    'title': 'Open Street map',
+    'opacity': 1.000000,
+    source: new ol.source.XYZ({
+        attributions: ' &nbsp &middot; <a href="https://www.openstreetmap.org/copyright">© OpenStreetMap contributors, CC-BY-SA</a>',
+        url: 'http://tile.openstreetmap.org/{z}/{x}/{y}.png'
+    })
 });
-jsonSource_Pre1800MissingRoads.addFeatures(features_Pre1800MissingRoads);
-var lyr_Pre1800MissingRoads= new ol.layer.Vector({
-                declutter: false,
-                source:jsonSource_Pre1800MissingRoads,
-                style: createDynamicRoadStyle(style_Pre1800MissingRoads), // Pass original style for this layer
-                popuplayertitle: 'Pre 1800 Missing Roads',
-                interactive: true,
-                title: '<img src="styles/legend/Pre1800MissingRoads.png" /> Pre 1800 Missing Roads'
-            });
 
-var format_Sevensisters = new ol.format.GeoJSON();
-var features_Sevensisters = format_Sevensisters.readFeatures(json_Sevensisters, 
-            {dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857'});
-var jsonSource_Sevensisters = new ol.source.Vector({
-    attributions: ' ',
+// Refactored: Reusable function for vector layer creation
+function createVectorLayer(params) {
+    const format = new ol.format.GeoJSON();
+    const features = format.readFeatures(params.jsonData, {
+        dataProjection: 'EPSG:4326',
+        featureProjection: 'EPSG:3857'
+    });
+    const source = new ol.source.Vector({
+        attributions: ' ',
+    });
+    source.addFeatures(features);
+    return new ol.layer.Vector({
+        declutter: false,
+        source: source,
+        style: params.style,
+        popuplayertitle: params.popuplayertitle,
+        interactive: true,
+        title: params.title
+    });
+}
+
+var lyr_Pre1800MissingRoads = createVectorLayer({
+    jsonData: json_Pre1800MissingRoads,
+    style: createDynamicRoadStyle(style_Pre1800MissingRoads),
+    popuplayertitle: 'Pre 1800 Missing Roads',
+    title: '<img src="styles/legend/Pre1800MissingRoads.png" /> Pre 1800 Missing Roads'
 });
-jsonSource_Sevensisters.addFeatures(features_Sevensisters);
-var lyr_Sevensisters = new ol.layer.Vector({
-                declutter: false,
-                source:jsonSource_Sevensisters, 
-                style: createDynamicRoadStyle(style_Sevensisters), // Pass original style for this layer
-                popuplayertitle: 'Seven sisters',
-                interactive: true,
-                title: '<img src="styles/legend/Sevensisters.png" /> Seven sisters'
-            });
 
-var format_Pre1800Roads = new ol.format.GeoJSON();
-var features_Pre1800Roads = format_Pre1800Roads.readFeatures(json_Pre1800Roads, 
-            {dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857'});
-var jsonSource_Pre1800Roads = new ol.source.Vector({
-    attributions: ' ',
+var lyr_Sevensisters = createVectorLayer({
+    jsonData: json_Sevensisters,
+    style: createDynamicRoadStyle(style_Sevensisters),
+    popuplayertitle: 'Seven sisters',
+    title: '<img src="styles/legend/Sevensisters.png" /> Seven sisters'
 });
-jsonSource_Pre1800Roads.addFeatures(features_Pre1800Roads);
-var lyr_Pre1800Roads = new ol.layer.Vector({
-                declutter: false,
-                source:jsonSource_Pre1800Roads, 
-                style: createDynamicRoadStyle(style_Pre1800Roads), // Pass original style for this layer
-                popuplayertitle: 'Pre 1800 Roads',
-                interactive: true,
-                title: '<img src="styles/legend/Pre1800Roads.png" /> Pre 1800 Roads'
-            });
 
-var format_18001860MissingRoads = new ol.format.GeoJSON();
-var features_18001860MissingRoads = format_18001860MissingRoads.readFeatures(json_18001860MissingRoads, 
-            {dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857'});
-var jsonSource_18001860MissingRoads = new ol.source.Vector({
-    attributions: ' ',
+var lyr_Pre1800Roads = createVectorLayer({
+    jsonData: json_Pre1800Roads,
+    style: createDynamicRoadStyle(style_Pre1800Roads),
+    popuplayertitle: 'Pre 1800 Roads',
+    title: '<img src="styles/legend/Pre1800Roads.png" /> Pre 1800 Roads'
 });
-jsonSource_18001860MissingRoads.addFeatures(features_18001860MissingRoads);
-var lyr_18001860MissingRoads = new ol.layer.Vector({
-                declutter: false,
-                source:jsonSource_18001860MissingRoads, 
-                style: createDynamicRoadStyle(style_18001860MissingRoads),
-                popuplayertitle: '1800-1860 Missing Roads',
-                interactive: true,
-                title: '<img src="styles/legend/18001860MissingRoads.png" /> 1800-1860 Missing Roads'
-            });
 
-var format_18001860 = new ol.format.GeoJSON();
-var features_18001860 = format_18001860.readFeatures(json_18001860, 
-            {dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857'});
-var jsonSource_18001860 = new ol.source.Vector({
-    attributions: ' ',
+var lyr_18001860MissingRoads = createVectorLayer({
+    jsonData: json_18001860MissingRoads,
+    style: createDynamicRoadStyle(style_18001860MissingRoads),
+    popuplayertitle: '1800-1860 Missing Roads',
+    title: '<img src="styles/legend/18001860MissingRoads.png" /> 1800-1860 Missing Roads'
 });
-jsonSource_18001860.addFeatures(features_18001860);
-var lyr_18001860 = new ol.layer.Vector({
-                declutter: false,
-                source:jsonSource_18001860, 
-                style: createDynamicRoadStyle(style_18001860),
-                popuplayertitle: '1800-1860',
-                interactive: true,
-                title: '<img src="styles/legend/18001860.png" /> 1800-1860'
-            });
 
-var format_18601880MissingRoads = new ol.format.GeoJSON();
-var features_18601880MissingRoads = format_18601880MissingRoads.readFeatures(json_18601880MissingRoads, 
-            {dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857'});
-var jsonSource_18601880MissingRoads = new ol.source.Vector({
-    attributions: ' ',
+var lyr_18001860 = createVectorLayer({
+    jsonData: json_18001860,
+    style: createDynamicRoadStyle(style_18001860),
+    popuplayertitle: '1800-1860',
+    title: '<img src="styles/legend/18001860.png" /> 1800-1860'
 });
-jsonSource_18601880MissingRoads.addFeatures(features_18601880MissingRoads);
-var lyr_18601880MissingRoads = new ol.layer.Vector({
-                declutter: false,
-                source:jsonSource_18601880MissingRoads, 
-                style: createDynamicRoadStyle(style_18601880MissingRoads),
-                popuplayertitle: '1860-1880 Missing Roads',
-                interactive: true,
-                title: '<img src="styles/legend/18601880MissingRoads.png" /> 1860-1880 Missing Roads'
-            });
 
-var format_18801900MissingRoads = new ol.format.GeoJSON();
-var features_18801900MissingRoads = format_18801900MissingRoads.readFeatures(json_18801900MissingRoads, 
-            {dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857'});
-var jsonSource_18801900MissingRoads = new ol.source.Vector({
-    attributions: ' ',
+var lyr_18601880MissingRoads = createVectorLayer({
+    jsonData: json_18601880MissingRoads,
+    style: createDynamicRoadStyle(style_18601880MissingRoads),
+    popuplayertitle: '1860-1880 Missing Roads',
+    title: '<img src="styles/legend/18601880MissingRoads.png" /> 1860-1880 Missing Roads'
 });
-jsonSource_18801900MissingRoads.addFeatures(features_18801900MissingRoads);
-var lyr_18801900MissingRoads = new ol.layer.Vector({
-                declutter: false,
-                source:jsonSource_18801900MissingRoads, 
-                style: createDynamicRoadStyle(style_18801900MissingRoads),
-                popuplayertitle: '1880-1900 Missing Roads',
-                interactive: true,
-                title: '<img src="styles/legend/18801900MissingRoads.png" /> 1880-1900 Missing Roads'
-            });
 
-var format_18801900 = new ol.format.GeoJSON();
-var features_18801900 = format_18801900.readFeatures(json_18801900, 
-            {dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857'});
-var jsonSource_18801900 = new ol.source.Vector({
-    attributions: ' ',
+var lyr_18801900MissingRoads = createVectorLayer({
+    jsonData: json_18801900MissingRoads,
+    style: createDynamicRoadStyle(style_18801900MissingRoads),
+    popuplayertitle: '1880-1900 Missing Roads',
+    title: '<img src="styles/legend/18801900MissingRoads.png" /> 1880-1900 Missing Roads'
 });
-jsonSource_18801900.addFeatures(features_18801900);
-var lyr_18801900 = new ol.layer.Vector({
-                declutter: false,
-                source:jsonSource_18801900, 
-                style: createDynamicRoadStyle(style_18801900),
-                popuplayertitle: '1880-1900',
-                interactive: true,
-                title: '<img src="styles/legend/18801900.png" /> 1880-1900'
-            });
 
-var format_19001920MissingRoads = new ol.format.GeoJSON();
-var features_19001920MissingRoads = format_19001920MissingRoads.readFeatures(json_19001920MissingRoads, 
-            {dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857'});
-var jsonSource_19001920MissingRoads = new ol.source.Vector({
-    attributions: ' ',
+var lyr_18801900 = createVectorLayer({
+    jsonData: json_18801900,
+    style: createDynamicRoadStyle(style_18801900),
+    popuplayertitle: '1880-1900',
+    title: '<img src="styles/legend/18801900.png" /> 1880-1900'
 });
-jsonSource_19001920MissingRoads.addFeatures(features_19001920MissingRoads);
-var lyr_19001920MissingRoads = new ol.layer.Vector({
-                declutter: false,
-                source:jsonSource_19001920MissingRoads, 
-                style: createDynamicRoadStyle(style_19001920MissingRoads),
-                popuplayertitle: '1900-1920 Missing Roads',
-                interactive: true,
-                title: '<img src="styles/legend/19001920MissingRoads.png" /> 1900-1920 Missing Roads'
-            });
 
-var format_19001920 = new ol.format.GeoJSON();
-var features_19001920 = format_19001920.readFeatures(json_19001920, 
-            {dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857'});
-var jsonSource_19001920 = new ol.source.Vector({
-    attributions: ' ',
+var lyr_19001920MissingRoads = createVectorLayer({
+    jsonData: json_19001920MissingRoads,
+    style: createDynamicRoadStyle(style_19001920MissingRoads),
+    popuplayertitle: '1900-1920 Missing Roads',
+    title: '<img src="styles/legend/19001920MissingRoads.png" /> 1900-1920 Missing Roads'
 });
-jsonSource_19001920.addFeatures(features_19001920);
-var lyr_19001920 = new ol.layer.Vector({
-                declutter: false,
-                source:jsonSource_19001920, 
-                style: createDynamicRoadStyle(style_19001920),
-                popuplayertitle: '1900-1920',
-                interactive: true,
-                title: '<img src="styles/legend/19001920.png" /> 1900-1920'
-            });
 
-var format_19201950MissingRoads = new ol.format.GeoJSON();
-var features_19201950MissingRoads = format_19201950MissingRoads.readFeatures(json_19201950MissingRoads, 
-            {dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857'});
-var jsonSource_19201950MissingRoads = new ol.source.Vector({
-    attributions: ' ',
+var lyr_19001920 = createVectorLayer({
+    jsonData: json_19001920,
+    style: createDynamicRoadStyle(style_19001920),
+    popuplayertitle: '1900-1920',
+    title: '<img src="styles/legend/19001920.png" /> 1900-1920'
 });
-jsonSource_19201950MissingRoads.addFeatures(features_19201950MissingRoads);
-var lyr_19201950MissingRoads = new ol.layer.Vector({
-                declutter: false,
-                source:jsonSource_19201950MissingRoads, 
-                style: createDynamicRoadStyle(style_19201950MissingRoads),
-                popuplayertitle: '1920-1950 Missing Roads',
-                interactive: true,
-                title: '<img src="styles/legend/19201950MissingRoads.png" /> 1920-1950 Missing Roads'
-            });
 
-var format_19201950 = new ol.format.GeoJSON();
-var features_19201950 = format_19201950.readFeatures(json_19201950, 
-            {dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857'});
-var jsonSource_19201950 = new ol.source.Vector({
-    attributions: ' ',
+var lyr_19201950MissingRoads = createVectorLayer({
+    jsonData: json_19201950MissingRoads,
+    style: createDynamicRoadStyle(style_19201950MissingRoads),
+    popuplayertitle: '1920-1950 Missing Roads',
+    title: '<img src="styles/legend/19201950MissingRoads.png" /> 1920-1950 Missing Roads'
 });
-jsonSource_19201950.addFeatures(features_19201950);
-var lyr_19201950 = new ol.layer.Vector({
-                declutter: false,
-                source:jsonSource_19201950, 
-                style: createDynamicRoadStyle(style_19201950),
-                popuplayertitle: '1920-1950',
-                interactive: true,
-                title: '<img src="styles/legend/19201950.png" /> 1920-1950'
-            });
 
-var format_19501980 = new ol.format.GeoJSON();
-var features_19501980 = format_19501980.readFeatures(json_19501980, 
-            {dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857'});
-var jsonSource_19501980 = new ol.source.Vector({
-    attributions: ' ',
+var lyr_19201950 = createVectorLayer({
+    jsonData: json_19201950,
+    style: createDynamicRoadStyle(style_19201950),
+    popuplayertitle: '1920-1950',
+    title: '<img src="styles/legend/19201950.png" /> 1920-1950'
 });
-jsonSource_19501980.addFeatures(features_19501980);
-var lyr_19501980 = new ol.layer.Vector({
-                declutter: false,
-                source:jsonSource_19501980, 
-                style: createDynamicRoadStyle(style_19501980),
-                popuplayertitle: '1950-1980',
-                interactive: true,
-                title: '<img src="styles/legend/19501980.png" /> 1950-1980'
-            });
 
-var format_19501980MissingRoads = new ol.format.GeoJSON();
-var features_19501980MissingRoads = format_19501980MissingRoads.readFeatures(json_19501980MissingRoads, 
-            {dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857'});
-var jsonSource_19501980MissingRoads = new ol.source.Vector({
-    attributions: ' ',
+var lyr_19501980 = createVectorLayer({
+    jsonData: json_19501980,
+    style: createDynamicRoadStyle(style_19501980),
+    popuplayertitle: '1950-1980',
+    title: '<img src="styles/legend/19501980.png" /> 1950-1980'
 });
-jsonSource_19501980MissingRoads.addFeatures(features_19501980MissingRoads);
-var lyr_19501980MissingRoads = new ol.layer.Vector({
-                declutter: false,
-                source:jsonSource_19501980MissingRoads, 
-                style: createDynamicRoadStyle(style_19501980MissingRoads),
-                popuplayertitle: '1950-1980 Missing Roads',
-                interactive: true,
-                title: '<img src="styles/legend/19501980MissingRoads.png" /> 1950-1980 Missing Roads'
-            });
 
-var format_19801995 = new ol.format.GeoJSON();
-var features_19801995 = format_19801995.readFeatures(json_19801995, 
-            {dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857'});
-var jsonSource_19801995 = new ol.source.Vector({
-    attributions: ' ',
+var lyr_19501980MissingRoads = createVectorLayer({
+    jsonData: json_19501980MissingRoads,
+    style: createDynamicRoadStyle(style_19501980MissingRoads),
+    popuplayertitle: '1950-1980 Missing Roads',
+    title: '<img src="styles/legend/19501980MissingRoads.png" /> 1950-1980 Missing Roads'
 });
-jsonSource_19801995.addFeatures(features_19801995);
-var lyr_19801995 = new ol.layer.Vector({
-                declutter: false,
-                source:jsonSource_19801995, 
-                style: createDynamicRoadStyle(style_19801995),
-                popuplayertitle: '1980-1995',
-                interactive: true,
-                title: '<img src="styles/legend/19801995.png" /> 1980-1995'
-            });
 
+var lyr_19801995 = createVectorLayer({
+    jsonData: json_19801995,
+    style: createDynamicRoadStyle(style_19801995),
+    popuplayertitle: '1980-1995',
+    title: '<img src="styles/legend/19801995.png" /> 1980-1995'
+});
+var lyr_19952025 = createVectorLayer({
+    jsonData: json_19952025Roads,
+    style: createDynamicRoadStyle(style_19952025),
+    popuplayertitle: '1995-2025',
+    title: '<img src="styles/legend/19952025Roads.png" /> 1995-2025'
+});
 // This layer might not have a "Road Type" attribute or needs different visibility rules.
 // You might want to define a separate style function for it or keep its original style.
 // For now, I'll assume it doesn't use the 'Road Type' logic, and if style_Pointsofinterest
 // is a static style object, it will be applied always.
-var format_Pointsofinterest = new ol.format.GeoJSON();
-var features_Pointsofinterest = format_Pointsofinterest.readFeatures(json_Pointsofinterest, 
-            {dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857'});
-var jsonSource_Pointsofinterest = new ol.source.Vector({
-    attributions: ' ',
+var lyr_Pointsofinterest = createVectorLayer({
+    jsonData: json_Pointsofinterest,
+    style: style_Pointsofinterest, // Assuming this layer does NOT use the 'Road Type' logic
+    popuplayertitle: 'Points of interest',
+    title: '<img src="styles/legend/Pointsofinterest.png" /> Points of interest'
 });
-jsonSource_Pointsofinterest.addFeatures(features_Pointsofinterest);
-var lyr_Pointsofinterest = new ol.layer.Vector({
-                declutter: false,
-                source:jsonSource_Pointsofinterest, 
-                style: style_Pointsofinterest, // Assuming this layer does NOT use the 'Road Type' logic
-                popuplayertitle: 'Points of interest',
-                interactive: true,
-                title: '<img src="styles/legend/Pointsofinterest.png" /> Points of interest'
-            });
 
 var group_RoadsandRail = new ol.layer.Group({
-                                layers: [lyr_Pre1800MissingRoads,lyr_Sevensisters,lyr_Pre1800Roads,lyr_18001860MissingRoads,lyr_18001860,lyr_18601880MissingRoads,lyr_18801900MissingRoads,lyr_18801900,lyr_19001920MissingRoads,lyr_19001920,lyr_19201950MissingRoads,lyr_19201950,lyr_19501980,lyr_19501980MissingRoads,lyr_19801995,lyr_Pointsofinterest,],
-                                fold: 'open',
-                                title: 'Roads and Rail'});
+    layers: [
+        lyr_Pre1800MissingRoads,
+        lyr_Sevensisters,
+        lyr_Pre1800Roads,
+        lyr_18001860MissingRoads,
+        lyr_18001860,
+        lyr_18601880MissingRoads,
+        lyr_18801900MissingRoads,
+        lyr_18801900,
+        lyr_19001920MissingRoads,
+        lyr_19001920,
+        lyr_19201950MissingRoads,
+        lyr_19201950,
+        lyr_19501980,
+        lyr_19501980MissingRoads,
+        lyr_19801995,
+        lyr_19952025,
+        lyr_Pointsofinterest,
+    ],
+    fold: 'open',
+    title: 'Roads and Rail'
+});
 var group_TimeSlices = new ol.layer.Group({
-                                layers: [],
-                                fold: 'open',
-                                title: 'Time Slices'});
+    layers: [],
+    fold: 'open',
+    title: 'Time Slices'
+});
 var group_1877 = new ol.layer.Group({
-                                layers: [],
-                                fold: 'open',
-                                title: '1877'});
+    layers: [],
+    fold: 'open',
+    title: '1877'
+});
 var group_1900 = new ol.layer.Group({
-                                layers: [],
-                                fold: 'open',
-                                title: '1900'});
+    layers: [],
+    fold: 'open',
+    title: '1900'
+});
 var group_1910 = new ol.layer.Group({
-                                layers: [],
-                                fold: 'open',
-                                title: '1910'});
+    layers: [],
+    fold: 'open',
+    title: '1910'
+});
 var group_Maps = new ol.layer.Group({
-                                layers: [lyr_OpenStreetmap_0,],
-                                fold: 'open',
-                                title: 'Maps'});
+    layers: [lyr_OpenStreetmap_0,],
+    fold: 'open',
+    title: 'Maps'
+});
 
 lyr_OpenStreetmap_0.setVisible(true);
 // Remove or comment out these individual layer setVisible calls,
