@@ -64,8 +64,7 @@ function createDynamicRoadStyle(layerBaseStyle) {
             // Add more cases for other 'Road Type' values as needed
             default:
                 // If 'Road Type' is unknown, not set, or doesn't match, hide by default
-                isVisible = true;
-                console.log(roadType)
+                isVisible = currentZoom >= 14;
                 break;
         }
 

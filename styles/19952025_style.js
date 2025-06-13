@@ -8,7 +8,7 @@ var style_19952025 = function(feature, resolution){
     };
     
     var labelText = ""; 
-    var value = feature.get("");
+    var value = feature.get("var value = '';");
     var labelFont = "10px, sans-serif";
     var labelFill = "#000000";
     var bufferColor = "";
@@ -20,12 +20,23 @@ var style_19952025 = function(feature, resolution){
     if ("" !== null) {
         labelText = String("");
     }
-    var style = [ new ol.style.Style({
-        stroke: new ol.style.Stroke({color: 'rgba(0,106,209,1.0)', lineDash: null, lineCap: 'square', lineJoin: 'bevel', width: 3.268}),
+    
+        function rules_19952025(feature, value) {
+            var context = {
+                feature: feature,
+                variables: {}
+            };
+           
+                return [ new ol.style.Style({
+        stroke: new ol.style.Stroke({color: 'rgba(218,75,43,1.0)', lineDash: null, lineCap: 'square', lineJoin: 'bevel', width: 3.268}),
         text: createTextStyle(feature, resolution, labelText, labelFont,
                               labelFill, placement, bufferColor,
                               bufferWidth)
     })];
+            
+        }
+        var style = rules_19952025(feature, value);
+        ;
 
     return style;
 };
