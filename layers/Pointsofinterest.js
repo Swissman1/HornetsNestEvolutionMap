@@ -1,0 +1,1 @@
+var json_Pointsofinterest = {"type":"FeatureCollection","name":"Pointsofinterest","crs":{"type":"name","properties":{"name":"urn:ogc:def:crs:OGC:1.3:CRS84"}},"features":[]}
