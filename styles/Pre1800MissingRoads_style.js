@@ -21,7 +21,7 @@ var style_Pre1800MissingRoads = function(feature, resolution){
         labelText = String("");
     }
     var style = [ new ol.style.Style({
-        stroke: new ol.style.Stroke({color: 'rgba(59,47,47,1.0)', lineDash: null, lineCap: 'square', lineJoin: 'round', width: 1.634}),
+        stroke: new ol.style.Stroke({color: 'rgba(59,47,47,1.0)', lineDash: [3,8], lineCap: 'square', lineJoin: 'bevel', width: 3.268}),
         text: createTextStyle(feature, resolution, labelText, labelFont,
                               labelFill, placement, bufferColor,
                               bufferWidth)
