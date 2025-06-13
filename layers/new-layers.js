@@ -28,36 +28,36 @@ function createDynamicRoadStyle(layerBaseStyle) {
         switch (roadType) {
             case 'Highway':
                 // Major roads visible from zoom level 6 and higher
-                isVisible = currentZoom >= 5;
+                isVisible = currentZoom >= 7;
                 break;
             case 'Freeway':
                 // Freeway roads visible from zoom level 5 and higher
-                isVisible = currentZoom >= 5;
+                isVisible = currentZoom >= 7;
                 break;
             case 'Major Road':
                 // Major roads visible from zoom level 8 and higher
-                isVisible = currentZoom >= 8;
+                isVisible = currentZoom >= 10;
                 break;
             case 'Minor Road':
                 // Minor roads visible from zoom level 10 and higher
-                isVisible = currentZoom >= 10;
+                isVisible = currentZoom >= 12;
                 break;
             case 'RAMP':
                 // RAMP roads visible from zoom level 12 and higher
-                isVisible = currentZoom >= 12;
+                isVisible = currentZoom >= 13;
                 break;
             case 'Collecting Residential Road':
                 // Residential visible from zoom level 14 and higher
-                isVisible = currentZoom >= 14;
+                isVisible = currentZoom >= 13;
                 break;
                 
             case 'Trunk Road':
                 // Major roads visible from zoom level 6 and higher
-                isVisible = currentZoom >= 7;
+                isVisible = currentZoom >= 10;
                 break;
             case 'Neighborhood Road':
                 // Missing roads might appear at higher zoom levels for detail
-                isVisible = currentZoom >= 15;
+                isVisible = currentZoom >= 14;
                 break;
             // Add more cases for other 'Road Type' values as needed
             default:
@@ -102,14 +102,14 @@ var features_Pre1800MissingRoads = format_Pre1800MissingRoads.readFeatures(json_
 var jsonSource_Pre1800MissingRoads= new ol.source.Vector({
     attributions: ' ',
 });
-jsonSource_Pre1800MissingRoads_1.addFeatures(features_Pre1800MissingRoads);
+jsonSource_Pre1800MissingRoads.addFeatures(features_Pre1800MissingRoads);
 var lyr_Pre1800MissingRoads= new ol.layer.Vector({
                 declutter: false,
                 source:jsonSource_Pre1800MissingRoads,
-                style: createDynamicRoadStyle(style_Pre1800MissingRoads_1), // Pass original style for this layer
+                style: createDynamicRoadStyle(style_Pre1800MissingRoads), // Pass original style for this layer
                 popuplayertitle: 'Pre 1800 Missing Roads',
                 interactive: true,
-                title: '<img src="styles/legend/Pre1800MissingRoads_1.png" /> Pre 1800 Missing Roads'
+                title: '<img src="styles/legend/Pre1800MissingRoads.png" /> Pre 1800 Missing Roads'
             });
 
 var format_Sevensisters = new ol.format.GeoJSON();
@@ -357,7 +357,7 @@ var lyr_Pointsofinterest = new ol.layer.Vector({
             });
 
 var group_RoadsandRail = new ol.layer.Group({
-                                layers: [lyr_Pre1800MissingRoadslyr_Sevensisters,lyr_Pre1800Roads,lyr_18001860MissingRoads,lyr_18001860,lyr_18601880MissingRoads,lyr_18801900MissingRoads,lyr_18801900,lyr_19001920MissingRoads,lyr_19001920,lyr_19201950MissingRoads,lyr_19201950,lyr_19501980,lyr_19501980MissingRoads,lyr_19801995,lyr_Pointsofinterest,],
+                                layers: [lyr_Pre1800MissingRoads,lyr_Sevensisters,lyr_Pre1800Roads,lyr_18001860MissingRoads,lyr_18001860,lyr_18601880MissingRoads,lyr_18801900MissingRoads,lyr_18801900,lyr_19001920MissingRoads,lyr_19001920,lyr_19201950MissingRoads,lyr_19201950,lyr_19501980,lyr_19501980MissingRoads,lyr_19801995,lyr_Pointsofinterest,],
                                 fold: 'open',
                                 title: 'Roads and Rail'});
 var group_TimeSlices = new ol.layer.Group({
@@ -384,7 +384,7 @@ var group_Maps = new ol.layer.Group({
 lyr_OpenStreetmap_0.setVisible(true);
 // Remove or comment out these individual layer setVisible calls,
 // as feature visibility is now controlled by the style functions.
-// lyr_Pre1800MissingRoads_1.setVisible(true);
+// lyr_Pre1800MissingRoads.setVisible(true);
 // lyr_Sevensisters.setVisible(true);
 // lyr_Pre1800Roads.setVisible(true);
 // lyr_18001860MissingRoads.setVisible(true);
@@ -403,7 +403,7 @@ lyr_Pointsofinterest.setVisible(true); // Keep POI visible if it doesn't use the
 
 var layersList = [group_Maps,group_RoadsandRail];
 // Ensure "Road Type" field alias is set for all road layers if it's new
-lyr_Pre1800MissingRoads_1.set('fieldAliases', {'First Seen': 'First Seen', 'Name': 'Name', 'Last Seen': 'Last Seen', 'Road Type': 'Road Type'});
+lyr_Pre1800MissingRoads.set('fieldAliases', {'First Seen': 'First Seen', 'Name': 'Name', 'Last Seen': 'Last Seen', 'Road Type': 'Road Type'});
 lyr_Sevensisters.set('fieldAliases', {'Name': 'Name', 'Year': 'Year', 'Road Type': 'Road Type'});
 lyr_Pre1800Roads.set('fieldAliases', {'First Seen': 'First Seen', 'Name': 'Name', 'Road Type': 'Road Type'});
 lyr_18001860MissingRoads.set('fieldAliases', {'First Seen': 'First Seen', 'Name': 'Name', 'Last Seen': 'Last Seen', 'Road Type': 'Road Type'});
@@ -420,7 +420,7 @@ lyr_19501980MissingRoads.set('fieldAliases', {'First Seen': 'First Seen', 'Name'
 lyr_19801995.set('fieldAliases', {'First Seen': 'First Seen', 'Name': 'Name', 'Road Type': 'Road Type'});
 lyr_Pointsofinterest.set('fieldAliases', {'Title': 'Title', 'Desc.': 'Desc.', 'Added by': 'Added by', 'Date': 'Date', 'Source': 'Source', 'id': 'id', });
 
-lyr_Pre1800MissingRoads_1.set('fieldImages', {'First Seen': 'TextEdit', 'Name': 'TextEdit', 'Last Seen': 'TextEdit', 'Road Type': 'TextEdit'});
+lyr_Pre1800MissingRoads.set('fieldImages', {'First Seen': 'TextEdit', 'Name': 'TextEdit', 'Last Seen': 'TextEdit', 'Road Type': 'TextEdit'});
 lyr_Sevensisters.set('fieldImages', {'Name': 'TextEdit', 'Year': 'Range', 'Road Type': 'TextEdit'});
 lyr_Pre1800Roads.set('fieldImages', {'First Seen': 'TextEdit', 'Name': 'TextEdit', 'Road Type': 'TextEdit'});
 lyr_18001860MissingRoads.set('fieldImages', {'First Seen': 'TextEdit', 'Name': 'TextEdit', 'Last Seen': 'TextEdit', 'Road Type': 'TextEdit'});
@@ -437,7 +437,7 @@ lyr_19501980MissingRoads.set('fieldImages', {'First Seen': 'TextEdit', 'Name': '
 lyr_19801995.set('fieldImages', {'First Seen': 'TextEdit', 'Name': 'TextEdit', 'Road Type': 'TextEdit'});
 lyr_Pointsofinterest.set('fieldImages', {'Title': 'TextEdit', 'Desc.': 'TextEdit', 'Added by': 'TextEdit', 'Date': 'DateTime', 'Source': 'TextEdit', 'id': 'TextEdit', });
 
-lyr_Pre1800MissingRoads_1.set('fieldLabels', {'First Seen': 'no label', 'Name': 'no label', 'Last Seen': 'no label', 'Road Type': 'inline label'});
+lyr_Pre1800MissingRoads.set('fieldLabels', {'First Seen': 'no label', 'Name': 'no label', 'Last Seen': 'no label', 'Road Type': 'inline label'});
 lyr_Sevensisters.set('fieldLabels', {'Name': 'no label', 'Year': 'no label', 'Road Type': 'inline label'});
 lyr_Pre1800Roads.set('fieldLabels', {'First Seen': 'no label', 'Name': 'no label', 'Road Type': 'inline label'});
 lyr_18001860MissingRoads.set('fieldLabels', {'First Seen': 'no label', 'Name': 'no label', 'Last Seen': 'no label', 'Road Type': 'inline label'});
