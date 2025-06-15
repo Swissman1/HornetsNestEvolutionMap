@@ -1,7 +1,7 @@
 var size = 0;
 var placement = 'point';
 
-var style_19801995 = function(feature, resolution){
+var style_18601880Roads = function(feature, resolution){
     var context = {
         feature: feature,
         variables: {}
@@ -21,7 +21,7 @@ var style_19801995 = function(feature, resolution){
         labelText = String("");
     }
     var style = [ new ol.style.Style({
-        stroke: new ol.style.Stroke({color: 'rgba(184,79,28,1.0)', lineDash: null, lineCap: 'square', lineJoin: 'bevel', width: 3.268}),
+        stroke: new ol.style.Stroke({color: 'rgba(94,116,12,1.0)', lineDash: null, lineCap: 'square', lineJoin: 'bevel', width: 3.268}),
         text: createTextStyle(feature, resolution, labelText, labelFont,
                               labelFill, placement, bufferColor,
                               bufferWidth)
