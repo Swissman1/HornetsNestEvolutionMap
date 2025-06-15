@@ -38,33 +38,33 @@ function createDynamicRoadStyle(layerBaseStyle) {
                 break;
             case 'Major Road':
                 // Major roads visible from zoom level 8 and higher
-                isVisible = currentZoom >= 10;
+                isVisible = currentZoom >= 9;
                 break;
             case 'Minor Road':
                 // Minor roads visible from zoom level 10 and higher
-                isVisible = currentZoom >= 12;
+                isVisible = currentZoom >= 11;
                 break;
             case 'RAMP':
                 // RAMP roads visible from zoom level 12 and higher
-                isVisible = currentZoom >= 13;
+                isVisible = currentZoom >= 12;
                 break;
             case 'Collecting Residential Road':
                 // Residential visible from zoom level 14 and higher
-                isVisible = currentZoom >= 13;
+                isVisible = currentZoom >= 12;
                 break;
                 
             case 'Trunk Road':
                 // Major roads visible from zoom level 6 and higher
-                isVisible = currentZoom >= 10;
+                isVisible = currentZoom >= 9;
                 break;
             case 'Neighborhood Road':
                 // Missing roads might appear at higher zoom levels for detail
-                isVisible = currentZoom >= 14;
+                isVisible = currentZoom >= 13;
                 break;
             // Add more cases for other 'Road Type' values as needed
             default:
                 // If 'Road Type' is unknown, not set, or doesn't match, hide by default
-                isVisible = currentZoom >= 14;
+                isVisible = currentZoom >= 13;
                 break;
         }
 

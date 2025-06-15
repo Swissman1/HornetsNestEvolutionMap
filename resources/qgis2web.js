@@ -211,7 +211,7 @@ function onPointerMove(evt) {
                 }
             }
         }
-    });
+    },{hitTolerance: 5});
     if (popupText == '<ul>') {
         popupText = '';
     } else {
@@ -319,6 +319,7 @@ function onSingleClickFeatures(evt) {
     var popupText = '<ul>';
     
     map.forEachFeatureAtPixel(pixel, function(feature, layer) {
+        hitToleran
         if (layer && feature instanceof ol.Feature && (layer.get("interactive") || layer.get("interactive") === undefined)) {
             var doPopup = false;
             for (var k in layer.get('fieldImages')) {
@@ -349,7 +350,7 @@ function onSingleClickFeatures(evt) {
                 }
             }
         }
-    });
+    },{hitTolerance: 5});
     if (popupText === '<ul>') {
         popupText = '';
     } else {
