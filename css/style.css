@@ -236,6 +236,7 @@ a:hover, a:focus {
     overflow: hidden;
     display: flex;
     flex-direction: column;
+    touch-action: none; /* Prevents default browser touch behaviors like pinch-zoom and pan */
 }
 
 .map-section h2 {
