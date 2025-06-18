@@ -5,18 +5,7 @@ var map = new ol.Map({
     layers: layersList,
     view: new ol.View({
          extent: [-9115415.931165, 4151761.751941, -8845464.795740, 4254973.008709], maxZoom: 19, minZoom: 1}),
-     interactions: ol.interaction.defaults({
-        // Adjust the 'delay' for tap interaction
-        tap: new ol.interaction.Tap({
-            duration: 250 // Milliseconds, default is 250. Increase if needed.
-                         // This is the maximum duration for a touch to be considered a tap.
-        }),
-        // Disable or adjust DragPan for touch if still having issues
-        // Although 'touch-action: none;' should handle this well
-        // dragPan: new ol.interaction.DragPan({
-        //     touchAction: 'none' // This might be redundant if #map already has it
-        // })
-    })
+
 });
 
 //initial view - epsg:3857 coordinates if not "Match project CRS"
