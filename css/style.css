@@ -194,6 +194,7 @@ a:hover, a:focus {
     border-radius: 3px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     max-width: 50%; /* Adjust as needed */
+    touch-action: none; /* Prevents default browser touch behaviors like pinch-zoom and pan */
 }
 
 .info-button{
@@ -263,7 +264,7 @@ a:hover, a:focus {
 /* Responsive Adjustments */
 @media (max-width: 1080px) {
     h1 {
-        font-size: 2em; /* Slightly smaller main heading */
+        font-size: 1.5em; /* Slightly smaller main heading */
     }
     h2 {
         font-size: 1.6em; /* Smaller section headings */
