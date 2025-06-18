@@ -7,7 +7,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     toggleOpenerButton.addEventListener('click', function() {
         openerSection.classList.toggle('collapsed');
-        openerContent.classList.toggle('collapsed')
         if (openerSection.classList.contains('collapsed')) {
             toggleOpenerButton.textContent = 'Show Info';
         } else {
