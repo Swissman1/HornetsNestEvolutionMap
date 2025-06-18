@@ -222,7 +222,7 @@ function onPointerMove(evt) {
                 }
             }
         }
-    },{hitTolerance: 9});
+    },{hitTolerance: 15});
     if (popupText == '<ul>') {
         popupText = '';
     } else {
@@ -361,7 +361,7 @@ function onSingleClickFeatures(evt) {
                 }
             }
         }
-    },{hitTolerance: 9});
+    },{hitTolerance: 15});
     if (popupText === '<ul>') {
         popupText = '';
     } else {
