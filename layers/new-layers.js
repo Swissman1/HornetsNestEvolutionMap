@@ -110,16 +110,20 @@ function createDynamicRoadStyle(layerBaseStyle) {
                 break;
         }
         const roadAdd = feature.get('First Seen');
+        const roadRemove = feature.set('Last Seen')
+        
         let featureYear = null;
-        if(roadAdd){
+        if(isVisible && roadAdd){
             featureYear = new Date(roadAdd).getFullYear();
-            isVisible =  isVisible && featureYear >= filterMinYear && featureYear <= filterMaxYear;
+            isVisible =   featureYear >= filterMinYear && featureYear <= filterMaxYear;
+            if(isVisible && roadRemove){
+                var removeYear =new Date(roadRemove).getFullYear()
+                isVisible =  removeYear >= filterMinYear && removeYear <= filterMaxYear;
+
+            }
+
         }
-        if(roadAdd){
-            var year = new Date(roadAdd).getFullYear();
-            isVisible =  isVisible && year >= filterMinYear && year <= filterMaxYear;
-        }
-                if (isVisible) {
+        if (isVisible) {
              // Get the base style
             let style = typeof layerBaseStyle === 'function' ? layerBaseStyle(feature, resolution) : layerBaseStyle;
 
@@ -182,7 +186,7 @@ var lyr_FullRoads = createVectorLayer({
     title: 'Existing roads'
  });
 var lyr_MissingRoads = createVectorLayer({
-    jsonData: json_2025MissingRoads,
+    jsonData: json_MissingRoads,
     style: createDynamicRoadStyle(style_2025MissingRoads),
     popuplayertitle: 'Road',
     title: 'Missing roads'
@@ -190,11 +194,11 @@ var lyr_MissingRoads = createVectorLayer({
 
 var group_RoadsandRail = new ol.layer.Group({
     layers: [
-        lyr_FullRoads
+        lyr_FullRoads, lyr_MissingRoads
 
     ],
     fold: 'open',
-    title: 'Roads and Rail'
+    title: 'Roads'
 });
 var group_Maps = new ol.layer.Group({
     layers: [lyr_OpenStreetmap_0,],
@@ -207,4 +211,5 @@ lyr_OpenStreetmap_0.setVisible(true);
 
 var layersList = [group_Maps,group_RoadsandRail];
 // Ensure "Road Type" field alias is set for all road layers if it's new
+lyr_FullRoads.set('fieldAliases', {'First Seen': 'First Seen', 'Name': 'Name', 'Road Type': 'Road Type'});
 lyr_FullRoads.set('fieldAliases', {'First Seen': 'First Seen', 'Name': 'Name', 'Last Seen': 'Last Seen', 'Road Type': 'Road Type'});
