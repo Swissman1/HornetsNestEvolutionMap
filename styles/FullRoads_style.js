@@ -21,7 +21,7 @@ var style_FullRoads = function(feature, resolution){
         labelText = String("");
     }
     var style = [ new ol.style.Style({
-        stroke: new ol.style.Stroke({color: 'rgba(48,146,26,1.0)', lineDash: null, lineCap: 'square', lineJoin: 'bevel', width: 4.028}),
+        stroke: new ol.style.Stroke({color: 'rgba(48,146,26,1.0)', lineDash: null, lineCap: 'square', lineJoin: 'bevel', width: 2.9}),
         text: createTextStyle(feature, resolution, labelText, labelFont,
                               labelFill, placement, bufferColor,
                               bufferWidth)
