@@ -6,7 +6,49 @@ var wms_layers = [];
 // var map = new ol.Map({ ... });
 // Make sure 'map' is globally available or passed in.
 
+var filterMinYear = 1800;
+var filterMaxYear =2025;
+// Helper function to interpolate between two colors (RGB interpolation)
+// Colors should be in [R, G, B] format (0-255)
+function interpolateColor(color1, color2, factor) {
+    let result = color1.slice(); // Create a copy
+    for (let i = 0; i < 3; i++) {
+        result[i] = Math.round(result[i] + factor * (color2[i] - result[i]));
+    }
+    return 'rgb(' + result.join(',') + ')';
+}
+function getColorForYear(year, minYear, maxYear) {
+    // Normalize the year to a 0-1 range
+    const normalizedYear = (year - minYear) / (maxYear - minYear);
 
+    // Define your color stops (year percentage and corresponding RGB color)
+    // You can add more color stops for more complex gradients
+    const colorStops = [
+        { yearRatio: 0.0, color: [74, 73, 26] }, 
+        {yearRatio: 0.5, color: [60,112,16]},
+       //{ yearRatio: 0.5, color: [0, 200, 0] },    
+        {yearRatio: 0.75, color: [201,122,25]},
+        { yearRatio: 1.0, color: [0, 25, 150] }      
+    ];
+
+    if (normalizedYear <= colorStops[0].yearRatio) {
+        return 'rgb(' + colorStops[0].color.join(',') + ')';
+    }
+    if (normalizedYear >= colorStops[colorStops.length - 1].yearRatio) {
+        return 'rgb(' + colorStops[colorStops.length - 1].color.join(',') + ')';
+    }
+
+    for (let i = 0; i < colorStops.length - 1; i++) {
+        const stop1 = colorStops[i];
+        const stop2 = colorStops[i + 1];
+
+        if (normalizedYear >= stop1.yearRatio && normalizedYear < stop2.yearRatio) {
+            const factor = (normalizedYear - stop1.yearRatio) / (stop2.yearRatio - stop1.yearRatio);
+            return interpolateColor(stop1.color, stop2.color, factor);
+        }
+    }
+    return '#333333'; // Fallback default color
+}
 
 // This helper function creates a style function for each layer.
 // It wraps your original layer-specific style (e.g., style_Pre1800Roads)
@@ -67,15 +109,36 @@ function createDynamicRoadStyle(layerBaseStyle) {
                 isVisible = currentZoom >= 13;
                 break;
         }
+        const roadAdd = feature.get('First Seen');
+        let featureYear = null;
+        if(roadAdd){
+            featureYear = new Date(roadAdd).getFullYear();
+            isVisible =  isVisible && featureYear >= filterMinYear && featureYear <= filterMaxYear;
+        }
+        if(roadAdd){
+            var year = new Date(roadAdd).getFullYear();
+            isVisible =  isVisible && year >= filterMinYear && year <= filterMaxYear;
+        }
+                if (isVisible) {
+             // Get the base style
+            let style = typeof layerBaseStyle === 'function' ? layerBaseStyle(feature, resolution) : layerBaseStyle;
 
-        if (isVisible) {
-            // If the feature is visible, return its original layer-specific style.
-            // Check if layerBaseStyle is itself a function (for more complex QGIS-exported styles)
-            if (typeof layerBaseStyle === 'function') {
-                return layerBaseStyle(feature, resolution);
-            }
-            // Otherwise, assume it's a static style object
-            return layerBaseStyle;
+            // Ensure style is an array of styles, or convert it to one
+            let stylesArray = Array.isArray(style) ? style : [style];
+
+            // Iterate over each style and modify the stroke color
+            stylesArray.forEach(s => {
+                let stroke = s.getStroke();
+                if (stroke) {
+                    if (featureYear !== null) {
+                        const interpolatedColor = getColorForYear(featureYear, 1800, 2025);
+                        stroke.setColor(interpolatedColor);
+                    } else {
+                        stroke.setColor('#333333'); // Default color if year is not available
+                    }
+                }
+            });
+            return stylesArray;
         } else {
             return null; // Hide the feature if it's not visible at the current zoom/road type
         }
@@ -112,169 +175,26 @@ function createVectorLayer(params) {
     });
 }
 
-var lyr_Pre1800MissingRoads = createVectorLayer({
-    jsonData: json_Pre1800MissingRoads,
-    style: createDynamicRoadStyle(style_Pre1800MissingRoads),
-    popuplayertitle: 'Pre 1800 Missing Roads',
-    title: '<img src="styles/legend/Pre1800MissingRoads.png" /> Pre 1800 Missing Roads'
-});
-
-var lyr_Sevensisters = createVectorLayer({
-    jsonData: json_Sevensisters,
-    style: createDynamicRoadStyle(style_Sevensisters),
-    popuplayertitle: 'Seven sisters',
-    title: '<img src="styles/legend/Sevensisters.png" /> Seven sisters'
-});
-
-var lyr_Pre1800Roads = createVectorLayer({
-    jsonData: json_Pre1800Roads,
-    style: createDynamicRoadStyle(style_Pre1800Roads),
-    popuplayertitle: 'Pre 1800 Roads',
-    title: '<img src="styles/legend/Pre1800Roads.png" /> Pre 1800 Roads'
-});
-
-var lyr_18001860MissingRoads = createVectorLayer({
-    jsonData: json_18001860MissingRoads,
-    style: createDynamicRoadStyle(style_18001860MissingRoads),
-    popuplayertitle: '1800-1860 Missing Roads',
-    title: '<img src="styles/legend/18001860MissingRoads.png" /> 1800-1860 Missing Roads'
-});
-
-var lyr_18001860 = createVectorLayer({
-    jsonData: json_18001860,
-    style: createDynamicRoadStyle(style_18001860),
-    popuplayertitle: '1800-1860',
-    title: '<img src="styles/legend/18001860.png" /> 1800-1860'
-});
-
-var lyr_18601880MissingRoads = createVectorLayer({
-    jsonData: json_18601880MissingRoads,
-    style: createDynamicRoadStyle(style_18601880MissingRoads),
-    popuplayertitle: '1860-1880 Missing Roads',
-    title: '<img src="styles/legend/18601880MissingRoads.png" /> 1860-1880 Missing Roads'
-});
-
-var lyr_18801900MissingRoads = createVectorLayer({
-    jsonData: json_18801900MissingRoads,
-    style: createDynamicRoadStyle(style_18801900MissingRoads),
-    popuplayertitle: '1880-1900 Missing Roads',
-    title: '<img src="styles/legend/18801900MissingRoads.png" /> 1880-1900 Missing Roads'
-});
-
-var lyr_18801900 = createVectorLayer({
-    jsonData: json_18801900,
-    style: createDynamicRoadStyle(style_18801900),
-    popuplayertitle: '1880-1900',
-    title: '<img src="styles/legend/18801900.png" /> 1880-1900'
-});
-
-var lyr_19001920MissingRoads = createVectorLayer({
-    jsonData: json_19001920MissingRoads,
-    style: createDynamicRoadStyle(style_19001920MissingRoads),
-    popuplayertitle: '1900-1920 Missing Roads',
-    title: '<img src="styles/legend/19001920MissingRoads.png" /> 1900-1920 Missing Roads'
-});
-
-var lyr_19001920 = createVectorLayer({
-    jsonData: json_19001920,
-    style: createDynamicRoadStyle(style_19001920),
-    popuplayertitle: '1900-1920',
-    title: '<img src="styles/legend/19001920.png" /> 1900-1920'
-});
-
-var lyr_19201950MissingRoads = createVectorLayer({
-    jsonData: json_19201950MissingRoads,
-    style: createDynamicRoadStyle(style_19201950MissingRoads),
-    popuplayertitle: '1920-1950 Missing Roads',
-    title: '<img src="styles/legend/19201950MissingRoads.png" /> 1920-1950 Missing Roads'
-});
-
-var lyr_19201950 = createVectorLayer({
-    jsonData: json_19201950,
-    style: createDynamicRoadStyle(style_19201950),
-    popuplayertitle: '1920-1950',
-    title: '<img src="styles/legend/19201950.png" /> 1920-1950'
-});
-
-var lyr_19501980 = createVectorLayer({
-    jsonData: json_19501980,
-    style: createDynamicRoadStyle(style_19501980),
-    popuplayertitle: '1950-1980',
-    title: '<img src="styles/legend/19501980.png" /> 1950-1980'
-});
-
-var lyr_19501980MissingRoads = createVectorLayer({
-    jsonData: json_19501980MissingRoads,
-    style: createDynamicRoadStyle(style_19501980MissingRoads),
-    popuplayertitle: '1950-1980 Missing Roads',
-    title: '<img src="styles/legend/19501980MissingRoads.png" /> 1950-1980 Missing Roads'
-});
-
-var lyr_19801995 = createVectorLayer({
-    jsonData: json_19801995,
-    style: createDynamicRoadStyle(style_19801995),
-    popuplayertitle: '1980-1995',
-    title: '<img src="styles/legend/19801995.png" /> 1980-1995'
-});
-var lyr_19952025 = createVectorLayer({
-    jsonData: json_19952025Roads,
-    style: createDynamicRoadStyle(style_19952025),
-    popuplayertitle: '1995-2025',
-    title: '<img src="styles/legend/19952025Roads.png" /> 1995-2025'
-});
-// This layer might not have a "Road Type" attribute or needs different visibility rules.
-// You might want to define a separate style function for it or keep its original style.
-// For now, I'll assume it doesn't use the 'Road Type' logic, and if style_Pointsofinterest
-// is a static style object, it will be applied always.
-var lyr_Pointsofinterest = createVectorLayer({
-    jsonData: json_Pointsofinterest,
-    style: style_Pointsofinterest, // Assuming this layer does NOT use the 'Road Type' logic
-    popuplayertitle: 'Points of interest',
-    title: '<img src="styles/legend/Pointsofinterest.png" /> Points of interest'
-});
+var lyr_FullRoads = createVectorLayer({
+    jsonData: json_FullRoads,
+    style: createDynamicRoadStyle(style_FullRoads),
+    popuplayertitle: 'Road',
+    title: 'Existing roads'
+ });
+var lyr_FullRoads = createVectorLayer({
+    jsonData: json_2025MissingRoads,
+    style: createDynamicRoadStyle(style_2025MissingRoads),
+    popuplayertitle: 'Road',
+    title: 'Missing roads'
+ });
 
 var group_RoadsandRail = new ol.layer.Group({
     layers: [
-        lyr_Pre1800MissingRoads,
-        lyr_Sevensisters,
-        lyr_Pre1800Roads,
-        lyr_18001860MissingRoads,
-        lyr_18001860,
-        lyr_18601880MissingRoads,
-        lyr_18801900MissingRoads,
-        lyr_18801900,
-        lyr_19001920MissingRoads,
-        lyr_19001920,
-        lyr_19201950MissingRoads,
-        lyr_19201950,
-        lyr_19501980,
-        lyr_19501980MissingRoads,
-        lyr_19801995,
-        lyr_19952025,
-        lyr_Pointsofinterest,
+        lyr_FullRoads
+
     ],
     fold: 'open',
     title: 'Roads and Rail'
-});
-var group_TimeSlices = new ol.layer.Group({
-    layers: [],
-    fold: 'open',
-    title: 'Time Slices'
-});
-var group_1877 = new ol.layer.Group({
-    layers: [],
-    fold: 'open',
-    title: '1877'
-});
-var group_1900 = new ol.layer.Group({
-    layers: [],
-    fold: 'open',
-    title: '1900'
-});
-var group_1910 = new ol.layer.Group({
-    layers: [],
-    fold: 'open',
-    title: '1910'
 });
 var group_Maps = new ol.layer.Group({
     layers: [lyr_OpenStreetmap_0,],
@@ -283,77 +203,8 @@ var group_Maps = new ol.layer.Group({
 });
 
 lyr_OpenStreetmap_0.setVisible(true);
-// Remove or comment out these individual layer setVisible calls,
-// as feature visibility is now controlled by the style functions.
-// lyr_Pre1800MissingRoads.setVisible(true);
-// lyr_Sevensisters.setVisible(true);
-// lyr_Pre1800Roads.setVisible(true);
-// lyr_18001860MissingRoads.setVisible(true);
-// lyr_18001860.setVisible(true);
-// lyr_18601880MissingRoads.setVisible(true);
-// lyr_18801900MissingRoads.setVisible(true);
-// lyr_18801900.setVisible(true);
-// lyr_19001920MissingRoads.setVisible(true);
-// lyr_19001920.setVisible(true);
-// lyr_19201950MissingRoads.setVisible(true);
-// lyr_19201950.setVisible(true);
-// lyr_19501980.setVisible(true);
-// lyr_19501980MissingRoads.setVisible(true);
-// lyr_19801995.setVisible(true);
-lyr_Pointsofinterest.setVisible(true); // Keep POI visible if it doesn't use the road style function
+
 
 var layersList = [group_Maps,group_RoadsandRail];
 // Ensure "Road Type" field alias is set for all road layers if it's new
-lyr_Pre1800MissingRoads.set('fieldAliases', {'First Seen': 'First Seen', 'Name': 'Name', 'Last Seen': 'Last Seen', 'Road Type': 'Road Type'});
-lyr_Sevensisters.set('fieldAliases', {'Name': 'Name', 'Year': 'Year', 'Road Type': 'Road Type'});
-lyr_Pre1800Roads.set('fieldAliases', {'First Seen': 'First Seen', 'Name': 'Name', 'Road Type': 'Road Type'});
-lyr_18001860MissingRoads.set('fieldAliases', {'First Seen': 'First Seen', 'Name': 'Name', 'Last Seen': 'Last Seen', 'Road Type': 'Road Type'});
-lyr_18001860.set('fieldAliases', {'First Seen': 'First Seen', 'Name': 'Name', 'Road Type': 'Road Type'});
-lyr_18601880MissingRoads.set('fieldAliases', {'First Seen': 'First Seen', 'Name': 'Name', 'Last Seen': 'Last Seen', 'Road Type': 'Road Type'});
-lyr_18801900MissingRoads.set('fieldAliases', {'First Seen': 'First Seen', 'Name': 'Name', 'Last Seen': 'Last Seen', 'Road Type': 'Road Type'});
-lyr_18801900.set('fieldAliases', {'First Seen': 'First Seen', 'Name': 'Name', 'Road Type': 'Road Type'});
-lyr_19001920MissingRoads.set('fieldAliases', {'First Seen': 'First Seen', 'Name': 'Name', 'Last Seen': 'Last Seen', 'Road Type': 'Road Type'});
-lyr_19001920.set('fieldAliases', {'First Seen': 'First Seen', 'Name': 'Name', 'Road Type': 'Road Type'});
-lyr_19201950MissingRoads.set('fieldAliases', {'First Seen': 'First Seen', 'Name': 'Name', 'Last Seen': 'Last Seen', 'Road Type': 'Road Type'});
-lyr_19201950.set('fieldAliases', {'First Seen': 'First Seen', 'Name': 'Name', 'Road Type': 'Road Type'});
-lyr_19501980.set('fieldAliases', {'First Seen': 'First Seen', 'Name': 'Name', 'Road Type': 'Road Type'});
-lyr_19501980MissingRoads.set('fieldAliases', {'First Seen': 'First Seen', 'Name': 'Name', 'Last Seen': 'Last Seen', 'Road Type': 'Road Type'});
-lyr_19801995.set('fieldAliases', {'First Seen': 'First Seen', 'Name': 'Name', 'Road Type': 'Road Type'});
-lyr_Pointsofinterest.set('fieldAliases', {'Title': 'Title', 'Desc.': 'Desc.', 'Added by': 'Added by', 'Date': 'Date', 'Source': 'Source', 'id': 'id', });
-
-lyr_Pre1800MissingRoads.set('fieldImages', {'First Seen': 'TextEdit', 'Name': 'TextEdit', 'Last Seen': 'TextEdit', 'Road Type': 'TextEdit'});
-lyr_Sevensisters.set('fieldImages', {'Name': 'TextEdit', 'Year': 'Range', 'Road Type': 'TextEdit'});
-lyr_Pre1800Roads.set('fieldImages', {'First Seen': 'TextEdit', 'Name': 'TextEdit', 'Road Type': 'TextEdit'});
-lyr_18001860MissingRoads.set('fieldImages', {'First Seen': 'TextEdit', 'Name': 'TextEdit', 'Last Seen': 'TextEdit', 'Road Type': 'TextEdit'});
-lyr_18001860.set('fieldImages', {'First Seen': 'TextEdit', 'Name': 'TextEdit', 'Road Type': 'TextEdit'});
-lyr_18601880MissingRoads.set('fieldImages', {'First Seen': 'TextEdit', 'Name': 'TextEdit', 'Last Seen': 'TextEdit', 'Road Type': 'TextEdit'});
-lyr_18801900MissingRoads.set('fieldImages', {'First Seen': 'DateTime', 'Name': 'TextEdit', 'Last Seen': 'TextEdit', 'Road Type': 'TextEdit'});
-lyr_18801900.set('fieldImages', {'First Seen': 'TextEdit', 'Name': 'TextEdit', 'Road Type': 'TextEdit'});
-lyr_19001920MissingRoads.set('fieldImages', {'First Seen': 'TextEdit', 'Name': 'TextEdit', 'Last Seen': 'TextEdit', 'Road Type': 'TextEdit'});
-lyr_19001920.set('fieldImages', {'First Seen': 'TextEdit', 'Name': 'TextEdit', 'Road Type': 'TextEdit'});
-lyr_19201950MissingRoads.set('fieldImages', {'First Seen': 'TextEdit', 'Name': 'TextEdit', 'Last Seen': 'TextEdit', 'Road Type': 'TextEdit'});
-lyr_19201950.set('fieldImages', {'First Seen': 'TextEdit', 'Name': 'TextEdit', 'Road Type': 'TextEdit'});
-lyr_19501980.set('fieldImages', {'First Seen': 'TextEdit', 'Name': 'TextEdit', 'Road Type': 'TextEdit'});
-lyr_19501980MissingRoads.set('fieldImages', {'First Seen': 'TextEdit', 'Name': 'TextEdit', 'Last Seen': 'TextEdit', 'Road Type': 'TextEdit'});
-lyr_19801995.set('fieldImages', {'First Seen': 'TextEdit', 'Name': 'TextEdit', 'Road Type': 'TextEdit'});
-lyr_Pointsofinterest.set('fieldImages', {'Title': 'TextEdit', 'Desc.': 'TextEdit', 'Added by': 'TextEdit', 'Date': 'DateTime', 'Source': 'TextEdit', 'id': 'TextEdit', });
-
-lyr_Pre1800MissingRoads.set('fieldLabels', {'First Seen': 'no label', 'Name': 'no label', 'Last Seen': 'no label', 'Road Type': 'inline label'});
-lyr_Sevensisters.set('fieldLabels', {'Name': 'no label', 'Year': 'no label', 'Road Type': 'inline label'});
-lyr_Pre1800Roads.set('fieldLabels', {'First Seen': 'no label', 'Name': 'no label', 'Road Type': 'inline label'});
-lyr_18001860MissingRoads.set('fieldLabels', {'First Seen': 'no label', 'Name': 'no label', 'Last Seen': 'no label', 'Road Type': 'inline label'});
-lyr_18001860.set('fieldLabels', {'First Seen': 'no label', 'Name': 'no label', 'Road Type': 'inline label'});
-lyr_18601880MissingRoads.set('fieldLabels', {'First Seen': 'no label', 'Name': 'no label', 'Last Seen': 'no label', 'Road Type': 'inline label'});
-lyr_18801900MissingRoads.set('fieldLabels', {'First Seen': 'no label', 'Name': 'no label', 'Last Seen': 'no label', 'Road Type': 'inline label'});
-lyr_18801900.set('fieldLabels', {'First Seen': 'no label', 'Name': 'inline label - always visible', 'Road Type': 'inline label'});
-lyr_19001920MissingRoads.set('fieldLabels', {'First Seen': 'no label', 'Name': 'no label', 'Last Seen': 'no label', 'Road Type': 'inline label'});
-lyr_19001920.set('fieldLabels', {'First Seen': 'no label', 'Name': 'no label', 'Road Type': 'inline label'});
-lyr_19201950MissingRoads.set('fieldLabels', {'First Seen': 'no label', 'Name': 'no label', 'Last Seen': 'no label', 'Road Type': 'inline label'});
-lyr_19201950.set('fieldLabels', {'First Seen': 'no label', 'Name': 'no label', 'Road Type': 'inline label'});
-lyr_19501980.set('fieldLabels', {'First Seen': 'no label', 'Name': 'no label', 'Road Type': 'inline label'});
-lyr_19501980MissingRoads.set('fieldLabels', {'First Seen': 'no label', 'Name': 'no label', 'Last Seen': 'no label', 'Road Type': 'inline label'});
-lyr_19801995.set('fieldLabels', {'First Seen': 'no label', 'Name': 'no label', 'Road Type': 'inline label'});
-lyr_Pointsofinterest.set('fieldLabels', {'Title': 'no label', 'Desc.': 'no label', 'Added by': 'no label', 'Date': 'no label', 'Source': 'no label', 'id': 'no label', });
-lyr_Pointsofinterest.on('precompose', function(evt) {
-    evt.context.globalCompositeOperation = 'normal';
-});
+lyr_FullRoads.set('fieldAliases', {'First Seen': 'First Seen', 'Name': 'Name', 'Last Seen': 'Last Seen', 'Road Type': 'Road Type'});

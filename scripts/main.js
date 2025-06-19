@@ -1,3 +1,49 @@
+ var slider = document.getElementById('year-slider');
+    var lowerValueSpan = document.getElementById('slider-value-lower');
+    var upperValueSpan = document.getElementById('slider-value-upper');
+    var sliderFormat = wNumb({
+        decimals: 0 // This ensures no decimal places
+    });
+    noUiSlider.create(slider, {
+        start: [1800, 1995], // Initial values for the two handles
+        connect: true, // Connect the handles with a bar
+        range: {
+            'min': 1800,
+            'max': 2025
+        },
+        step: 1, // Slider moves in increments of 1
+        tooltips: true, // Show tooltips for current values
+        pips: { // Show pips for specific values
+            mode: 'range',
+            density: 5
+        },
+        format: sliderFormat
+    });
+
+    // Update the displayed values when the slider changes
+    slider.noUiSlider.on('update', function (values, handle) {
+        lowerValueSpan.innerHTML = Math.round(values[0]);
+        
+        upperValueSpan.innerHTML = Math.round(values[1]);
+
+          filterMinYear = values[0];
+          filterMaxYear = values[1];
+
+    if (typeof map !== 'undefined' && map !== null) {
+            // Force the entire map to re-render, which will re-evaluate all layer styles
+            map.render();
+            map.updateSize();
+            const view = map.getView();
+            var currentCenter = view.getCenter();
+            var jigger = Math.random()-0.5;
+const newCenter = [currentCenter[0] + jigger, currentCenter[1]];
+view.setCenter(newCenter);
+
+    }
+        
+    });
+
+
 document.addEventListener('DOMContentLoaded', function() {
     
     //addHamburger();

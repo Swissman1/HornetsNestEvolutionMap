@@ -5,6 +5,9 @@
     <meta charset="utf-8" />
     <title>The Map - Hornets Nest Evolution Project</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.7.1/nouislider.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.7.1/nouislider.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/wnumb/1.2.0/wNumb.min.js"></script>
     <script type="application/ld+json">
     {
       "@context" : "https://schema.org",
@@ -34,6 +37,7 @@
     />
 
     <script async defer src="https://buttons.github.io/buttons.js"></script>
+
     <style>
       /* Original inline styles for map controls - keep these for compatibility */
       .ol-control > * {
@@ -82,7 +86,11 @@
     </header>
 
     <main class="content-wrapper main-container">
-
+    
+      <div id="year-slider" style="margin-top: 20px;"></div>
+        <p style="text-align: center; margin-top: 10px;">
+          <span id="slider-value-lower"></span> - <span id="slider-value-upper"></span>
+        </p>
       <section id="map-container" class="map-section">
         <div id="map">
           <div id="popup" class="ol-popup">
@@ -191,9 +199,10 @@
       </p>
     </footer>
 
-
+ 
     <script src="./resources/ol.js"></script>
-    
+    <script src="layers/FullRoads.js"></script>
+    <script src="styles/FullRoads_style.js"></script>
     <script src="resources/qgis2web_expressions.js"></script>
     <script src="./resources/functions.js"></script>
     <script src="./resources/ol-layerswitcher.js"></script>
@@ -214,13 +223,12 @@
     <script src="styles/19801995_style.js"></script>
     <script src="styles/19952025_style.js"></script>
     <script src="styles/Pointsofinterest_style.js"></script>
-    <!-- <script src="./layers/layers.js" type="text/javascript"></script>   -->
-    <script src="./layers/new-layers.js" type="text/javascript"></script>  
+    <script src="layers/new-layers.js"></script>
     <script src="./resources/Autolinker.min.js"></script>
     <script src="./resources/qgis2web.js"></script>
         
         
-        <script src="./scripts/main.js"></script>
+    <script src="./scripts/main.js"></script>
         
   </body>
 </html>

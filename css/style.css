@@ -261,6 +261,11 @@ a:hover, a:focus {
     border-top: 1px solid #d3c8b4;
 }
 
+#year-slider{
+    margin-left: 25px;
+    margin-right: 22px;
+}
+
 /* Responsive Adjustments */
 @media (max-width: 1080px) {
     h1 {
