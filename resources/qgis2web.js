@@ -319,7 +319,7 @@ function onSingleClickFeatures(evt) {
     var popupText = '<ul>';
     
     map.forEachFeatureAtPixel(pixel, function(feature, layer) {
-        hitToleran
+
         if (layer && feature instanceof ol.Feature && (layer.get("interactive") || layer.get("interactive") === undefined)) {
             var doPopup = false;
             for (var k in layer.get('fieldImages')) {
