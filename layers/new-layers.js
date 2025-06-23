@@ -24,13 +24,17 @@ function getColorForYear(year, minYear, maxYear) {
     // Define your color stops (year percentage and corresponding RGB color)
     // You can add more color stops for more complex gradients
     const colorStops = [
-        { yearRatio: 0.0, color: [0, 3, 16] }, 
-        { yearRatio: 0.25, color: [30, 20, 205] },    
+        { yearRatio: 0.0, color: [0, 3, 16] },         
+        { yearRatio: 0.16, color: [30, 20, 205] },    
+        { yearRatio: 0.35, color: [206, 120, 0] },    
         
-        {yearRatio: 0.5, color: [200,100,50]},
-        {yearRatio: 0.75, color: [247,215,85]},
+        {yearRatio: 0.49, color: [54,135,51]},
+        {yearRatio: 0.64, color: [74,218,226]},
        
-        { yearRatio: 1.0, color: [40, 5, 255] }      
+        {yearRatio: 0.76, color: [190,69,163]},
+        { yearRatio: 0.87, color: [233, 50, 14] },
+        
+        {yearRatio: 1, color: [32,205,45]}  
     ]; 
 
     if (normalizedYear <= colorStops[0].yearRatio) {
