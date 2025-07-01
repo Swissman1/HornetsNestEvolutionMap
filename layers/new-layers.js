@@ -116,15 +116,18 @@ function createDynamicRoadStyle(layerBaseStyle) {
                 break;
         }
         const roadAdd = feature.get('First Seen');
-        const roadRemove = feature.set('Last Seen')
-        
+        const roadRemove = feature.get('Last Seen')
+
+        if(feature.get('Name')=='Old Central Ave'){
+            console.log("");
+        }
         let featureYear = null;
         if(isVisible && roadAdd){
             featureYear = new Date(roadAdd).getFullYear();
             isVisible =   featureYear >= filterMinYear && featureYear <= filterMaxYear;
             if(isVisible && roadRemove){
                 var removeYear =new Date(roadRemove).getFullYear()
-                isVisible =  removeYear >= filterMinYear && removeYear <= filterMaxYear;
+                isVisible =  removeYear >= filterMinYear && removeYear >= filterMaxYear;
 
             }
 
