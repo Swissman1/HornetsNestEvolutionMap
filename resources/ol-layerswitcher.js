@@ -32,18 +32,18 @@ const CSS_PREFIX = 'layer-switcher-';
  * Specify a `title` for a Layer by adding a `title` property to it's options object:
  * ```javascript
  * var lyr = new ol.layer.Tile({
- *   // Specify a title property which will be displayed by the layer switcher
- *   title: 'OpenStreetMap',
- *   visible: true,
- *   source: new ol.source.OSM()
+ * // Specify a title property which will be displayed by the layer switcher
+ * title: 'OpenStreetMap',
+ * visible: true,
+ * source: new ol.source.OSM()
  * })
  * ```
  *
  * Alternatively the properties can be set via the `set` method after a layer has been created:
  * ```javascript
  * var lyr = new ol.layer.Tile({
- *   visible: true,
- *   source: new ol.source.OSM()
+ * visible: true,
+ * source: new ol.source.OSM()
  * })
  * // Specify a title property which will be displayed by the layer switcher
  * lyr.set('title', 'OpenStreetMap');
@@ -52,8 +52,8 @@ const CSS_PREFIX = 'layer-switcher-';
  * To create a LayerSwitcher and add it to a map, create a new instance then pass it to the map's [`addControl` method](https://openlayers.org/en/latest/apidoc/module-ol_Map-Map.html#addControl).
  * ```javascript
  * var layerSwitcher = new LayerSwitcher({
- *   reverse: true,
- *   groupSelectStyle: 'group'
+ * reverse: true,
+ * groupSelectStyle: 'group'
  * });
  * map.addControl(layerSwitcher);
  * ```
@@ -67,6 +67,14 @@ class LayerSwitcher extends Control {
         const options = Object.assign({}, opt_options);
         const element = document.createElement('div');
         super({ element: element, target: options.target });
+
+        // --- START: Added for "Show all missing roads" checkbox ---
+        // Property to store the state of the "Show all missing roads" checkbox
+        this.showMissingRoads = options.showMissingRoads || false;
+        // Optional callback to notify external code when the checkbox state changes
+        this.onMissingRoadsChangeCallback = options.onMissingRoadsChange || null;
+        // --- END: Added for "Show all missing roads" checkbox ---
+
         this.activationMode = options.activationMode || 'mouseover';
         this.startActive = options.startActive === true;
         // TODO Next: Rename to showButtonContent
@@ -172,7 +180,7 @@ class LayerSwitcher extends Control {
          * map.addControl(layerSwitcher);
          *
          * layerSwitcher.on('show', evt => {
-         *   console.log('show', evt);
+         * console.log('show', evt);
          * });
          * @event LayerSwitcher#show
          */
@@ -214,19 +222,23 @@ class LayerSwitcher extends Control {
      */
     renderPanel() {
         this.dispatchEvent('render');
-        LayerSwitcher.renderPanel(this.getMap(), this.panel, {
+        // --- START: Modified call to static renderPanel to pass 'this' instance ---
+        // Pass 'this' (the LayerSwitcher instance) to the static renderPanel method
+        LayerSwitcher.renderPanel(this, this.getMap(), this.panel, {
             groupSelectStyle: this.groupSelectStyle,
             reverse: this.reverse
         });
+        // --- END: Modified call to static renderPanel ---
         this.dispatchEvent('rendercomplete');
     }
     /**
      * **_[static]_** - Re-draw the layer panel to represent the current state of the layers.
+     * @param switcherInstance The LayerSwitcher instance.
      * @param map The OpenLayers Map instance to render layers for
      * @param panel The DOM Element into which the layer tree will be rendered
      * @param options Options for panel, group, and layers
      */
-    static renderPanel(map, panel, options) {
+    static renderPanel(switcherInstance, map, panel, options) {
         // Create the event.
         const render_event = new Event('render');
         // Dispatch the event.
@@ -254,10 +266,47 @@ class LayerSwitcher extends Control {
         }
         const ul = document.createElement('ul');
         panel.appendChild(ul);
+
+        // --- START: Added "Show all missing roads" checkbox ---
+        const missingRoadsLi = document.createElement('li');
+        missingRoadsLi.className = 'layer-switcher-missing-roads'; // Custom class for styling
+        const missingRoadsCheckboxId = LayerSwitcher.uuid(); // Generate a unique ID
+
+        const missingRoadsInput = document.createElement('input');
+        missingRoadsInput.type = 'checkbox';
+        missingRoadsInput.id = missingRoadsCheckboxId;
+        // Set the checkbox's initial state from the LayerSwitcher instance property
+        missingRoadsInput.checked = switcherInstance.showMissingRoads;
+        missingRoadsInput.onchange = function (e) {
+            const target = e.target;
+            // Update the LayerSwitcher instance property
+            switcherInstance.showMissingRoads = target.checked;
+            // Call the optional callback if provided
+            if (switcherInstance.onMissingRoadsChangeCallback) {
+                switcherInstance.onMissingRoadsChangeCallback(target.checked);
+            }
+            // If you need the panel to re-render after this checkbox changes, uncomment the line below.
+            // However, for a standalone variable, it's usually not necessary.
+            // LayerSwitcher.renderPanel(switcherInstance, map, panel, options);
+        };
+
+        const missingRoadsLabel = document.createElement('label');
+        missingRoadsLabel.htmlFor = missingRoadsCheckboxId;
+        missingRoadsLabel.textContent = 'Show all missing roads';
+
+        missingRoadsLi.appendChild(missingRoadsInput);
+        missingRoadsLi.appendChild(missingRoadsLabel);
+        // Prepend this new list item to the unordered list of layers
+        ul.prepend(missingRoadsLi);
+        // --- END: Added "Show all missing roads" checkbox ---
+
         // passing two map arguments instead of lyr as we're passing the map as the root of the layers tree
-        LayerSwitcher.renderLayers_(map, map, ul, options, function render(_changedLyr) {
-            LayerSwitcher.renderPanel(map, panel, options);
+        // --- START: Modified call to static renderLayers_ to pass 'switcherInstance' ---
+        LayerSwitcher.renderLayers_(switcherInstance, map, map, ul, options, function render(_changedLyr) {
+            // Pass switcherInstance to the recursive call
+            LayerSwitcher.renderPanel(switcherInstance, map, panel, options);
         });
+        // --- END: Modified call to static renderLayers_ ---
         // Create the event.
         const rendercomplete_event = new Event('rendercomplete');
         // Dispatch the event.
@@ -403,13 +452,15 @@ class LayerSwitcher extends Control {
     }
     /**
      * Render all layers that are children of a group.
+     * @param switcherInstance The LayerSwitcher instance.
      * @param map The map instance.
      * @param lyr Layer to be rendered (should have a title property).
      * @param idx Position in parent group list.
      * @param options Options for groups and layers
+     * @param render Callback to re-render the panel
      * @protected
      */
-    static renderLayer_(map, lyr, idx, options, render) {
+    static renderLayer_(switcherInstance, map, lyr, idx, options, render) {
         const li = document.createElement('li');
         const lyrTitle = lyr.get('title');
         const checkboxId = LayerSwitcher.uuid();
@@ -450,7 +501,9 @@ class LayerSwitcher extends Control {
             li.appendChild(label);
             const ul = document.createElement('ul');
             li.appendChild(ul);
-            LayerSwitcher.renderLayers_(map, lyr, ul, options, render);
+            // --- START: Modified call to static renderLayers_ to pass 'switcherInstance' ---
+            LayerSwitcher.renderLayers_(switcherInstance, map, lyr, ul, options, render);
+            // --- END: Modified call to static renderLayers_ ---
         }
         else {
             li.className = 'layer';
@@ -488,20 +541,24 @@ class LayerSwitcher extends Control {
     }
     /**
      * Render all layers that are children of a group.
+     * @param switcherInstance The LayerSwitcher instance.
      * @param map The map instance.
      * @param lyr Group layer whose children will be rendered.
      * @param elm DOM element that children will be appended to.
      * @param options Options for groups and layers
+     * @param render Callback to re-render the panel
      * @protected
      */
-    static renderLayers_(map, lyr, elm, options, render) {
+    static renderLayers_(switcherInstance, map, lyr, elm, options, render) {
         let lyrs = lyr.getLayers().getArray().slice();
         if (options.reverse)
             lyrs = lyrs.reverse();
         for (let i = 0, l; i < lyrs.length; i++) {
             l = lyrs[i];
             if (l.get('title')) {
-                elm.appendChild(LayerSwitcher.renderLayer_(map, l, i, options, render));
+                // --- START: Modified call to static renderLayer_ to pass 'switcherInstance' ---
+                elm.appendChild(LayerSwitcher.renderLayer_(switcherInstance, map, l, i, options, render));
+                // --- END: Modified call to static renderLayer_ ---
             }
         }
     }
@@ -522,7 +579,7 @@ class LayerSwitcher extends Control {
     }
     /**
      * **_[static]_** - Generate a UUID
-     * Adapted from http://stackoverflow.com/a/2117523/526860
+     * Adapted from [http://stackoverflow.com/a/2117523/526860](http://stackoverflow.com/a/2117523/526860)
      * @returns {String} UUID
      */
     static uuid() {
@@ -533,7 +590,7 @@ class LayerSwitcher extends Control {
     }
     /**
      * Apply workaround to enable scrolling of overflowing content within an
-     * element. Adapted from https://gist.github.com/chrismbarr/4107472
+     * element. Adapted from [https://gist.github.com/chrismbarr/4107472](https://gist.github.com/chrismbarr/4107472)
      * @param elm Element on which to enable touch scrolling
      * @protected
      */
@@ -550,7 +607,7 @@ class LayerSwitcher extends Control {
     }
     /**
      * Determine if the current browser supports touch events. Adapted from
-     * https://gist.github.com/chrismbarr/4107472
+     * [https://gist.github.com/chrismbarr/4107472](https://gist.github.com/chrismbarr/4107472)
      * @returns {Boolean} True if client can have 'TouchEvent' event
      * @protected
      */

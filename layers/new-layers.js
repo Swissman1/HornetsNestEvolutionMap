@@ -79,6 +79,7 @@ function createDynamicRoadStyle(layerBaseStyle) {
             case 'Highway':
                 // Major roads visible from zoom level 6 and higher
                 isVisible = currentZoom >= 7;
+
                 break;
             case 'Freeway':
                 // Freeway roads visible from zoom level 5 and higher
@@ -86,11 +87,11 @@ function createDynamicRoadStyle(layerBaseStyle) {
                 break;
             case 'Major Road':
                 // Major roads visible from zoom level 8 and higher
-                isVisible = currentZoom >= 9;
+                isVisible = currentZoom >= 10;
                 break;
             case 'Minor Road':
                 // Minor roads visible from zoom level 10 and higher
-                isVisible = currentZoom >= 11;
+                isVisible = currentZoom >= 12.5;
                 break;
             case 'RAMP':
                 // RAMP roads visible from zoom level 12 and higher
@@ -98,16 +99,16 @@ function createDynamicRoadStyle(layerBaseStyle) {
                 break;
             case 'Collecting Residential Road':
                 // Residential visible from zoom level 14 and higher
-                isVisible = currentZoom >= 12;
+                isVisible = currentZoom >= 13.5;
                 break;
                 
             case 'Trunk Road':
                 // Major roads visible from zoom level 6 and higher
-                isVisible = currentZoom >= 9;
+                isVisible = currentZoom >= 10.0;
                 break;
             case 'Neighborhood Road':
                 // Missing roads might appear at higher zoom levels for detail
-                isVisible = currentZoom >= 13;
+                isVisible = currentZoom >= 14;
                 break;
             // Add more cases for other 'Road Type' values as needed
             default:
@@ -125,7 +126,7 @@ function createDynamicRoadStyle(layerBaseStyle) {
         if(isVisible && roadAdd){
             featureYear = new Date(roadAdd).getFullYear();
             isVisible =   featureYear >= filterMinYear && featureYear <= filterMaxYear;
-            if(isVisible && roadRemove){
+            if(isVisible && roadRemove && !showAllMissingRoads){
                 var removeYear =new Date(roadRemove).getFullYear()
                 isVisible =  removeYear >= filterMinYear && removeYear >= filterMaxYear;
 
@@ -146,6 +147,7 @@ function createDynamicRoadStyle(layerBaseStyle) {
                     if (featureYear !== null) {
                         const interpolatedColor = getColorForYear(featureYear, 1800, 2025);
                         stroke.setColor(interpolatedColor);
+                        setWidthByClass(feature, stroke);
                     } else {
                         stroke.setColor('#333333'); // Default color if year is not available
                     }
@@ -158,6 +160,53 @@ function createDynamicRoadStyle(layerBaseStyle) {
     };
 }
 
+function setWidthByClass(feature, stroke){
+        const roadType = feature.get('Road Type'); // Get the "Road Type" attribute from the feature
+            // Define visibility rules based on "Road Type" and zoom thresholds
+        // Adjust these zoom levels and road type strings to match your data and requirements
+        
+        switch (roadType) {
+            case 'Highway':
+                // Major roads visible from zoom level 6 and higher
+                stroke.setWidth(6)
+
+                break;
+            case 'Freeway':
+                // Freeway roads visible from zoom level 5 and higher
+                stroke.setWidth(6.9)
+                break;
+            case 'Major Road':
+                // Major roads visible from zoom level 8 and higher
+                stroke.setWidth(5.55)
+                break;
+            case 'Minor Road':
+                // Minor roads visible from zoom level 10 and higher
+                stroke.setWidth(4.45)
+                break;
+            case 'RAMP':
+                // RAMP roads visible from zoom level 12 and higher
+                stroke.setWidth(2.95)
+                break;
+            case 'Collecting Residential Road':
+                // Residential visible from zoom level 14 and higher
+                stroke.setWidth(3.5)
+                break;
+                
+            case 'Trunk Road':
+                // Major roads visible from zoom level 6 and higher
+                stroke.setWidth(5.55)
+                break;
+            case 'Neighborhood Road':
+                // Missing roads might appear at higher zoom levels for detail
+                stroke.setWidth(2.9)
+                break;
+            // Add more cases for other 'Road Type' values as needed
+            default:
+
+                
+                break;
+        }
+}
 var lyr_OpenStreetmap_0 = new ol.layer.Tile({
     'title': 'Open Street map',
     'opacity': 1.000000,
@@ -220,5 +269,18 @@ lyr_OpenStreetmap_0.setVisible(true);
 
 var layersList = [group_Maps,group_RoadsandRail];
 // Ensure "Road Type" field alias is set for all road layers if it's new
-lyr_FullRoads.set('fieldAliases', {'First Seen': 'First Seen', 'Name': 'Name', 'Road Type': 'Road Type'});
-lyr_FullRoads.set('fieldAliases', {'First Seen': 'First Seen', 'Name': 'Name', 'Last Seen': 'Last Seen', 'Road Type': 'Road Type'});
+lyr_Sevensisters.set('fieldAliases', {'Name': 'Name', 'Year': 'Year', });
+lyr_Pointsofinterest.set('fieldAliases', {'Title': 'Title', 'Desc.': 'Desc.', 'Added by': 'Added by', 'Date': 'Date', 'Source': 'Source', 'id': 'id', });
+lyr_MissingRoads.set('fieldAliases', {'First Seen': 'First Seen', 'Name': 'Name', 'Last Seen': 'Last Seen', 'Road Type': 'Road Type', });
+lyr_FullRoads.set('fieldAliases', {'First Seen': 'First Seen', 'Name': 'Name', 'Road Type': 'Road Type', });
+lyr_Sevensisters.set('fieldImages', {'Name': 'TextEdit', 'Year': 'Range', });
+lyr_Pointsofinterest.set('fieldImages', {'Title': 'TextEdit', 'Desc.': 'TextEdit', 'Added by': 'TextEdit', 'Date': 'DateTime', 'Source': 'TextEdit', 'id': 'TextEdit', });
+lyr_MissingRoads.set('fieldImages', {'First Seen': 'DateTime', 'Name': 'TextEdit', 'Last Seen': 'DateTime', 'Road Type': '', });
+lyr_FullRoads.set('fieldImages', {'First Seen': 'DateTime', 'Name': 'TextEdit', 'Road Type': 'TextEdit', });
+lyr_Sevensisters.set('fieldLabels', {'Name': 'inline label - visible with data', 'Year': 'inline label - visible with data', });
+lyr_Pointsofinterest.set('fieldLabels', {'Title': 'no label', 'Desc.': 'no label', 'Added by': 'no label', 'Date': 'no label', 'Source': 'no label', 'id': 'no label', });
+lyr_MissingRoads.set('fieldLabels', {'First Seen': 'no label', 'Name': 'no label', 'Last Seen': 'no label', 'Road Type': 'no label', });
+lyr_FullRoads.set('fieldLabels', {'First Seen': 'no label', 'Name': 'no label', 'Road Type': 'no label', });
+lyr_FullRoads.on('precompose', function(evt) {
+    evt.context.globalCompositeOperation = 'normal';
+});

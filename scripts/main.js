@@ -33,11 +33,7 @@
             // Force the entire map to re-render, which will re-evaluate all layer styles
             map.render();
             map.updateSize();
-            const view = map.getView();
-            var currentCenter = view.getCenter();
-            var jigger = Math.random()-0.5;
-const newCenter = [currentCenter[0] + jigger, currentCenter[1]];
-view.setCenter(newCenter);
+            JiggerMap();
 
     }
         
@@ -64,6 +60,14 @@ document.addEventListener('DOMContentLoaded', function() {
     // openerSection.classList.add('collapsed');
     // toggleOpenerButton.textContent = 'Show Info';
 });
+
+function JiggerMap() {
+  const view = map.getView();
+  var currentCenter = view.getCenter();
+  var jigger = Math.random() - 0.5;
+  const newCenter = [currentCenter[0] + jigger, currentCenter[1]];
+  view.setCenter(newCenter);
+}
 
 function addHamburger() {
   const hamburgerBtn = document.getElementById('hamburger-btn');

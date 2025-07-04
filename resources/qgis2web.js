@@ -1,4 +1,3 @@
-
 var map = new ol.Map({
     target: 'map',
     renderer: 'canvas',
@@ -36,7 +35,7 @@ map.getView().fit([-9115415.931165, 4151761.751941, -8845464.795740, 4254973.008
         })(),
     });
     map.addControl(bottomLeftContainer)
-  
+
     //top right container
     var topRightContainer = new ol.control.Control({
         element: (() => {
@@ -73,8 +72,8 @@ var overlayPopup = new ol.Overlay({
 	autoPan: true
 });
 map.addOverlay(overlayPopup)
-    
-    
+
+
 var NO_POPUP = 0
 var ALL_FIELDS = 1
 
@@ -198,7 +197,7 @@ function onPointerMove(evt) {
                         popupText += '<li><table>'
                         popupText += '<a>' + '<b>' + layer.get('popuplayertitle') + '</b>' + '</a>';
                         popupText += createPopupField(currentFeature, currentFeatureKeys, layer);
-                        popupText += '</table></li>';    
+                        popupText += '</table></li>';
                     }
                 }
             } else {
@@ -217,7 +216,7 @@ function onPointerMove(evt) {
     } else {
         popupText += '</ul>';
     }
-    
+
 	if (doHighlight) {
         if (currentFeature !== highlight) {
             if (highlight) {
@@ -292,6 +291,7 @@ map.on('pointermove', onPointerMove);
 var popupContent = '';
 var popupCoord = null;
 var featuresPopupActive = false;
+var showAllMissingRoads = false; // Initialize the variable here
 
 function updatePopup() {
     if (popupContent) {
@@ -302,7 +302,12 @@ function updatePopup() {
         container.style.display = 'none';
         closer.blur();
     }
-} 
+}
+
+// --- START: Removed incorrect LayerSwitcher instantiation from here ---
+// The previous LayerSwitcher initialization block was here. It has been removed.
+// --- END: Removed incorrect LayerSwitcher instantiation from here ---
+
 
 function onSingleClickFeatures(evt) {
     if (doHover || sketch) {
@@ -317,7 +322,7 @@ function onSingleClickFeatures(evt) {
     var currentFeatureKeys;
     var clusteredFeatures;
     var popupText = '<ul>';
-    
+
     map.forEachFeatureAtPixel(pixel, function(feature, layer) {
 
         if (layer && feature instanceof ol.Feature && (layer.get("interactive") || layer.get("interactive") === undefined)) {
@@ -337,7 +342,7 @@ function onSingleClickFeatures(evt) {
                         popupText += '<li><table>';
                         popupText += '<a><b>' + layer.get('popuplayertitle') + '</b></a>';
                         popupText += createPopupField(currentFeature, currentFeatureKeys, layer);
-                        popupText += '</table></li>';    
+                        popupText += '</table></li>';
                     }
                 }
             } else {
@@ -356,7 +361,7 @@ function onSingleClickFeatures(evt) {
     } else {
         popupText += '</ul>';
     }
-	
+
 	popupContent = popupText;
     popupCoord = coord;
     updatePopup();
@@ -469,25 +474,42 @@ var bottomRightContainerDiv = document.getElementById('bottom-right-container')
 
 
 //layerswitcher
-
+// --- START: Corrected LayerSwitcher instantiation ---
 var layerSwitcher = new ol.control.LayerSwitcher({
     activationMode: 'click',
 	startActive: true,
 	tipLabel: "Layers",
     target: 'top-right-container',
 	collapseLabel: '»',
-	collapseTipLabel: 'Close'
-    });
+	collapseTipLabel: 'Close',
+    // Initial state for the "Show all missing roads" checkbox
+    showMissingRoads: false, // Ensure this matches the initial state of the variable
+    // Optional: A callback function that will be called when the checkbox state changes
+    onMissingRoadsChange: function(isChecked) {
+        console.log('Show all missing roads:', isChecked);
+        // Update the global variable
+        showAllMissingRoads = isChecked;
+        // Call your map update function here
+        // Make sure JiggerMap() is defined in your script.
+        // If it's not, you'll need to define it or replace this call
+        // with your actual logic to show/hide missing roads.
+        if (typeof JiggerMap === 'function') {
+            JiggerMap();
+        } else {
+            console.warn("JiggerMap() function is not defined. Cannot update map for missing roads.");
+        }
+    }
+});
 map.addControl(layerSwitcher);
+// --- END: Corrected LayerSwitcher instantiation ---
+
 if (hasTouchScreen || isSmallScreen) {
 	document.addEventListener('DOMContentLoaded', function() {
 		setTimeout(function() {
 			layerSwitcher.hidePanel();
 		}, 500);
-	});	
+	});
 }
-
-
 
 
 
@@ -504,7 +526,7 @@ var attributionList = document.createElement('li');
 attributionList.innerHTML = `
 	<a href="https://github.com/qgis2web/qgis2web">qgis2web</a> &middot;
 	<a href="https://openlayers.org/">OpenLayers</a> &middot;
-	<a href="https://qgis.org/">QGIS</a>	
+	<a href="https://qgis.org/">QGIS</a>
 `;
 var bottomAttributionUl = bottomAttribution.element.querySelector('ul');
 if (bottomAttributionUl) {
@@ -520,7 +542,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	if (doHover || doHighlight) {
 		var controlElements = document.getElementsByClassName('ol-control');
 		for (var i = 0; i < controlElements.length; i++) {
-			controlElements[i].addEventListener('mouseover', function() { 
+			controlElements[i].addEventListener('mouseover', function() {
 				doHover = false;
 				doHighlight = false;
 			});
@@ -571,3 +593,10 @@ document.addEventListener('DOMContentLoaded', function() {
     if (attributionControl) {
         bottomRightContainerDiv.appendChild(attributionControl);
     }
+function JiggerMap() {
+  const view = map.getView();
+  var currentCenter = view.getCenter();
+  var jigger = Math.random() - 0.5;
+  const newCenter = [currentCenter[0] + jigger, currentCenter[1]];
+  view.setCenter(newCenter);
+}
