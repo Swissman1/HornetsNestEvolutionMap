@@ -70,7 +70,7 @@ class LayerSwitcher extends Control {
 
         // --- START: Added for "Show all missing roads" checkbox ---
         // Property to store the state of the "Show all missing roads" checkbox
-        this.showMissingRoads = options.showMissingRoads || false;
+        this.showMissingRoads = options.showMissingRoads || true;
         // Optional callback to notify external code when the checkbox state changes
         this.onMissingRoadsChangeCallback = options.onMissingRoadsChange || null;
         // --- END: Added for "Show all missing roads" checkbox ---

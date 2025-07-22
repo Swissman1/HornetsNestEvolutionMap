@@ -291,7 +291,7 @@ map.on('pointermove', onPointerMove);
 var popupContent = '';
 var popupCoord = null;
 var featuresPopupActive = false;
-var showAllMissingRoads = false; // Initialize the variable here
+var showAllMissingRoads = true; // Initialize the variable here
 
 function updatePopup() {
     if (popupContent) {
