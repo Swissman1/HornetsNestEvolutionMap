@@ -290,6 +290,7 @@ a:hover, a:focus {
     }
     .map-section {
         height: 580px; /* Reduced map height on mobile */
+        width: 100%;
     }
     .support-section {
         flex-direction: column; /* Stack items vertically */
