@@ -280,6 +280,12 @@ a:hover, a:focus {
     .site-header h1 {
     margin-left: 5px;
     font-size: 1.2em;
+     touch-action: none;
+    overflow: hidden;
+}
+body{
+     touch-action: none;
+    overflow: hidden;
 }
     h2 {
         font-size: 1.1em; /* Smaller section headings */
@@ -290,7 +296,9 @@ a:hover, a:focus {
     }
     .map-section {
         height: 580px; /* Reduced map height on mobile */
-        width: 100%;
+        width: 100%; 
+        touch-action: none;
+    overflow: hidden;
     }
     .support-section {
         flex-direction: column; /* Stack items vertically */
