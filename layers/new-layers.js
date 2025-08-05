@@ -6,7 +6,7 @@ var wms_layers = [];
 // var map = new ol.Map({ ... });
 // Make sure 'map' is globally available or passed in.
 
-var filterMinYear = 1800;
+var filterMinYear = 1750;
 var filterMaxYear =2025;
 // Helper function to interpolate between two colors (RGB interpolation)
 // Colors should be in [R, G, B] format (0-255)

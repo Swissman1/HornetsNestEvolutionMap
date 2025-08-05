@@ -5,10 +5,10 @@
         decimals: 0 // This ensures no decimal places
     });
     noUiSlider.create(slider, {
-        start: [1800, 2025], // Initial values for the two handles
+        start: [1750, 2025], // Initial values for the two handles
         connect: true, // Connect the handles with a bar
         range: {
-            'min': 1800,
+            'min': 1750,
             'max': 2025
         },
         step: 1, // Slider moves in increments of 1
