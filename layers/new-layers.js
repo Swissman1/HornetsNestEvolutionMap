@@ -29,10 +29,10 @@ function getColorForYear(year, minYear, maxYear) {
         { yearRatio: 0.35, color: [206, 120, 0] },    
         
         {yearRatio: 0.49, color: [54,135,51]},
-        {yearRatio: 0.64, color: [74,218,226]},
+        {yearRatio: 0.64, color: [74,58,26]},
        
         {yearRatio: 0.76, color: [190,69,163]},
-        { yearRatio: 0.87, color: [233, 50, 14] },
+        { yearRatio: 0.87, color: [243, 140, 0] },
         
         {yearRatio: 1, color: [32,205,45]}  
     ]; 
@@ -257,22 +257,18 @@ var lyr_Annex = createVectorLayer({
 })
 var group_RoadsandRail = new ol.layer.Group({
     layers: [
-        lyr_FullRoads, lyr_MissingRoads, lyr_Annex
+        lyr_FullRoads, lyr_MissingRoads
 
     ],
     fold: 'open',
     title: 'Roads'
 });
-var group_Maps = new ol.layer.Group({
-    layers: [lyr_OpenStreetmap_0,],
-    fold: 'open',
-    title: 'Maps'
-});
 
+lyr_Annex.setOpacity(0.6)
 lyr_OpenStreetmap_0.setVisible(true);
 
 
-var layersList = [group_Maps,group_RoadsandRail];
+var layersList = [lyr_OpenStreetmap_0,lyr_Annex,group_RoadsandRail];
 // Ensure "Road Type" field alias is set for all road layers if it's new
 //lyr_Sevensisters.set('fieldAliases', {'Name': 'Name', 'Year': 'Year', });
 //lyr_Pointsofinterest.set('fieldAliases', {'Title': 'Title', 'Desc.': 'Desc.', 'Added by': 'Added by', 'Date': 'Date', 'Source': 'Source', 'id': 'id', });
