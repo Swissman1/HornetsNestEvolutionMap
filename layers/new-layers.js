@@ -55,6 +55,39 @@ function getColorForYear(year, minYear, maxYear) {
     }
     return '#333333'; // Fallback default color
 }
+// This helper function creates a style function for each layer.
+// It wraps your original layer-specific style (e.g., style_Pre1800Roads)
+// and applies visibility rules based on the feature's "Road Type" attribute and the current zoom level.
+function createDynamicAnnexStyle(layerBaseStyle) {
+    return function(feature, resolution) {
+        // Ensure 'map' is defined before trying to access its view
+        if (!map) {
+            console.warn("Map object is not defined. Cannot apply zoom-based styling.");
+            // If map is not available, return the base style without zoom/type checks
+            return typeof layerBaseStyle === 'function' ? layerBaseStyle(feature, resolution) : layerBaseStyle;
+        }
+        const roadAdd = feature.get('effdate');
+
+
+        let featureYear = null;
+        if(roadAdd){
+            featureYear = new Date(roadAdd).getFullYear();
+            isVisible =   featureYear >= filterMinYear && featureYear <= filterMaxYear;
+           
+
+        }
+        if (isVisible) {
+             // Get the base style
+            let style = typeof layerBaseStyle === 'function' ? layerBaseStyle(feature, resolution) : layerBaseStyle;
+
+            // Ensure style is an array of styles, or convert it to one
+            let stylesArray = Array.isArray(style) ? style : [style];
+            return stylesArray;
+        } else {
+            return null; // Hide the feature if it's not visible at the current zoom/road type
+        }
+    };
+}
 
 // This helper function creates a style function for each layer.
 // It wraps your original layer-specific style (e.g., style_Pre1800Roads)
@@ -251,7 +284,7 @@ var lyr_MissingRoads = createVectorLayer({
  });
 var lyr_Annex = createVectorLayer({
     jsonData: json_Annexation_History,
-    style: style_Annexation_History,
+    style: createDynamicAnnexStyle( style_Annexation_History),
     popuplayertitle: 'Annexation History',
     title: 'Annexation History'
 })
