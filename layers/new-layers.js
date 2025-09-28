@@ -120,11 +120,11 @@ function createDynamicRoadStyle(layerBaseStyle) {
                 break;
             case 'Major Road':
                 // Major roads visible from zoom level 8 and higher
-                isVisible = currentZoom >= 9;
+                isVisible = currentZoom >= 8.75;
                 break;
             case 'Minor Road':
                 // Minor roads visible from zoom level 10 and higher
-                isVisible = currentZoom >= 11;
+                isVisible = currentZoom >= 10.35;
                 break;
             case 'RAMP':
                 // RAMP roads visible from zoom level 12 and higher
@@ -132,7 +132,7 @@ function createDynamicRoadStyle(layerBaseStyle) {
                 break;
             case 'Collecting Residential Road':
                 // Residential visible from zoom level 14 and higher
-                isVisible = currentZoom >= 11.5;
+                isVisible = currentZoom >= 10.75;
                 break;
                 
             case 'Trunk Road':
@@ -141,12 +141,12 @@ function createDynamicRoadStyle(layerBaseStyle) {
                 break;
             case 'Neighborhood Road':
                 // Missing roads might appear at higher zoom levels for detail
-                isVisible = currentZoom >= 12.25;
+                isVisible = currentZoom >= 11.25;
                 break;
             // Add more cases for other 'Road Type' values as needed
             default:
                 // If 'Road Type' is unknown, not set, or doesn't match, hide by default
-                isVisible = currentZoom >= 13;
+                isVisible = currentZoom >= 12.5;
                 break;
         }
         const roadAdd = feature.get('First Seen');
