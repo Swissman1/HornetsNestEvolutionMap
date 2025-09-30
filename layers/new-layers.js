@@ -24,17 +24,17 @@ function getColorForYear(year, minYear, maxYear) {
     // Define your color stops (year percentage and corresponding RGB color)
     // You can add more color stops for more complex gradients
     const colorStops = [
-        { yearRatio: 0.0, color: [0, 3, 16] },         
-        { yearRatio: 0.16, color: [30, 20, 205] },    
-        { yearRatio: 0.35, color: [206, 120, 0] },    
+        { yearRatio: 0.0, color: [10, 3, 106] },         
+        //{ yearRatio: 0.16, color: [30, 20, 205] },    
+        //{ yearRatio: 0.35, color: [206, 120, 0] },    
         
-        {yearRatio: 0.49, color: [54,135,51]},
-        {yearRatio: 0.64, color: [74,58,26]},
+        {yearRatio: 0.59, color: [154,15,51]},
+        //{yearRatio: 0.64, color: [74,58,26]},
        
-        {yearRatio: 0.76, color: [190,69,163]},
-        { yearRatio: 0.87, color: [243, 140, 0] },
+        //{yearRatio: 0.76, color: [190,69,163]},
+        //{ yearRatio: 0.87, color: [243, 140, 0] },
         
-        {yearRatio: 1, color: [32,205,45]}  
+        {yearRatio: 1, color: [152,205,5]}  
     ]; 
 
     if (normalizedYear <= colorStops[0].yearRatio) {
@@ -120,19 +120,19 @@ function createDynamicRoadStyle(layerBaseStyle) {
                 break;
             case 'Major Road':
                 // Major roads visible from zoom level 8 and higher
-                isVisible = currentZoom >= 8.75;
+                isVisible = currentZoom >= 9;
                 break;
             case 'Minor Road':
                 // Minor roads visible from zoom level 10 and higher
-                isVisible = currentZoom >= 10.35;
+                isVisible = currentZoom >= 10.75;
                 break;
             case 'RAMP':
                 // RAMP roads visible from zoom level 12 and higher
-                isVisible = currentZoom >= 11;
+                isVisible = currentZoom >= 115;
                 break;
             case 'Collecting Residential Road':
                 // Residential visible from zoom level 14 and higher
-                isVisible = currentZoom >= 10.75;
+                isVisible = currentZoom >= 11.25;
                 break;
                 
             case 'Trunk Road':
@@ -141,7 +141,7 @@ function createDynamicRoadStyle(layerBaseStyle) {
                 break;
             case 'Neighborhood Road':
                 // Missing roads might appear at higher zoom levels for detail
-                isVisible = currentZoom >= 11.25;
+                isVisible = currentZoom >= 12.15;
                 break;
             // Add more cases for other 'Road Type' values as needed
             default:
