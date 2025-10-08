@@ -34,7 +34,7 @@ function getColorForYear(year, minYear, maxYear) {
         //{yearRatio: 0.76, color: [190,69,163]},
         //{ yearRatio: 0.87, color: [243, 140, 0] },
         
-        {yearRatio: 1, color: [152,205,5]}  
+        {yearRatio: 1, color: [172,190,5]}  
     ]; 
 
     if (normalizedYear <= colorStops[0].yearRatio) {
