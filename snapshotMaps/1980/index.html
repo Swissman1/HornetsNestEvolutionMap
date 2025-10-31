@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <link rel="stylesheet" href="./resources/ol.css">
+        <link rel="stylesheet" href="resources/fontawesome-all.min.css">
+        <link rel="stylesheet" href="./resources/ol-layerswitcher.css">
+        <link rel="stylesheet" href="./resources/qgis2web.css">
+
+    <link rel="stylesheet" href="../../css/style.css" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <style>
+        html, body {
+            background-color: #ffffff;
+        }
+        .ol-control > * {
+            background-color: #f8f8f8!important;
+            color: #444444!important;
+            border-radius: 0px;
+        }
+        .ol-attribution a, .gcd-gl-input::placeholder, .search-layer-input-search::placeholder {
+            color: #444444!important;
+        }
+        .search-layer-input-search {
+            background-color: #f8f8f8!important;
+        }
+        .ol-control > *:focus, .ol-control >*:hover {
+            background-color: rgba(248, 248, 248, 0.7)!important;
+        } 
+        .ol-control {
+            background-color: rgba(255,255,255,.4) !important;
+            padding: 2px !important;
+        } 
+        </style>
+
+        <style>
+          html,body{
+ width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+          }
+
+       #map {
+            width: 90%;
+            align-content: center;
+            height: 90%;
+            padding-left: 5%;
+            padding-top: 1%;
+            margin: 0;
+        }
+        .info{
+          padding: 3%;
+        }
+        button {
+  border: none;
+  color: white;
+  background-color: #5a4a3e;
+  padding: 5px 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 11px;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+        </style>
+        <script async defer src="https://buttons.github.io/buttons.js"></script>
+  <script type="application/ld+json">
+    {
+      "@context" : "https://schema.org",
+      "@type" : "WebSite",
+      "name" : "Hornets Nest Evolution Project",
+            "datePublished": "2025-05-3T08:00:00+05:00",
+            "dateModified": "2025-05-30T09:43:00+05:00"
+      "url" : "https://swissman1.github.io/HornetsNestEvolutionMap/"
+    }
+  </script>
+            <title>The story- Hornets Nest Evolution Project</title>
+    </head>
+        <header class="site-header">
+      <nav style="display: flex; align-items: center; width: 100%; box-sizing: border-box; padding: 0;">
+        <a href="../../index.html" class="header-link">The Map</a>
+        <a href="../../thestory.html" class="header-link">The Story</a>
+        <a href="../../Sources.html" class="header-link">Sources</a>
+
+
+        <div style="flex: 1 1 auto;">
+          <h1 style="text-align: center; margin: 0 auto;">Hornets Nest Evolution Project</h1>
+        </div>
+      </nav>
+    </header>
+    <body>
+      <div>
+        <h2 style="margin-top: 1%; align-content: center;">  1980</h2>    <h3> City population: 315,474     County Population: 404,270 </h3><button onclick="location.href= '../1965/index.html'">1965</button><button onclick="location.href= '../1995/index.html'">1995</button></div><br>
+  
+          
+   
+      </div>
+        <div id="map">
+            <div id="popup" class="ol-popup">
+                <a href="#" id="popup-closer" class="ol-popup-closer"></a>
+                <div id="popup-content"></div>
+            </div>
+        </div>
+        <script src="resources/qgis2web_expressions.js"></script>
+        <script src="./resources/functions.js"></script>
+        <script src="./resources/ol.js"></script>
+        <script src="./resources/ol-layerswitcher.js"></script>
+        <script src="layers/Roads.js"></script><script src="layers/MissingRoads.js"></script>
+        <script src="styles/Roads_style.js"></script><script src="styles/MissingRoads_style.js"></script>
+        <script src="./layers/layers.js" type="text/javascript"></script> 
+        <script src="./resources/Autolinker.min.js"></script>
+        <script src="./resources/qgis2web.js"></script>
+    </body>
+</html>
