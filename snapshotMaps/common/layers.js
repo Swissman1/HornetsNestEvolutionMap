@@ -10,27 +10,14 @@ function getColorForYear(year, thresYear) {
 
     // Define your color stops (year percentage and corresponding RGB color)
     // You can add more color stops for more complex gradients
-    const newColor = [150,180,50];
-    const colorStops = [
-        { yearRatio: 0.0, color: [10, 3, 106] },         
-        //{ yearRatio: 0.16, color: [30, 20, 205] },    
-        //{ yearRatio: 0.35, color: [206, 120, 0] },    
-        
-        {yearRatio: 0.59, color: [154,15,51]},
-        //{yearRatio: 0.64, color: [74,58,26]},
-       
-        //{yearRatio: 0.76, color: [190,69,163]},
-        //{ yearRatio: 0.87, color: [243, 140, 0] },
-        
-        {yearRatio: 1, color: [172,190,5]}  
-    ]; 
+    const newColor = [100,210,100];
 
     if (year > thresYear) {
         return 'rgb(' +newColor.join(',') + ')';
     }
 
 
-    return '#1a50a1ff'; // Fallback default color
+   return null;
 }
 // This helper function creates a style function for each layer.
 // It wraps your original layer-specific style (e.g., style_Pre1800Roads)
@@ -149,10 +136,9 @@ function createDynamicRoadStyle(layerBaseStyle) {
                 if (stroke) {
                     if (featureYear !== null) {
                         const interpolatedColor = getColorForYear(featureYear, lastYear );
-                        stroke.setColor(interpolatedColor);
+                        if(interpolatedColor)
+                            stroke.setColor(interpolatedColor);
                         setWidthByClass(feature, stroke);
-                    } else {
-                        stroke.setColor('#333333'); // Default color if year is not available
                     }
                 }
             });
