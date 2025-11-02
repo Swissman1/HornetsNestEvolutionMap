@@ -48,3 +48,22 @@ html, body {
   margin: 4px 2px;
   cursor: pointer;
 }
+.year-header{
+    margin-top: 1%; 
+    margin-bottom: 0%; 
+    align-content: center;}
+    .pop-header{
+        margin-top: 0.5%;
+    }
+/* Responsive Adjustments */
+@media (max-width: 1080px) {
+    .description {
+        font-size: 10px;
+    }
+    .year-header{
+        font-size: 12px;
+    }
+    .pop-header{
+        font-size: 12px;
+    }
+}
