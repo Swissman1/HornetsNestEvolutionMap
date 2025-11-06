@@ -270,7 +270,7 @@ function createVectorLayer(params) {
     });
 }
 
-var lyr_FullRoads = createVectorLayer({
+var lyr_Roads = createVectorLayer({
     jsonData: json_FullRoads,
     style: createDynamicRoadStyle(style_FullRoads),
     popuplayertitle: 'Road',
@@ -278,7 +278,7 @@ var lyr_FullRoads = createVectorLayer({
  });
 var lyr_MissingRoads = createVectorLayer({
     jsonData: json_MissingRoads,
-    style: createDynamicRoadStyle(style_2025MissingRoads),
+    style: createDynamicRoadStyle(style_MissingRoads),
     popuplayertitle: 'Road',
     title: 'Missing roads'
  });
@@ -290,7 +290,7 @@ var lyr_Annex = createVectorLayer({
 })
 var group_RoadsandRail = new ol.layer.Group({
     layers: [
-        lyr_FullRoads, lyr_MissingRoads
+        lyr_Roads, lyr_MissingRoads
 
     ],
     fold: 'open',
@@ -306,15 +306,15 @@ var layersList = [lyr_OpenStreetmap_0,lyr_Annex,group_RoadsandRail];
 //lyr_Sevensisters.set('fieldAliases', {'Name': 'Name', 'Year': 'Year', });
 //lyr_Pointsofinterest.set('fieldAliases', {'Title': 'Title', 'Desc.': 'Desc.', 'Added by': 'Added by', 'Date': 'Date', 'Source': 'Source', 'id': 'id', });
 lyr_MissingRoads.set('fieldAliases', {'First Seen': 'First Seen', 'Name': 'Name', 'Last Seen': 'Last Seen', 'Road Type': 'Road Type', });
-lyr_FullRoads.set('fieldAliases', {'First Seen': 'First Seen', 'Name': 'Name', 'Road Type': 'Road Type', });
+lyr_Roads.set('fieldAliases', {'First Seen': 'First Seen', 'Name': 'Name', 'Road Type': 'Road Type', });
 //lyr_Sevensisters.set('fieldImages', {'Name': 'TextEdit', 'Year': 'Range', });
 //lyr_Pointsofinterest.set('fieldImages', {'Title': 'TextEdit', 'Desc.': 'TextEdit', 'Added by': 'TextEdit', 'Date': 'DateTime', 'Source': 'TextEdit', 'id': 'TextEdit', });
 lyr_MissingRoads.set('fieldImages', {'First Seen': 'DateTime', 'Name': 'TextEdit', 'Last Seen': 'DateTime', 'Road Type': '', });
-lyr_FullRoads.set('fieldImages', {'First Seen': 'DateTime', 'Name': 'TextEdit', 'Road Type': 'TextEdit', });
+lyr_Roads.set('fieldImages', {'First Seen': 'DateTime', 'Name': 'TextEdit', 'Road Type': 'TextEdit', });
 //lyr_Sevensisters.set('fieldLabels', {'Name': 'inline label - visible with data', 'Year': 'inline label - visible with data', });
 //lyr_Pointsofinterest.set('fieldLabels', {'Title': 'no label', 'Desc.': 'no label', 'Added by': 'no label', 'Date': 'no label', 'Source': 'no label', 'id': 'no label', });
 lyr_MissingRoads.set('fieldLabels', {'First Seen': 'no label', 'Name': 'no label', 'Last Seen': 'no label', 'Road Type': 'no label', });
-lyr_FullRoads.set('fieldLabels', {'First Seen': 'no label', 'Name': 'no label', 'Road Type': 'no label', });
-lyr_FullRoads.on('precompose', function(evt) {
+lyr_Roads.set('fieldLabels', {'First Seen': 'no label', 'Name': 'no label', 'Road Type': 'no label', });
+lyr_Roads.on('precompose', function(evt) {
     evt.context.globalCompositeOperation = 'normal';
 });
