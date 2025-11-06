@@ -294,13 +294,13 @@ a:hover, a:focus {
         background-color: rgb(1, 134, 1);
 }
 
-/* Responsive Adjustments */
 @media (max-width: 1080px) {
+    
     h1 {
-        font-size: 0.8em; /* Slightly smaller main heading */
+        font-size: 0.8em; 
     }
     .slider-with-background-container {
-        width: calc(100% - 47px); /* Reconfirm calculations for narrower screens */
+        width: calc(100% - 47px); 
         margin-left: 25px;
         margin-right: 22px;
     }
@@ -317,41 +317,41 @@ a:hover, a:focus {
     left: 0;
     width: 100%;
     height: 100px;
-    object-fit: cover; /* This will make the image cover the slider area without distorting */
-    z-index: -1; /* Send the image behind the slider elements */
-    opacity: 0.5; /* Optional: Make it slightly transparent so the slider is still clear */
+    object-fit: cover;
+    z-index: -1;
+    opacity: 0.5; 
 }
-
 body{
     
+/* overflow: hidden; */
+}
+h2 {
+    font-size: 1.1em; 
+}
+.content-wrapper {
+    padding: 0 10px;
+    margin: 10px auto;
+}
+.map-section {
+    height: 580px; 
+    width: 100%; 
+    touch-action: none; 
     overflow: hidden;
 }
-    h2 {
-        font-size: 1.1em; /* Smaller section headings */
-    }
-    .content-wrapper {
-        padding: 0 10px;
-        margin: 10px auto;
-    }
-    .map-section {
-        height: 580px; /* Reduced map height on mobile */
-        width: 100%; 
-        touch-action: none;
-    overflow: hidden;
-    }
-    .support-section {
-        flex-direction: column; /* Stack items vertically */
-        justify-content: center; /* Center items */
-        align-items: center;
-        text-align: center; /* Center text within items */
+
+.support-section {
+    flex-direction: column; 
+    justify-content: center; 
+    align-items: center;
+    text-align: center; 
     }
     #support-text {
-        margin-right: 0; /* Remove right margin */
-        margin-bottom: 1em; /* Add bottom margin for spacing */
+        margin-right: 0; 
+        margin-bottom: 1em;
     }
     .info-button {
-        width: 100%; /* Full-width buttons */
-        margin-bottom: 0.5em; /* Space between buttons */
+        width: 100%; 
+        margin-bottom: 0.5em; 
         justify-content: center;
     }
-}
+} 
