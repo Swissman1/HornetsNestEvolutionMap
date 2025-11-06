@@ -307,7 +307,7 @@ a:hover, a:focus {
     .site-header h1 {
     margin-left: 5px;
     font-size: 1.2em;
-     touch-action: none;
+
     overflow: hidden;
 }
 .color-code {
