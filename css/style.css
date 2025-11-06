@@ -323,7 +323,7 @@ a:hover, a:focus {
 }
 
 body{
-     touch-action: none;
+    
     overflow: hidden;
 }
     h2 {
