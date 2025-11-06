@@ -58,7 +58,7 @@ html, body {
 /* Responsive Adjustments */
 @media (max-width: 1080px) {
     .description {
-        font-size: 10px;
+        font-size: 9px;
     }
     .year-header{
         font-size: 12px;
