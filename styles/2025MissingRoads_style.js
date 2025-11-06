@@ -1,7 +1,7 @@
 var size = 0;
 var placement = 'point';
 
-var style_2025MissingRoads = function(feature, resolution){
+var style_MissingRoads = function(feature, resolution){
     var context = {
         feature: feature,
         variables: {}
