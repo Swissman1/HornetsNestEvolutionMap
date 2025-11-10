@@ -1,0 +1,434 @@
+<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
+<!-- * * * * * * * * * * * The content below * * * * * * * * * * * -->
+<!-- * * * * * * * * * * is only a placeholder * * * * * * * * * * -->
+<!-- * * * * * * * * * * and can be replaced.  * * * * * * * * * * -->
+<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
+<!-- * * * * * * * * * Delete the template below * * * * * * * * * -->
+<!-- * * * * * * * to get started with your project! * * * * * * * -->
+<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
+
+<style>
+  :host {
+    --bright-blue: oklch(51.01% 0.274 263.83);
+    --electric-violet: oklch(53.18% 0.28 296.97);
+    --french-violet: oklch(47.66% 0.246 305.88);
+    --vivid-pink: oklch(69.02% 0.277 332.77);
+    --hot-red: oklch(61.42% 0.238 15.34);
+    --orange-red: oklch(63.32% 0.24 31.68);
+
+    --gray-900: oklch(19.37% 0.006 300.98);
+    --gray-700: oklch(36.98% 0.014 302.71);
+    --gray-400: oklch(70.9% 0.015 304.04);
+
+    --red-to-pink-to-purple-vertical-gradient: linear-gradient(
+      180deg,
+      var(--orange-red) 0%,
+      var(--vivid-pink) 50%,
+      var(--electric-violet) 100%
+    );
+
+    --red-to-pink-to-purple-horizontal-gradient: linear-gradient(
+      90deg,
+      var(--orange-red) 0%,
+      var(--vivid-pink) 50%,
+      var(--electric-violet) 100%
+    );
+
+    --pill-accent: var(--bright-blue);
+
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+      Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
+      "Segoe UI Symbol";
+    box-sizing: border-box;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1 {
+    font-size: 3.125rem;
+    color: var(--gray-900);
+    font-weight: 500;
+    line-height: 100%;
+    letter-spacing: -0.125rem;
+    margin: 0;
+    font-family: "Inter Tight", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+      Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
+      "Segoe UI Symbol";
+  }
+
+  p {
+    margin: 0;
+    color: var(--gray-700);
+  }
+
+  main {
+    width: 100%;
+    min-height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+    box-sizing: inherit;
+    position: relative;
+  }
+
+  .angular-logo {
+    max-width: 9.2rem;
+  }
+
+  .content {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    max-width: 700px;
+    margin-bottom: 3rem;
+  }
+
+  .content h1 {
+    margin-top: 1.75rem;
+  }
+
+  .content p {
+    margin-top: 1.5rem;
+  }
+
+  .divider {
+    width: 1px;
+    background: var(--red-to-pink-to-purple-vertical-gradient);
+    margin-inline: 0.5rem;
+  }
+
+  .pill-group {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    flex-wrap: wrap;
+    gap: 1.25rem;
+  }
+
+  .pill {
+    display: flex;
+    align-items: center;
+    --pill-accent: var(--bright-blue);
+    background: color-mix(in srgb, var(--pill-accent) 5%, transparent);
+    color: var(--pill-accent);
+    padding-inline: 0.75rem;
+    padding-block: 0.375rem;
+    border-radius: 2.75rem;
+    border: 0;
+    transition: background 0.3s ease;
+    font-family: var(--inter-font);
+    font-size: 0.875rem;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 1.4rem;
+    letter-spacing: -0.00875rem;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  .pill:hover {
+    background: color-mix(in srgb, var(--pill-accent) 15%, transparent);
+  }
+
+  .pill-group .pill:nth-child(6n + 1) {
+    --pill-accent: var(--bright-blue);
+  }
+  .pill-group .pill:nth-child(6n + 2) {
+    --pill-accent: var(--electric-violet);
+  }
+  .pill-group .pill:nth-child(6n + 3) {
+    --pill-accent: var(--french-violet);
+  }
+
+  .pill-group .pill:nth-child(6n + 4),
+  .pill-group .pill:nth-child(6n + 5),
+  .pill-group .pill:nth-child(6n + 6) {
+    --pill-accent: var(--hot-red);
+  }
+
+  .pill-group svg {
+    margin-inline-start: 0.25rem;
+  }
+
+  .social-links {
+    display: flex;
+    align-items: center;
+    gap: 0.73rem;
+    margin-top: 1.5rem;
+  }
+
+  .social-links path {
+    transition: fill 0.3s ease;
+    fill: var(--gray-400);
+  }
+
+  .social-links a:hover svg path {
+    fill: var(--gray-900);
+  }
+
+  @media screen and (max-width: 650px) {
+    .content {
+      flex-direction: column;
+      width: max-content;
+    }
+
+    .divider {
+      height: 1px;
+      width: 100%;
+      background: var(--red-to-pink-to-purple-horizontal-gradient);
+      margin-block: 1.5rem;
+    }
+  }
+</style>
+
+<main class="main">
+
+  
+  <!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta name="description" content="Revealing the hidden history of Charlotte and Mecklenburg North Carolina through its roads and rail. History in plain sight."/>
+    <meta charset="utf-8" /> 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>The Map - Hornets Nest Evolution Project</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.7.1/nouislider.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.7.1/nouislider.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/wnumb/1.2.0/wNumb.min.js"></script>
+    <script type="application/ld+json">
+    {
+      "@context" : "https://schema.org",
+      "@type" : "WebSite",
+      "name" : "Hornets Nest Evolution Project",
+            "datePublished": "2025-05-3T08:00:00+05:00",
+            "dateModified": "2025-05-30T09:43:00+05:00"
+      "url" : "https://swissman1.github.io/HornetsNestEvolutionMap/"
+    }
+  </script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <link rel="icon" href="./images/HNEP Logo.png" type="image/png" />
+    <link rel="stylesheet" href="./resources/ol.css" />
+    <link rel="stylesheet" href="resources/fontawesome-all.min.css" />
+    <link rel="stylesheet" href="./resources/ol-layerswitcher.css" />
+    <link rel="stylesheet" href="./resources/qgis2web.css" />
+
+    <link rel="stylesheet" href="css/style.css" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Lato:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+    <style>
+      /* Original inline styles for map controls - keep these for compatibility */
+      .ol-control > * {
+        background-color: #f8f8f8 !important;
+        color: #444444 !important;
+        border-radius: 0px;
+      }
+      .ol-attribution a,
+      .gcd-gl-input::placeholder,
+      .search-layer-input-search::placeholder {
+        color: #444444 !important;
+      }
+      .search-layer-input-search {
+        background-color: #f8f8f8 !important;
+      }
+      .ol-control > *:focus,
+      .ol-control > *:hover {
+        background-color: rgba(248, 248, 248, 0.7) !important;
+      }
+      .ol-control {
+        background-color: rgba(255, 255, 255, 0.4) !important;
+        padding: 2px !important;
+      }
+      /* Ensure map takes height within its container */
+      #map {
+        width: 100%;
+        height: 100%; /* Map will take 100% height of its parent */
+        padding: 0;
+        margin: 0;
+      }
+      
+
+    </style>
+
+    <title>The story- Hornets Nest Evolution Project</title>
+  </head>
+  <body>
+    <header class="site-header">
+      <nav style="display: flex; align-items: center; width: 100%; box-sizing: border-box; padding: 0;">
+        <a href="snapshotMaps/1911/index.html" class="header-link">Snapshots</a>
+         <a href="Streetcar/index.html" class="header-link">Streetcars</a>
+        <a href="thestory.html" class="header-link">The Story</a>
+        <a href="Sources.html" class="header-link">Sources</a>
+
+        <div style="flex: 1 1 auto;">
+          <h1 style="text-align: center; margin: 0 auto;">Hornets Nest Evolution Project</h1>
+        </div>
+      </nav>
+    </header>
+
+    <main class="content-wrapper main-container">
+    
+      <div id="year-slider" style="margin-top: 20px;"></div>
+        <p style="text-align: center; margin-top: 10px;">
+          <span id="slider-value-lower"></span> - <span id="slider-value-upper"></span>
+        </p>
+      <section id="map-container" class="map-section">
+        <div id="map">
+          <div id="popup" class="ol-popup">
+            <a href="#" id="popup-closer" class="ol-popup-closer"></a>
+            <div id="popup-content"></div>
+          </div>
+        </div>
+      </section>      
+       
+      <section id="opener" class="opener-section map-overlay">
+        <p id="opener-content">
+          It may appear to many that Charlotte has few
+          historical remnants still standing, and a confusing road network. Dig deeper, and 
+          does have history, it is with us today in the paths and
+          names our roads take. This is owed to the fact that for the first 100
+          years of its existence, it was a small town with a population of ~3000, surrounded by neighboring communities and farms, often organized around
+          a church, with the roads of the day serving to connect them. As
+          Charlotte grew contiually and rapidly starting in the 1880s, in this environment, its roads were forced to work
+          with that backdrop, oriented on incremental evolution, rather than a
+          master plan like other cities such as New York. This leads to a large
+          number of historical easter eggs that are still here today. This map shows the major roads' ages. 
+          <br> <b>You can view different time periods by moving the Sliders above</b> 
+          <br> <a href="thestory.html">This Page</a> has more Information about Charlotte. 
+          if a road isn't on the map, it has not been dated. I will be dating roads over time and adding them.
+        </p>
+       
+
+       <button id="toggle-opener" class="opener-toggle">Hide Info</button>
+      </section>
+    </main>    
+    <footer class="site-footer">
+      <p>
+            <section class="support-section">
+      <div id="support-text">
+        <p>
+          The project is ongoing, with new data being pulled in from multiple
+          sources for different time periods.  I am starting as early back as I
+          have good data for and working forward. Please keep checking back for
+          new data to see how it evolves!
+        </p>  
+          <p>
+          I am always looking for fellow appreciators of history interested in
+          contributing to the project, whether that be via tracking down
+          sources, pulling those into the map, or just suggestions. Get more
+          info and reach out on the project's github by "opening an issue"! 
+          <br><br>Or if you want to just be notified when I publish a notable amount of new content, send me an email at <a href="bfhouseiii@gmail.com">bfhouseiii@gmail.com</a>
+        </p>
+        <p>
+          The Hornets Nest Evolution Project (HNEP) is a (presently solo)
+          Citizen lead, Geographic Information Systems (GIS) project dedicated
+          to digitizing the historical evolution of Mecklenburg County, and
+          surrounding areas, via physical infrastructure, primarily roads and
+          railways, and other traces left in the present.
+        </p>
+
+        <p>
+          You can also support by buying me a coffee. As a token of gratitude I
+          will prioritize researching a neighborhood of your choice, providing a
+          quick report about it, and adding an info point crediting you as a
+          patron
+        </p>
+        <p>
+          Thank you in advance for any and all support, even if it is just
+          admiring the hidden history of Charlotte!
+        </p>
+
+        <p>
+          Last Update: 5/29/2025 <br />
+
+        </p>
+      </div>
+      <div>
+        <a
+          class="github-button info-button"
+          href="https://github.com/Swissman1/HornetsNestEvolutionMap"
+          data-color-scheme="no-preference: light; light: light; dark: dark;"
+          data-size="large"
+          aria-label="Follow HNEP on GitHub"
+          >HNEP on GitHub</a
+        >
+        <a
+          class="github-button info-button"
+          href="https://github.com/swissman1/hornets-nest-evolution-project/issues"
+          data-color-scheme="no-preference: light; light: light; dark: dark;"
+          data-icon="octicon-issue-opened"
+          data-size="large"
+          aria-label="Issue swissman1/hornets-nest-evolution-project on GitHub"
+          >Open an Issue/Reach out</a
+        >
+        <script
+          type="text/javascript"
+          class="info-button"
+          src="https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js"
+          data-name="bmc-button"
+          data-slug="hornetsnestevoproject"
+          data-color="#FFDD00"
+          data-emoji=""
+          data-font="Cookie"
+          data-text="Buy me a coffee"
+          data-outline-color="#000000"
+          data-font-color="#000000"
+          data-coffee-color="#ffffff"
+        ></script>
+      </div>
+    </section>
+
+        &copy; 2025 Hornets Nest Evolution Project. Map data generated via QGIS
+        & OpenLayers. Last update: 5/15/2025
+      
+    </footer>
+
+    <script src="styles/"></script>
+    <script src="./resources/ol.js"></script>
+    <script src="layers/FullRoads.js"></script>
+    <script src="layers/Annexation_History.js"></script>
+    <script src="styles/Annexation_History_style.js"></script>
+    <script src="styles/2025MissingRoads_style.js"></script>
+    <script src="layers/MissingRoads.js"></script>
+    
+    <script src="styles/FullRoads_style.js"></script>
+    <script src="resources/qgis2web_expressions.js"></script>
+    <script src="./resources/functions.js"></script>
+    <script src="./resources/ol-layerswitcher.js"></script>
+    <script src="layers/Sevensisters.js"></script>
+
+    <script src="layers/Pointsofinterest.js"></script>
+    <script src="styles/Sevensisters_style.js"></script>
+    <script src="styles/Pointsofinterest_style.js"></script>
+    <script src="layers/new-layers.js"></script>
+    <script src="./resources/Autolinker.min.js"></script>
+    <script src="./resources/qgis2web.js"></script>
+        
+        
+    <script src="./scripts/main.js"></script>
+        
+  </body>
+</html>
+
+</main>
+
+<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
+<!-- * * * * * * * * * * * The content above * * * * * * * * * * * * -->
+<!-- * * * * * * * * * * is only a placeholder * * * * * * * * * * * -->
+<!-- * * * * * * * * * * and can be replaced.  * * * * * * * * * * * -->
+<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
+<!-- * * * * * * * * * * End of Placeholder  * * * * * * * * * * * * -->
+<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
+
+
+<router-outlet />
