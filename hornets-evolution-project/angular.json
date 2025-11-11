@@ -22,8 +22,36 @@
               }
             ],
             "styles": [
+  "src/styles.css",
+  "src/assets/resources/ol.css",
+  "src/assets/resources/ol-layerswitcher.css",
+  "src/assets/resources/qgis2web.css",
               "src/styles.css"
-            ]
+            ],
+            "scripts": [
+    "src/assets/resources/ol.js",
+    "src/assets/resources/ol-layerswitcher.js",
+    "src/assets/resources/Autolinker.min.js",
+    "src/assets/resources/qgis2web_expressions.js",
+    "src/assets/resources/qgis2web.js",
+    "src/assets/resources/functions.js",
+    "src/assets/scripts/main.js", 
+
+    "src/assets/layers/FullRoads.js",
+    "src/assets/layers/Annexation_History.js",
+    "src/assets/styles/Annexation_History_style.js",
+    "src/assets/styles/2025MissingRoads_style.js",
+    "src/assets/layers/MissingRoads.js",
+    "src/assets/styles/FullRoads_style.js",
+    "src/assets/layers/Sevensisters.js",
+    "src/assets/layers/Pointsofinterest.js",
+    "src/assets/styles/Sevensisters_style.js",
+    "src/assets/styles/Pointsofinterest_style.js",
+    "src/assets/layers/new-layers.js",
+    
+    "https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js",
+    "https://buttons.github.io/buttons.js" 
+]
           },
           "configurations": {
             "production": {
