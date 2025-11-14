@@ -21,12 +21,12 @@ var style_streetcarstreets = function(feature, resolution){
         labelText = String("");
     }
     var style = [ new ol.style.Style({
-        stroke: new ol.style.Stroke({color: 'rgba(35,35,35,1.0)', lineDash: null, lineCap: 'butt', lineJoin: 'bevel', width: 4.18}),
+        stroke: new ol.style.Stroke({color: 'rgba(35,35,35,1.0)', lineDash: null, lineCap: 'butt', lineJoin: 'bevel', width: 2.9}),
         text: createTextStyle(feature, resolution, labelText, labelFont,
                               labelFill, placement, bufferColor,
                               bufferWidth)
     }),new ol.style.Style({
-        stroke: new ol.style.Stroke({color: 'rgba(24,153,59,1.0)', lineDash: null, lineCap: 'square', lineJoin: 'bevel', width: 3.268}),
+        stroke: new ol.style.Stroke({color: 'rgba(24,153,59,1.0)', lineDash: null, lineCap: 'square', lineJoin: 'bevel', width: 2.4}),
         text: createTextStyle(feature, resolution, labelText, labelFont,
                               labelFill, placement, bufferColor,
                               bufferWidth)
