@@ -1,3 +1,4 @@
+//import { transformExtent } from 'ol/proj';
 var createTextStyle = function(feature, resolution, labelText, labelFont,
                                labelFill, placement, bufferColor,
                                bufferWidth) {
@@ -33,6 +34,38 @@ var createTextStyle = function(feature, resolution, labelText, labelFont,
     return textStyle;
 };
 
+
+
+/**
+ * Converts a WGS84 (EPSG:4326) extent into a Web Mercator (EPSG:3857) extent.
+ * This is useful for setting the view extent on a 3857 map using lat/lon bounds.
+ *
+ * @param {Array<number>} extent4326 - The extent in [minLon, minLat, maxLon, maxLat] (EPSG:4326).
+ * @returns {Array<number>} The extent in [minX, minY, maxX, maxY] (EPSG:3857).
+ */
+function getWebMercatorExtent(extent4326) {
+    // Check if the input array has exactly 4 numbers
+    if (!Array.isArray(extent4326) || extent4326.length !== 4) {
+        console.error("Input extent must be an array of 4 numbers: [minLon, minLat, maxLon, maxLat]");
+        return null;
+    }
+
+    // transformExtent(extent, source, destination)
+    const extent3857 = ol.proj.transformExtent(
+        extent4326,
+        'EPSG:4326', // Source projection (WGS84/LatLon)
+        'EPSG:3857'  // Destination projection (Web Mercator)
+    );
+
+    return extent3857;
+}
+
+function getSimpleExtent(left,right,top, bottom){
+    return [left,bottom,right, top];
+}
+function getSimpleMercatorExtent(left,right,top, bottom){
+    return getWebMercatorExtent([left,bottom,right, top]);
+}
 function stripe(stripeWidth, gapWidth, angle, color) {
     var canvas = document.createElement('canvas');
     var context = canvas.getContext('2d');
