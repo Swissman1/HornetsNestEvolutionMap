@@ -1,4 +1,4 @@
-//import {getSimpleMercatorExtent} from '../resources/functions.js'
+
 var map = new ol.Map({
     target: 'map',
     renderer: 'canvas',
@@ -8,8 +8,6 @@ var map = new ol.Map({
     })
 });
 
-// -9009372,4200540
-// -8985180,4185847
 //initial view - epsg:3857 coordinates if not "Match project CRS"
 map.getView().fit(getSimpleExtent(-9004372,-8988180,4200000,4183647),map.getSize());//[-9009594.396580, 4187812.908610, -8987594.481332, 4199706.289496], map.getSize());
 
