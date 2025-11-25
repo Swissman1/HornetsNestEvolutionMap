@@ -58,9 +58,9 @@ var lyr_streetcardisp = new ol.layer.Vector({
 lyr_OSMStandard.setVisible(true);lyr_streetcarstreets.setVisible(true);lyr_streetcardisp.setVisible(true);
 var layersList = [lyr_OSMStandard,lyr_streetcarstreets,lyr_streetcardisp];
 lyr_streetcarstreets.set('fieldAliases', {'Name': 'Name', });
-lyr_streetcardisp.set('fieldAliases', {'name': 'name', });
+lyr_streetcardisp.set('fieldAliases', {'name': 'Name', });
 lyr_streetcarstreets.set('fieldImages', {'Name': 'TextEdit', });
-lyr_streetcardisp.set('fieldImages', {'name': 'TextEdit', });
+lyr_streetcardisp.set('fieldImages', {'Name': 'TextEdit', });
 lyr_streetcarstreets.set('fieldLabels', {'Name': 'inline label - visible with data', });
 lyr_streetcardisp.set('fieldLabels', {'name': 'inline label - always visible', });
 lyr_streetcardisp.on('precompose', function(evt) {
