@@ -345,13 +345,14 @@ function onSingleClickFeatures(evt) {
             clusteredFeatures = feature.get("features");
             if (typeof clusteredFeatures !== "undefined") {
                 if (doPopup) {
-                    for(var n = 0; n < clusteredFeatures.length; n++) {
+                    for(var n=0; n<clusteredFeatures.length; n++) {
                         currentFeature = clusteredFeatures[n];
                         currentFeatureKeys = currentFeature.getKeys();
-                        popupText += '<li><table>';
-                        popupText += '<b>' + layer.get('popuplayertitle') + '</b>';
-                        popupText += createPopupField(currentFeature, currentFeatureKeys, layer);
-                        popupText += '</table></li>';
+                        popupText += '<li><table>'
+                        popupText += '<b>' + layer.get('popuplayertitle') + '</b>' ;
+                        const field = createPopupField(currentFeature, currentFeatureKeys, layer);
+                        popupText += field != '' ? field: 'No data available'
+                        popupText += '</table></li>';    
                     }
                 }
             } else {
@@ -359,8 +360,9 @@ function onSingleClickFeatures(evt) {
                 if (doPopup) {
                     popupText += '<li><table>';
                     popupText += '<b>' + layer.get('popuplayertitle') + '</b>';
-                    popupText += createPopupField(currentFeature, currentFeatureKeys, layer);
-                    popupText += '</table>';
+                        const field = createPopupField(currentFeature, currentFeatureKeys, layer);
+                        popupText += field != '' ? field: 'No data available'
+                    popupText += '</table></li>';
                 }
             }
         }

@@ -159,7 +159,10 @@ function createPopupField(currentFeature, currentFeatureKeys, layer) {
                 popupField += (fieldValue != null ? autolinker.link(fieldValue.toLocaleString()) + '</td>' : '');
             }
         }
-        popupText += '<tr>' + popupField + '</tr>';
+        if(popupField != ''){
+
+            popupText += '<tr>' + popupField + '</tr>';
+        }
         
     // --- CLOSING BRACE for the new loop ---
     } 
@@ -203,7 +206,8 @@ function onPointerMove(evt) {
                         currentFeatureKeys = currentFeature.getKeys();
                         popupText += '<li><table>'
                         popupText += '<b>' + layer.get('popuplayertitle') + '</b>' ;
-                        popupText += createPopupField(currentFeature, currentFeatureKeys, layer);
+                        const field = createPopupField(currentFeature, currentFeatureKeys, layer);
+                        popupText += field != '' ? field: 'No data available'
                         popupText += '</table></li>';    
                     }
                 }
@@ -212,7 +216,8 @@ function onPointerMove(evt) {
                 if (doPopup) {
                     popupText += '<li><table>';
                     popupText += '<b>' + layer.get('popuplayertitle') + '</b>';
-                    popupText += createPopupField(currentFeature, currentFeatureKeys, layer);
+                        const field = createPopupField(currentFeature, currentFeatureKeys, layer);
+                        popupText += field != '' ? field: 'No data available'
                     popupText += '</table></li>';
                 }
             }
@@ -340,7 +345,7 @@ function onSingleClickFeatures(evt) {
                         currentFeature = clusteredFeatures[n];
                         currentFeatureKeys = currentFeature.getKeys();
                         popupText += '<li><table>';
-                        popupText += '<b>' + layer.get('popuplayertitle') + '</b>';
+                        popupText += '<a><b>' + layer.get('popuplayertitle') + '</b></a>';
                         popupText += createPopupField(currentFeature, currentFeatureKeys, layer);
                         popupText += '</table></li>';    
                     }
@@ -349,7 +354,7 @@ function onSingleClickFeatures(evt) {
                 currentFeatureKeys = currentFeature.getKeys();
                 if (doPopup) {
                     popupText += '<li><table>';
-                    popupText += '<b>' + layer.get('popuplayertitle') + '</b>';
+                    popupText += '<a><b>' + layer.get('popuplayertitle') + '</b></a>';
                     popupText += createPopupField(currentFeature, currentFeatureKeys, layer);
                     popupText += '</table>';
                 }
