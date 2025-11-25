@@ -266,12 +266,12 @@ lyr_MissingRoads.set('fieldAliases', {'First Seen': 'First Seen', 'Name': 'Name'
 lyr_Roads.set('fieldAliases', {'First Seen': 'First Seen', 'Name': 'Name', 'Road Type': 'Road Type', });
 //lyr_Sevensisters.set('fieldImages', {'Name': 'TextEdit', 'Year': 'Range', });
 //lyr_Pointsofinterest.set('fieldImages', {'Title': 'TextEdit', 'Desc.': 'TextEdit', 'Added by': 'TextEdit', 'Date': 'DateTime', 'Source': 'TextEdit', 'id': 'TextEdit', });
-lyr_MissingRoads.set('fieldImages', {'First Seen': 'DateTime', 'Name': 'TextEdit', 'Last Seen': 'DateTime', 'Road Type': '', });
+lyr_MissingRoads.set('fieldImages', {'First Seen': 'DateTime', 'Last Seen': 'DateTime', 'Name': 'TextEdit', 'Road Type': '', });
 lyr_Roads.set('fieldImages', {'First Seen': 'DateTime', 'Name': 'TextEdit', 'Road Type': 'TextEdit', });
 //lyr_Sevensisters.set('fieldLabels', {'Name': 'inline label - visible with data', 'Year': 'inline label - visible with data', });
 //lyr_Pointsofinterest.set('fieldLabels', {'Title': 'no label', 'Desc.': 'no label', 'Added by': 'no label', 'Date': 'no label', 'Source': 'no label', 'id': 'no label', });
-lyr_MissingRoads.set('fieldLabels', {'First Seen': 'no label', 'Name': 'no label', 'Last Seen': 'no label', 'Road Type': 'no label', });
-lyr_Roads.set('fieldLabels', {'First Seen': 'no label', 'Name': 'no label', 'Road Type': 'no label', });
+lyr_MissingRoads.set('fieldLabels', {'First Seen': 'inline label - visible with data', 'Name': 'inline label - visible with data', 'Last Seen': 'inline label - visible with data', 'Road Type': 'inline label - visible with data', });
+lyr_Roads.set('fieldLabels', {'First Seen': 'inline label - visible with data', 'Name': 'inline label - visible with data', 'Road Type': 'inline label - visible with data', });
 lyr_Roads.on('precompose', function(evt) {
     evt.context.globalCompositeOperation = 'normal';
 });
