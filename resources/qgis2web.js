@@ -122,46 +122,50 @@ var doHover = false;
 
 function createPopupField(currentFeature, currentFeatureKeys, layer) {
     var popupText = '';
-    for (var i = 0; i < currentFeatureKeys.length; i++) {
-        if (currentFeatureKeys[i] != 'geometry' && currentFeatureKeys[i] != 'layerObject' && currentFeatureKeys[i] != 'idO') {
-            var popupField = '';
-            if (layer.get('fieldLabels')[currentFeatureKeys[i]] == "hidden field") {
+    const fieldsToDisplay = layer.get('fieldImages');
+    for (const fieldKey in fieldsToDisplay) {
+
+        var popupField = '';
+        
+        
+        if (layer.get('fieldLabels')[fieldKey] == "hidden field") {
+            continue;
+        } else if (layer.get('fieldLabels')[fieldKey] == "inline label - visible with data") {
+            if (currentFeature.get(fieldKey) == null) {
                 continue;
-            } else if (layer.get('fieldLabels')[currentFeatureKeys[i]] == "inline label - visible with data") {
-                if (currentFeature.get(currentFeatureKeys[i]) == null) {
-                    continue;
-                }
             }
-            if (layer.get('fieldLabels')[currentFeatureKeys[i]] == "inline label - always visible" ||
-                layer.get('fieldLabels')[currentFeatureKeys[i]] == "inline label - visible with data") {
-                popupField += '<th>' + layer.get('fieldAliases')[currentFeatureKeys[i]] + '</th><td>';
-            } else {
-                popupField += '<td colspan="2">';
-            }
-            if (layer.get('fieldLabels')[currentFeatureKeys[i]] == "header label - visible with data") {
-                if (currentFeature.get(currentFeatureKeys[i]) == null) {
-                    continue;
-                }
-            }
-            if (layer.get('fieldLabels')[currentFeatureKeys[i]] == "header label - always visible" ||
-                layer.get('fieldLabels')[currentFeatureKeys[i]] == "header label - visible with data") {
-                popupField += '<strong>' + layer.get('fieldAliases')[currentFeatureKeys[i]] + '</strong><br />';
-            }
-            if (layer.get('fieldImages')[currentFeatureKeys[i]] != "ExternalResource") {
-				popupField += (currentFeature.get(currentFeatureKeys[i]) != null ? autolinker.link(currentFeature.get(currentFeatureKeys[i]).toLocaleString()) + '</td>' : '');
-			} else {
-				var fieldValue = currentFeature.get(currentFeatureKeys[i]);
-				if (/\.(gif|jpg|jpeg|tif|tiff|png|avif|webp|svg)$/i.test(fieldValue)) {
-					popupField += (fieldValue != null ? '<img src="images/' + fieldValue.replace(/[\\\/:]/g, '_').trim() + '" /></td>' : '');
-				} else if (/\.(mp4|webm|ogg|avi|mov|flv)$/i.test(fieldValue)) {
-					popupField += (fieldValue != null ? '<video controls><source src="images/' + fieldValue.replace(/[\\\/:]/g, '_').trim() + '" type="video/mp4">Il tuo browser non supporta il tag video.</video></td>' : '');
-				} else {
-					popupField += (fieldValue != null ? autolinker.link(fieldValue.toLocaleString()) + '</td>' : '');
-				}
-			}
-            popupText += '<tr>' + popupField + '</tr>';
         }
-    }
+        if (layer.get('fieldLabels')[fieldKey] == "inline label - always visible" ||
+            layer.get('fieldLabels')[fieldKey] == "inline label - visible with data") {
+            popupField += '<th>' + layer.get('fieldAliases')[fieldKey] + '</th><td>';
+        } else {
+            popupField += '<td colspan="2">';
+        }
+        if (layer.get('fieldLabels')[fieldKey] == "header label - visible with data") {
+            if (currentFeature.get(fieldKey) == null) {
+                continue;
+            }
+        }
+        if (layer.get('fieldLabels')[fieldKey] == "header label - always visible" ||
+            layer.get('fieldLabels')[fieldKey] == "header label - visible with data") {
+            popupField += '<strong>' + layer.get('fieldAliases')[fieldKey] + '</strong><br />';
+        }
+        if (layer.get('fieldImages')[fieldKey] != "ExternalResource") {
+            popupField += (currentFeature.get(fieldKey) != null ? autolinker.link(currentFeature.get(fieldKey).toLocaleString()) + '</td>' : '');
+        } else {
+            var fieldValue = currentFeature.get(fieldKey);
+            if (/\.(gif|jpg|jpeg|tif|tiff|png|avif|webp|svg)$/i.test(fieldValue)) {
+                popupField += (fieldValue != null ? '<img src="images/' + fieldValue.replace(/[\\\/:]/g, '_').trim() + '" /></td>' : '');
+            } else if (/\.(mp4|webm|ogg|avi|mov|flv)$/i.test(fieldValue)) {
+                popupField += (fieldValue != null ? '<video controls><source src="images/' + fieldValue.replace(/[\\\/:]/g, '_').trim() + '" type="video/mp4">Il tuo browser non supporta il tag video.</video></td>' : '');
+            } else {
+                popupField += (fieldValue != null ? autolinker.link(fieldValue.toLocaleString()) + '</td>' : '');
+            }
+        }
+        popupText += '<tr>' + popupField + '</tr>';
+        
+    // --- CLOSING BRACE for the new loop ---
+    } 
     return popupText;
 }
 

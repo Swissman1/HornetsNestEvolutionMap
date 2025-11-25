@@ -390,13 +390,13 @@ var lyr_Roads = createVectorLayer({
 var lyr_MissingRoads = createVectorLayer({
     jsonData: json_MissingRoads,
     style: createDynamicRoadStyle(style_MissingRoads),
-    popuplayertitle: 'Road',
+    popuplayertitle: 'Removed road',
     title: 'Missing roads'
  });
  var lyr_MissingRail = createVectorLayer({
     jsonData: json_MissingRail,
     style: createDynamicRailStyle(style_MissingRail),
-    popuplayertitle: 'Rail',
+    popuplayertitle: 'Removed Rail',
     title: 'Missing Rail'
  });
  var lyr_Rail = createVectorLayer({
@@ -437,17 +437,22 @@ var layersList = [lyr_OpenStreetmap_0,lyr_Annex,group_Rail,group_Roads];
 //lyr_Pointsofinterest.set('fieldAliases', {'Title': 'Title', 'Desc.': 'Desc.', 'Added by': 'Added by', 'Date': 'Date', 'Source': 'Source', 'id': 'id', });
 lyr_MissingRoads.set('fieldAliases', {'First Seen': 'First Seen', 'Name': 'Name', 'Last Seen': 'Last Seen', 'Road Type': 'Road Type', });
 lyr_Roads.set('fieldAliases', {'First Seen': 'First Seen', 'Name': 'Name', 'Road Type': 'Road Type', });
-lyr_Rail.set('fieldAliases', {'operator':'operator','First Seen': 'First Seen', 'Type': 'Type', 'type':'type' });
+lyr_Rail.set('fieldAliases', {'operator':'Operator','First Seen': 'First Seen', 'type':'Type', 'operator': 'Operator' });
 lyr_MissingRail.set('fieldAliases', {'First Seen': 'First Seen', 'Last Seen': 'Last Seen',  });
 //lyr_Pointsofinterest.set('fieldImages', {'Title': 'TextEdit', 'Desc.': 'TextEdit', 'Added by': 'TextEdit', 'Date': 'DateTime', 'Source': 'TextEdit', 'id': 'TextEdit', });
-lyr_MissingRoads.set('fieldImages', {'First Seen': 'DateTime', 'Name': 'TextEdit', 'Last Seen': 'DateTime', 'Road Type': '', });
+lyr_MissingRoads.set('fieldImages', {'First Seen': 'DateTime', 'Last Seen': 'DateTime', 'Name': 'TextEdit', 'Road Type': '', });
 lyr_Roads.set('fieldImages', {'First Seen': 'DateTime', 'Name': 'TextEdit', 'Road Type': 'TextEdit', });
+lyr_MissingRail.set('fieldImages', {'First Seen': 'DateTime',  'Last Seen': 'DateTime', 'type': 'TextEdit', });
+lyr_Rail.set('fieldImages', {'First Seen': 'DateTime',  'operator': 'TextEdit','type': 'TextEdit', });
 //lyr_Sevensisters.set('fieldLabels', {'Name': 'inline label - visible with data', 'Year': 'inline label - visible with data', });
-//lyr_Pointsofinterest.set('fieldLabels', {'Title': 'no label', 'Desc.': 'no label', 'Added by': 'no label', 'Date': 'no label', 'Source': 'no label', 'id': 'no label', });
-lyr_MissingRoads.set('fieldLabels', {'First Seen': 'no label', 'Name': 'no label', 'Last Seen': 'no label', 'Road Type': 'no label', });
-lyr_Roads.set('fieldLabels', {'First Seen': 'no label', 'Name': 'no label', 'Road Type': 'no label', });
-lyr_MissingRail.set('fieldLabels', {'First Seen': 'no label', 'Last Seen': 'no label', 'type': 'no label', });
-lyr_Rail.set('fieldLabels', {'First Seen': 'no label', 'type': 'no label', });
+//lyr_Pointsofinterest.set('fieldLabels', {'Title': 'inline label - visible with data', 'Desc.': 'inline label - visible with data', 'Added by': 'inline label - visible with data', 'Date': 'inline label - visible with data', 'Source': 'inline label - visible with data', 'id': 'inline label - visible with data', });
+lyr_MissingRoads.set('fieldLabels', {'First Seen': 'inline label - visible with data',  'Last Seen': 'inline label - visible with data', 'Name': 'inline label - visible with data','Road Type': 'inline label - visible with data', });
+lyr_Roads.set('fieldLabels', {'First Seen': 'inline label - visible with data', 'Name': 'inline label - visible with data', 'Road Type': 'inline label - visible with data', });
+lyr_MissingRail.set('fieldLabels', {'First Seen': 'inline label - visible with data', 'Last Seen': 'inline label - visible with data', 'type': 'inline label - visible with data', });
+lyr_Rail.set('fieldLabels', {'First Seen': 'inline label - visible with data', 'type': 'inline label - visible with data','operator': 'inline label - visible with data' });
 lyr_Roads.on('precompose', function(evt) {
+    evt.context.globalCompositeOperation = 'normal';
+});
+lyr_Rail.on('precompose', function(evt) {
     evt.context.globalCompositeOperation = 'normal';
 });
