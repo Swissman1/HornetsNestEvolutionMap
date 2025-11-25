@@ -173,7 +173,7 @@ function createDynamicRailStyle(layerBaseStyle) {
                         const interpolatedColor = getRailColorForYear(featureYear, 1770, 2025);
                         stroke.setColor(interpolatedColor);
                     } else {
-                        stroke.setColor('#a5a59eff'); // Default color if year is not available
+                        stroke.setColor('#ca82baff'); // Default color if year is not available
                     }
                     setRailWidthByClass(feature, stroke);
                 }
@@ -359,6 +359,14 @@ var lyr_OpenStreetmap_0 = new ol.layer.Tile({
         url: 'http://tile.openstreetmap.org/{z}/{x}/{y}.png'
     })
 });
+var lyr_stadia = new ol.layer.Tile({
+    'title': 'Base Map',
+    'opacity': 1.000000,
+    source: new ol.source.XYZ({
+        attributions: ' &nbsp &middot; <a href="https://www.openstreetmap.org/copyright">© OpenStreetMap contributors, CC-BY-SA</a>',
+        url: 'https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}@2x.png?api_key=ce03ba7c-01c6-4dc4-ad8f-05920d5c9bea'
+    })
+});
 
 // Refactored: Reusable function for vector layer creation
 function createVectorLayer(params) {
@@ -429,9 +437,10 @@ var group_Rail = new ol.layer.Group({
 
 lyr_Annex.setOpacity(0.6)
 lyr_OpenStreetmap_0.setVisible(true);
+lyr_stadia.setVisible(true);
 
 
-var layersList = [lyr_OpenStreetmap_0,lyr_Annex,group_Rail,group_Roads];
+var layersList = [lyr_stadia,lyr_Annex,group_Rail,group_Roads];
 // Ensure "Road Type" field alias is set for all road layers if it's new
 //lyr_Sevensisters.set('fieldAliases', {'Name': 'Name', 'Year': 'Year', });
 //lyr_Pointsofinterest.set('fieldAliases', {'Title': 'Title', 'Desc.': 'Desc.', 'Added by': 'Added by', 'Date': 'Date', 'Source': 'Source', 'id': 'id', });
