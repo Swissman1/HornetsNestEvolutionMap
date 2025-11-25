@@ -22,7 +22,7 @@ var lyr_streetcarstreets = new ol.layer.Vector({
                 declutter: false,
                 source:jsonSource_streetcarstreets, 
                 style: style_streetcarstreets,
-                popuplayertitle: '1935 street',
+                popuplayertitle: '1935 streets',
                 interactive: true,
                 title: '<img src="styles/legend/streetcarstreets.png" />1935 streets'
             });
@@ -37,7 +37,7 @@ var lyr_streetcardisp = new ol.layer.Vector({
                 declutter: false,
                 source:jsonSource_streetcardisp, 
                 style: style_streetcardisp,
-                popuplayertitle: 'Streetcar Line',
+                popuplayertitle: 'Streetcar Lines',
                 interactive: true,
     title: 'Streetcar Lines<br />\
     <img src="styles/legend/streetcardisp_1.png" /> 4th Ward Line<br />\
@@ -60,9 +60,9 @@ var layersList = [lyr_OSMStandard,lyr_streetcarstreets,lyr_streetcardisp];
 lyr_streetcarstreets.set('fieldAliases', {'Name': 'Name', });
 lyr_streetcardisp.set('fieldAliases', {'name': 'Name', });
 lyr_streetcarstreets.set('fieldImages', {'Name': 'TextEdit', });
-lyr_streetcardisp.set('fieldImages', {'name': 'TextEdit', });
+lyr_streetcardisp.set('fieldImages', {'Name': 'TextEdit', });
 lyr_streetcarstreets.set('fieldLabels', {'Name': 'inline label - visible with data', });
-lyr_streetcardisp.set('fieldLabels', {'name': 'inline label - visible with data', });
+lyr_streetcardisp.set('fieldLabels', {'name': 'inline label - always visible', });
 lyr_streetcardisp.on('precompose', function(evt) {
     evt.context.globalCompositeOperation = 'normal';
 });
