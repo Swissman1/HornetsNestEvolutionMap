@@ -446,6 +446,8 @@ lyr_Roads.set('fieldImages', {'First Seen': 'DateTime', 'Name': 'TextEdit', 'Roa
 //lyr_Pointsofinterest.set('fieldLabels', {'Title': 'no label', 'Desc.': 'no label', 'Added by': 'no label', 'Date': 'no label', 'Source': 'no label', 'id': 'no label', });
 lyr_MissingRoads.set('fieldLabels', {'First Seen': 'no label', 'Name': 'no label', 'Last Seen': 'no label', 'Road Type': 'no label', });
 lyr_Roads.set('fieldLabels', {'First Seen': 'no label', 'Name': 'no label', 'Road Type': 'no label', });
+lyr_MissingRail.set('fieldLabels', {'First Seen': 'no label', 'Last Seen': 'no label', 'Type': 'no label', });
+lyr_Rail.set('fieldLabels', {'First Seen': 'no label', 'Type': 'no label', });
 lyr_Roads.on('precompose', function(evt) {
     evt.context.globalCompositeOperation = 'normal';
 });

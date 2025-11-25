@@ -1,14 +1,19 @@
+
+const maxExtent = [-9175815.931165, 4079505.751941, -8785357.795740, 4314106.008709]
+const initalExtent = [-9079398.931165, 4151245.751941, -8918428.795740, 4247947.008709]
 var map = new ol.Map({
     target: 'map',
     renderer: 'canvas',
     layers: layersList,
     view: new ol.View({
-         extent: [-9115415.931165, 4151761.751941, -8845464.795740, 4254973.008709], maxZoom: 19, minZoom: 1}),
+         extent: maxExtent, maxZoom: 19, minZoom: 1}),
 
 });
 
+
+
 //initial view - epsg:3857 coordinates if not "Match project CRS"
-map.getView().fit([-9115415.931165, 4151761.751941, -8845464.795740, 4254973.008709], map.getSize());
+map.getView().fit(initalExtent);
 
 ////small screen definition
     var hasTouchScreen = map.getViewport().classList.contains('ol-touch');
