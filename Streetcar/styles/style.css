@@ -56,14 +56,24 @@ html, body {
 }
 
 #map {
-            width: 98%;
-            align-content: center;
-
+    width: 60%;
+    height: 100%;
     padding-left: 1%;
     padding-top: 0%;
     margin: 0;
 }
+.map-description-container {
+    width: 40%; /* Take up the remaining space */
+    padding-left: 2%; /* Add some space between the map and the text */
+    padding-right: 1%; /* Match the map's left padding */
+    box-sizing: border-box; /* Ensure padding is included in the width */
+}
 
+/* Make sure the text in the container aligns nicely */
+.map-description-container p {
+    text-align: left; 
+    font-size: 14px; /* Optional: adjust font size if needed */
+}
 .title-header{
     margin-top: 1%; 
     margin-bottom: 0%; 
