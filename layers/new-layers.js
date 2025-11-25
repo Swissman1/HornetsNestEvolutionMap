@@ -439,17 +439,21 @@ lyr_MissingRoads.set('fieldAliases', {'First Seen': 'First Seen', 'Name': 'Name'
 lyr_Roads.set('fieldAliases', {'First Seen': 'First Seen', 'Name': 'Name', 'Road Type': 'Road Type', });
 lyr_Rail.set('fieldAliases', {'operator':'Operator','First Seen': 'First Seen', 'type':'Type', 'operator': 'Operator' });
 lyr_MissingRail.set('fieldAliases', {'First Seen': 'First Seen', 'Last Seen': 'Last Seen',  });
+lyr_Annex.set('fieldAliases', {'effdate': 'Annexation Date', 'munic_name': 'Name', });
 //lyr_Pointsofinterest.set('fieldImages', {'Title': 'TextEdit', 'Desc.': 'TextEdit', 'Added by': 'TextEdit', 'Date': 'DateTime', 'Source': 'TextEdit', 'id': 'TextEdit', });
 lyr_MissingRoads.set('fieldImages', {'First Seen': 'DateTime', 'Last Seen': 'DateTime', 'Name': 'TextEdit', 'Road Type': '', });
 lyr_Roads.set('fieldImages', {'First Seen': 'DateTime', 'Name': 'TextEdit', 'Road Type': 'TextEdit', });
 lyr_MissingRail.set('fieldImages', {'First Seen': 'DateTime',  'Last Seen': 'DateTime', 'type': 'TextEdit', });
 lyr_Rail.set('fieldImages', {'First Seen': 'DateTime',  'operator': 'TextEdit','type': 'TextEdit', });
+lyr_Annex.set('fieldImages',{'munic_name':'TextEdit','effdate': 'DateTime'})
 //lyr_Sevensisters.set('fieldLabels', {'Name': 'inline label - visible with data', 'Year': 'inline label - visible with data', });
 //lyr_Pointsofinterest.set('fieldLabels', {'Title': 'inline label - visible with data', 'Desc.': 'inline label - visible with data', 'Added by': 'inline label - visible with data', 'Date': 'inline label - visible with data', 'Source': 'inline label - visible with data', 'id': 'inline label - visible with data', });
 lyr_MissingRoads.set('fieldLabels', {'First Seen': 'inline label - visible with data',  'Last Seen': 'inline label - visible with data', 'Name': 'inline label - visible with data','Road Type': 'inline label - visible with data', });
 lyr_Roads.set('fieldLabels', {'First Seen': 'inline label - visible with data', 'Name': 'inline label - visible with data', 'Road Type': 'inline label - visible with data', });
-lyr_MissingRail.set('fieldLabels', {'First Seen': 'inline label - visible with data', 'Last Seen': 'inline label - visible with data', 'type': 'inline label - visible with data', });
+lyr_MissingRail.set('fieldLabels', {'First Seen': 'inline label - visible with data', 'Last Seen': 'inline label - visible with data', 'type': 'inline label - visible with data' });
+lyr_MissingRail.set('fieldLabels', {'effdate': 'inline label - visible with data', 'munic_name': 'inline label - visible with data' });
 lyr_Rail.set('fieldLabels', {'First Seen': 'inline label - visible with data', 'type': 'inline label - visible with data','operator': 'inline label - visible with data' });
+lyr_Annex.set('fieldLabels', {'munic_name': 'inline label - visible with data', 'effdate': 'inline label - visible with data'});
 lyr_Roads.on('precompose', function(evt) {
     evt.context.globalCompositeOperation = 'normal';
 });
