@@ -57,11 +57,11 @@ function getRailColorForYear(year, minYear, maxYear) {
     // Define your color stops (year percentage and corresponding RGB color)
     // You can add more color stops for more complex gradients
     const colorStops =[
-{ yearRatio: 0.0, color: [0, 40, 0] },
-    { yearRatio: 0.28, color: [120, 180, 0] }, // <-- Bright Lime Green Pop for focus area
-    { yearRatio: 0.4, color: [80, 150, 60] },
-    { yearRatio: 0.76, color: [50, 150, 150] },
-    { yearRatio: 1, color: [0, 150, 255] } // <-- Bright Blue End
+{ yearRatio: 0.0, color: [80, 100, 0] },
+    { yearRatio: 0.30, color: [120, 195, 0] }, // <-- Bright Lime Green Pop for focus area
+    { yearRatio: 0.44, color: [80, 120, 60] },
+    { yearRatio: 0.87, color: [50, 150, 150] },
+    { yearRatio: 1, color: [0, 210, 255] } // <-- Bright Blue End
 ];
 
     if (normalizedYear <= colorStops[0].yearRatio) {
