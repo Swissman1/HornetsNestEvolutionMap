@@ -184,6 +184,40 @@ function createDynamicRailStyle(layerBaseStyle) {
         }
     };
 }
+function createDynamicCountyStyle(layerBaseStyle) {
+    return function(feature, resolution) {
+        // Ensure 'map' is defined before trying to access its view
+        if (!map) {
+            console.warn("Map object is not defined. Cannot apply zoom-based styling.");
+            // If map is not available, return the base style without zoom/type checks
+            return typeof layerBaseStyle === 'function' ? layerBaseStyle(feature, resolution) : layerBaseStyle;
+        }
+              let isVisible = true;
+        const Add = feature.get('dateAdded');
+        const Remove = feature.get('dateRem');
+        let featureYear = null;
+        if(isVisible && Add){
+            featureYear = new Date(Add).getFullYear();
+            isVisible =   featureYear >= filterMinYear && featureYear <= filterMaxYear;
+            if(isVisible && Remove){
+                var removeYear =new Date(Remove).getFullYear()
+                isVisible =  removeYear >= filterMinYear && removeYear >= filterMaxYear;
+
+            }
+
+        }
+        if (isVisible) {
+             // Get the base style
+            let style = typeof layerBaseStyle === 'function' ? layerBaseStyle(feature, resolution) : layerBaseStyle;
+
+            // Ensure style is an array of styles, or convert it to one
+            let stylesArray = Array.isArray(style) ? style : [style];
+            return stylesArray;
+        } else {
+            return null; // Hide the feature if it's not visible at the current zoom/road type
+        }
+    };
+}
 // This helper function creates a style function for each layer.
 // It wraps your original layer-specific style (e.g., style_Pre1800Roads)
 // and applies visibility rules based on the feature's "Road Type" attribute and the current zoom level.
@@ -401,6 +435,12 @@ var lyr_MissingRoads = createVectorLayer({
     popuplayertitle: 'Removed road',
     title: 'Missing roads'
  });
+ var lyr_Counties = createVectorLayer({
+    jsonData: json_CountyLines,
+    style: createDynamicCountyStyle(style_Counties),
+    popuplayertitle: 'County Line',
+    title: 'County Line'
+ });
  var lyr_MissingRail = createVectorLayer({
     jsonData: json_MissingRail,
     style: createDynamicRailStyle(style_MissingRail),
@@ -440,14 +480,14 @@ lyr_OpenStreetmap_0.setVisible(true);
 lyr_stadia.setVisible(true);
 
 
-var layersList = [lyr_stadia,lyr_Annex,group_Rail,group_Roads];
+var layersList = [lyr_stadia,lyr_Counties,lyr_Annex,group_Rail,group_Roads];
 // Ensure "Road Type" field alias is set for all road layers if it's new
 //lyr_Sevensisters.set('fieldAliases', {'Name': 'Name', 'Year': 'Year', });
 //lyr_Pointsofinterest.set('fieldAliases', {'Title': 'Title', 'Desc.': 'Desc.', 'Added by': 'Added by', 'Date': 'Date', 'Source': 'Source', 'id': 'id', });
 lyr_MissingRoads.set('fieldAliases', {'First Seen': 'First Seen', 'Name': 'Name', 'Last Seen': 'Last Seen', 'Road Type': 'Road Type', });
 lyr_Roads.set('fieldAliases', {'First Seen': 'First Seen', 'Name': 'Name', 'Road Type': 'Road Type', });
 lyr_Rail.set('fieldAliases', {'operator':'Operator','First Seen': 'First Seen', 'type':'Type', 'operator': 'Operator' });
-lyr_MissingRail.set('fieldAliases', {'First Seen': 'First Seen', 'Last Seen': 'Last Seen',  });
+lyr_MissingRail.set('fieldAliases', {'First Seen': 'First Seen', 'Last Seen': 'Last Seen', 'type': 'Type'  });
 lyr_Annex.set('fieldAliases', {'effdate': 'Annexation Date', 'munic_name': 'Name', });
 //lyr_Pointsofinterest.set('fieldImages', {'Title': 'TextEdit', 'Desc.': 'TextEdit', 'Added by': 'TextEdit', 'Date': 'DateTime', 'Source': 'TextEdit', 'id': 'TextEdit', });
 lyr_MissingRoads.set('fieldImages', {'First Seen': 'DateTime', 'Last Seen': 'DateTime', 'Name': 'TextEdit', 'Road Type': '', });
