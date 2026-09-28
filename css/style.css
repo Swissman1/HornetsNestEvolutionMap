@@ -197,6 +197,45 @@ a:hover, a:focus {
     /*touch-action: none; /* Prevents default browser touch behaviors like pinch-zoom and pan */
 }
 
+.map-legend {
+  position: absolute;
+  bottom: 30px;
+  left: 20px;
+  background: rgba(255, 255, 255, 0.92);
+  padding: 10px 14px;
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+  color: #333;
+  z-index: 1000;
+  width: 240px;
+}
+
+.legend-title {
+  font-weight: bold;
+  margin-bottom: 8px;
+  text-align: center;
+}
+
+.color-ramp {
+  height: 14px;
+  border-radius: 3px;
+  border: 1px solid #ccc;
+}
+
+.legend-labels {
+  position: relative;
+  height: 18px;
+  margin-top: 4px;
+}
+
+.legend-label {
+  position: absolute;
+  transform: translateX(-50%);
+  font-size: 10px;
+  white-space: nowrap;
+}
 .info-button{
     justify-content: right;
 }
@@ -329,45 +368,6 @@ h2 {
     font-size: 1.1em; 
 }
 
-.map-legend {
-  position: absolute;
-  bottom: 30px;
-  left: 20px;
-  background: rgba(255, 255, 255, 0.92);
-  padding: 10px 14px;
-  border-radius: 6px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
-  font-family: Arial, sans-serif;
-  font-size: 12px;
-  color: #333;
-  z-index: 1000;
-  width: 240px;
-}
-
-.legend-title {
-  font-weight: bold;
-  margin-bottom: 8px;
-  text-align: center;
-}
-
-.color-ramp {
-  height: 14px;
-  border-radius: 3px;
-  border: 1px solid #ccc;
-}
-
-.legend-labels {
-  position: relative;
-  height: 18px;
-  margin-top: 4px;
-}
-
-.legend-label {
-  position: absolute;
-  transform: translateX(-50%);
-  font-size: 10px;
-  white-space: nowrap;
-}
 .content-wrapper {
     padding: 0 10px;
     margin: 10px auto;
