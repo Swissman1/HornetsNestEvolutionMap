@@ -8,6 +8,23 @@ var wms_layers = [];
 
 var filterMinYear = 1770;
 var filterMaxYear =2025;
+
+
+// NEW HELPER: Put this at the top level
+function getFeatureYear(feature, propName) {
+    const cacheKey = '_cached_year_' + propName;
+    let cached = feature.get(cacheKey);
+    if (cached !== undefined) return cached;
+
+    const val = feature.get(propName);
+    if (!val) {
+        feature.set(cacheKey, null);
+        return null;
+    }
+    const year = new Date(val).getFullYear();
+    feature.set(cacheKey, year);
+    return year;
+}
 // Helper function to interpolate between two colors (RGB interpolation)
 // Colors should be in [R, G, B] format (0-255)
 function interpolateColor(color1, color2, factor) {
@@ -98,7 +115,7 @@ function createDynamicAnnexStyle(layerBaseStyle) {
 
         let featureYear = null;
         if(roadAdd){
-            featureYear = new Date(roadAdd).getFullYear();
+            featureYear = getFeatureYear(feature, 'effdate');
             isVisible =   featureYear >= filterMinYear && featureYear <= filterMaxYear;
            
 
@@ -119,6 +136,7 @@ function createDynamicAnnexStyle(layerBaseStyle) {
 // It wraps your original layer-specific style (e.g., style_Pre1800Roads)
 // and applies visibility rules based on the feature's "Road Type" attribute and the current zoom level.
 function createDynamicRailStyle(layerBaseStyle) {
+    const styleCache = new Map();
     return function(feature, resolution) {
         // Ensure 'map' is defined before trying to access its view
         if (!map) {
@@ -130,58 +148,31 @@ function createDynamicRailStyle(layerBaseStyle) {
         const type = feature.get('type');
         const currentZoom = map.getView().getZoom();
 
-        let isVisible = true;
+        let isVisible = (type === 'Main') ? (currentZoom >= 6) : (currentZoom >= 11.5);
+        if (!isVisible) return null;
 
-        // Define visibility rules based on "Road Type" and zoom thresholds
-        // Adjust these zoom levels and road type strings to match your data and requirements
-        switch (type) {
-            case 'Main':
-                isVisible = currentZoom >= 6;
-
-                break;
-            default:
-                isVisible = currentZoom >= 11.5;
-                break;
-        }
-        const railAdd = feature.get('First Seen');
-        const railRemove = feature.get('Last Seen')
-
-
-        let featureYear = null;
-        if(isVisible && railAdd){
-            featureYear = new Date(railAdd).getFullYear();
+        let featureYear = getFeatureYear(feature, 'First Seen');
+            if (featureYear !== null) {
+                if (featureYear < filterMinYear || featureYear > filterMaxYear) return null;
             isVisible =   featureYear >= filterMinYear && featureYear <= filterMaxYear;
-            if(isVisible && railRemove && !showAllMissingRoads){
-                var removeYear =new Date(railRemove).getFullYear()
-                isVisible =  removeYear >= filterMinYear && removeYear >= filterMaxYear;
-
+            const railRemove = getFeatureYear(feature, 'Last Seen');
+            if (railRemove !== null && typeof showAllMissingRoads !== 'undefined' && !showAllMissingRoads) {
+                if (railRemove < filterMinYear || railRemove < filterMaxYear) return null;
             }
-
         }
-        if (isVisible) {
-             // Get the base style
-            let style = typeof layerBaseStyle === 'function' ? layerBaseStyle(feature, resolution) : layerBaseStyle;
-
-            // Ensure style is an array of styles, or convert it to one
-            let stylesArray = Array.isArray(style) ? style : [style];
-
-            // Iterate over each style and modify the stroke color
-            stylesArray.forEach(s => {
-                let stroke = s.getStroke();
-                if (stroke) {
-                    if (featureYear !== null) {
-                        const interpolatedColor = getRailColorForYear(featureYear, 1770, 2025);
-                        stroke.setColor(interpolatedColor);
-                    } else {
-                        stroke.setColor('#ca82baff'); // Default color if year is not available
-                    }
-                    setRailWidthByClass(feature, stroke);
-                }
-            });
-            return stylesArray;
-        } else {
-            return null; // Hide the feature if it's not visible at the current zoom/road type
-        }
+    
+ 
+        const width = (type === 'Main') ? 4.5 : 2.2;
+        const color = (featureYear !== null) ? getRailColorForYear(featureYear, 1770, 2025) : '#ca82baff';
+        const cacheId = `${color}_${width}`;
+        if (!styleCache.has(cacheId)) {
+        styleCache.set(cacheId, [
+            new ol.style.Style({
+                stroke: new ol.style.Stroke({ color: color, width: width })
+            })
+        ]);
+    }
+    return styleCache.get(cacheId);
     };
 }
 function createDynamicCountyStyle(layerBaseStyle) {
@@ -197,10 +188,10 @@ function createDynamicCountyStyle(layerBaseStyle) {
         const Remove = feature.get('dateRem');
         let featureYear = null;
         if(isVisible && Add){
-            featureYear = new Date(Add).getFullYear();
+            featureYear = getFeatureYear(feature, 'dateAdded');
             isVisible =   featureYear >= filterMinYear && featureYear <= filterMaxYear;
             if(isVisible && Remove){
-                var removeYear =new Date(Remove).getFullYear()
+                const removeYear = getFeatureYear(feature, 'dateRem');
                 isVisible =  removeYear >= filterMinYear && removeYear >= filterMaxYear;
 
             }
@@ -222,6 +213,19 @@ function createDynamicCountyStyle(layerBaseStyle) {
 // It wraps your original layer-specific style (e.g., style_Pre1800Roads)
 // and applies visibility rules based on the feature's "Road Type" attribute and the current zoom level.
 function createDynamicRoadStyle(layerBaseStyle) {
+    // 1. Initialize caches outside the returned rendering loop
+    const styleCache = new Map();
+    
+    const zoomThresholds = {
+        'Highway': 7, 'Freeway': 8, 'Major Road': 9, 'Trunk Road': 9.0,
+        'Minor Road': 10.75, 'Collecting Residential Road': 11.25,
+        'RAMP': 11.5, 'Neighborhood Road': 12.15
+    };
+
+    const widthMap = {
+        'Main': 7.7, 'Highway': 8, 'Freeway': 7, 'Major Road': 5.3, 'Minor Road': 3.0,
+        'RAMP': 2.8, 'Collecting Residential Road': 4.4, 'Trunk Road': 5.0, 'Neighborhood Road': 2.7
+    };
     return function(feature, resolution) {
         // Ensure 'map' is defined before trying to access its view
         if (!map) {
@@ -232,159 +236,37 @@ function createDynamicRoadStyle(layerBaseStyle) {
 
         const roadType = feature.get('Road Type'); // Get the "Road Type" attribute from the feature
         const currentZoom = map.getView().getZoom();;
+        
+        const zoomThreshold = zoomThresholds[roadType] || 12.5;
+        if (currentZoom < zoomThreshold) return null;
 
-        let isVisible = false;
+        const featureYear = getFeatureYear(feature, 'First Seen');
+        if (featureYear !== null) {
+            if (featureYear < filterMinYear || featureYear > filterMaxYear) return null;
 
-        // Define visibility rules based on "Road Type" and zoom thresholds
-        // Adjust these zoom levels and road type strings to match your data and requirements
-        switch (roadType) {
-            case 'Highway':
-                // Major roads visible from zoom level 6 and higher
-                isVisible = currentZoom >= 7;
-
-                break;
-            case 'Freeway':
-                // Freeway roads visible from zoom level 5 and higher
-                isVisible = currentZoom >= 8;
-                break;
-            case 'Major Road':
-                // Major roads visible from zoom level 8 and higher
-                isVisible = currentZoom >= 9;
-                break;
-            case 'Minor Road':
-                // Minor roads visible from zoom level 10 and higher
-                isVisible = currentZoom >= 10.75;
-                break;
-            case 'RAMP':
-                // RAMP roads visible from zoom level 12 and higher
-                isVisible = currentZoom >= 115;
-                break;
-            case 'Collecting Residential Road':
-                // Residential visible from zoom level 14 and higher
-                isVisible = currentZoom >= 11.25;
-                break;
-                
-            case 'Trunk Road':
-                // Major roads visible from zoom level 6 and higher
-                isVisible = currentZoom >= 9.0;
-                break;
-            case 'Neighborhood Road':
-                // Missing roads might appear at higher zoom levels for detail
-                isVisible = currentZoom >= 12.15;
-                break;
-            // Add more cases for other 'Road Type' values as needed
-            default:
-                // If 'Road Type' is unknown, not set, or doesn't match, hide by default
-                isVisible = currentZoom >= 12.5;
-                break;
-        }
-        const roadAdd = feature.get('First Seen');
-        const roadRemove = feature.get('Last Seen')
-
-        if(feature.get('Name')=='Old Central Ave'){
-            console.log("");
-        }
-        let featureYear = null;
-        if(isVisible && roadAdd){
-            featureYear = new Date(roadAdd).getFullYear();
-            isVisible =   featureYear >= filterMinYear && featureYear <= filterMaxYear;
-            if(isVisible && roadRemove && !showAllMissingRoads){
-                var removeYear =new Date(roadRemove).getFullYear()
-                isVisible =  removeYear >= filterMinYear && removeYear >= filterMaxYear;
-
+            const roadRemove = getFeatureYear(feature, 'Last Seen');
+            if (roadRemove !== null && typeof showAllMissingRoads !== 'undefined' && !showAllMissingRoads) {
+                if (roadRemove < filterMinYear || roadRemove < filterMaxYear) return null;
             }
-
         }
-        if (isVisible) {
-             // Get the base style
-            let style = typeof layerBaseStyle === 'function' ? layerBaseStyle(feature, resolution) : layerBaseStyle;
 
-            // Ensure style is an array of styles, or convert it to one
-            let stylesArray = Array.isArray(style) ? style : [style];
+        const typeClass = feature.get('Road Type');
+        const width = widthMap[typeClass] || 2.9;
+        const color = (featureYear !== null) ? getColorForYear(featureYear, 1770, 2025) : '#333333';
 
-            // Iterate over each style and modify the stroke color
-            stylesArray.forEach(s => {
-                let stroke = s.getStroke();
-                if (stroke) {
-                    if (featureYear !== null) {
-                        const interpolatedColor = getColorForYear(featureYear, 1770, 2025);
-                        stroke.setColor(interpolatedColor);
-                        setWidthByClass(feature, stroke);
-                    } else {
-                        stroke.setColor('#333333'); // Default color if year is not available
-                    }
-                }
-            });
-            return stylesArray;
-        } else {
-            return null; // Hide the feature if it's not visible at the current zoom/road type
+        const cacheId = `${color}_${width}`;
+
+        if (!styleCache.has(cacheId)) {
+            styleCache.set(cacheId, [
+                new ol.style.Style({
+                    stroke: new ol.style.Stroke({ color: color, width: width })
+                })
+            ]);
         }
+        return styleCache.get(cacheId);
     };
 }
 
-function setRailWidthByClass(feature, stroke){
-        const roadType = feature.get('type'); // Get the "Road Type" attribute from the feature
-            // Define visibility rules based on "Road Type" and zoom thresholds
-        // Adjust these zoom levels and road type strings to match your data and requirements
-        
-        switch (roadType) {
-            case 'Main':
-                // Major roads visible from zoom level 6 and higher
-                stroke.setWidth(4.5)
-                break;
-            // Add more cases for other 'Road Type' values as needed
-            default:
-
-                stroke.setWidth(2.2)
-                break;
-        }
-}
-function setWidthByClass(feature, stroke){
-        const roadType = feature.get('Type'); // Get the "Road Type" attribute from the feature
-            // Define visibility rules based on "Road Type" and zoom thresholds
-        // Adjust these zoom levels and road type strings to match your data and requirements
-        
-        switch (roadType) {
-            case 'Main':
-                // Major roads visible from zoom level 6 and higher
-                stroke.setWidth(6.77)
-
-                break;
-            case 'Freeway':
-                // Freeway roads visible from zoom level 5 and higher
-                stroke.setWidth(7)
-                break;
-            case 'Major Road':
-                // Major roads visible from zoom level 8 and higher
-                stroke.setWidth(5.3)
-                break;
-            case 'Minor Road':
-                // Minor roads visible from zoom level 10 and higher
-                stroke.setWidth(4.45)
-                break;
-            case 'RAMP':
-                // RAMP roads visible from zoom level 12 and higher
-                stroke.setWidth(2.95)
-                break;
-            case 'Collecting Residential Road':
-                // Residential visible from zoom level 14 and higher
-                stroke.setWidth(3.5)
-                break;
-                
-            case 'Trunk Road':
-                // Major roads visible from zoom level 6 and higher
-                stroke.setWidth(5.6)
-                break;
-            case 'Neighborhood Road':
-                // Missing roads might appear at higher zoom levels for detail
-                
-            // Add more cases for other 'Road Type' values as needed
-            default:
-
-                stroke.setWidth(2.9)
-                break;
-        }
-}
 var lyr_OpenStreetmap_0 = new ol.layer.Tile({
     'title': 'Open Street map',
     'opacity': 1.000000,
@@ -411,8 +293,9 @@ function createVectorLayer(params) {
     });
     const source = new ol.source.Vector({
         attributions: ' ',
+        features: features,
+        useSpatialIndex: true
     });
-    source.addFeatures(features);
     return new ol.layer.Vector({
         declutter: false,
         source: source,
