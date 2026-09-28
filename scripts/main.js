@@ -38,10 +38,21 @@
     }
         
     });
+const minYear = 1760;
+const maxYear = 2025;
 
+const colorStops = [
+  { yearRatio: 0.0, color: [10, 8, 0] },
+  { yearRatio: 0.28, color: [15, 95, 5] },
+  { yearRatio: 0.42, color: [180, 50, 10] },
+  { yearRatio: 0.58, color: [154, 5, 50] },
+  { yearRatio: 0.70, color: [195, 110, 60] },
+  { yearRatio: 1.0, color: [240, 240, 40] }
+];
 
 document.addEventListener('DOMContentLoaded', function() {
     
+  initLegend();
     //addHamburger();
     const toggleOpenerButton = document.getElementById('toggle-opener');
     const openerSection = document.getElementById('opener');
@@ -60,6 +71,44 @@ document.addEventListener('DOMContentLoaded', function() {
     // openerSection.classList.add('collapsed');
     // toggleOpenerButton.textContent = 'Show Info';
 });
+
+function initLegend() {
+  const colorRampEl = document.getElementById('color-ramp');
+  const labelsEl = document.getElementById('legend-labels');
+
+  // Build linear-gradient string
+  const gradientStops = colorStops.map(stop => {
+    const [r, g, b] = stop.color;
+    const pct = (stop.yearRatio * 100).toFixed(1);
+    return `rgb(${r}, ${g}, ${b}) ${pct}%`;
+  });
+
+  colorRampEl.style.background = `linear-gradient(to right, ${gradientStops.join(', ')})`;
+
+  // Render labels for each stop
+  labelsEl.innerHTML = '';
+  colorStops.forEach((stop, index) => {
+    const year = Math.round(minYear + stop.yearRatio * (maxYear - minYear));
+    const label = document.createElement('span');
+    label.className = 'legend-label';
+    label.innerText = year;
+
+    // Adjust alignment for endpoints so text stays bounded nicely
+    const leftPct = stop.yearRatio * 100;
+    if (index === 0) {
+      label.style.left = '0%';
+      label.style.transform = 'translateX(0%)';
+    } else if (index === colorStops.length - 1) {
+      label.style.left = '100%';
+      label.style.transform = 'translateX(-100%)';
+    } else {
+      label.style.left = `${leftPct}%`;
+      label.style.transform = 'translateX(-50%)';
+    }
+
+    labelsEl.appendChild(label);
+  });
+}
 
 function JiggerMap() {
   const view = map.getView();
