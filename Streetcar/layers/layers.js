@@ -6,10 +6,7 @@ var wms_layers = [];
             'opacity': 1.000000,
             
             
-            source: new ol.source.XYZ({
-            attributions: ' &nbsp &middot; <a href="https://www.openstreetmap.org/copyright">© OpenStreetMap contributors, CC-BY-SA</a>',
-                url: 'http://tile.openstreetmap.org/{z}/{x}/{y}.png'
-            })
+            source: new ol.source.OSM()
         });
 var format_streetcarstreets = new ol.format.GeoJSON();
 var features_streetcarstreets = format_streetcarstreets.readFeatures(json_streetcarstreets, 
