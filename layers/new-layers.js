@@ -39,12 +39,13 @@ function getColorForYear(year, minYear, maxYear) {
     const normalizedYear = (year - minYear) / (maxYear - minYear);
 
 
-    const colorStops =[
+    var colorStops =[
     { yearRatio: 0.0, color: [10, 8, 0] },     
-    { yearRatio: 0.28, color: [15, 95, 5] },   
-    { yearRatio: 0.42, color: [180, 50, 10] }, 
+  { yearRatio: 0.25, color: [15, 95, 5] },
+  { yearRatio: 0.42, color: [20, 60, 110] },
     { yearRatio: 0.58, color: [154, 5, 50] },
     { yearRatio: 0.70, color: [195, 110, 60] },
+    {yearRatio:0.83, color:[120,50,190]},
     { yearRatio: 1, color: [240, 240, 40] }
 ];
 
