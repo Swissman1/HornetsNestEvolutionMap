@@ -89,7 +89,7 @@ button {
 /* Responsive Adjustments */
 @media (max-width: 1080px) {
   .description {
-    font-size: 9px;
+    font-size: 10px;
   }
 
   .year-header {
@@ -98,5 +98,9 @@ button {
 
   .pop-header {
     font-size: 12px;
+  }
+  #nations {
+    width: 94%;
+    height: 100%;
   }
 }
