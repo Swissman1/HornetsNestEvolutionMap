@@ -40,36 +40,7 @@
     <script async defer src="https://buttons.github.io/buttons.js"></script>
 
     <style>
-      /* Original inline styles for map controls - keep these for compatibility */
-      .ol-control > * {
-        background-color: #f8f8f8 !important;
-        color: #444444 !important;
-        border-radius: 0px;
-      }
-      .ol-attribution a,
-      .gcd-gl-input::placeholder,
-      .search-layer-input-search::placeholder {
-        color: #444444 !important;
-      }
-      .search-layer-input-search {
-        background-color: #f8f8f8 !important;
-      }
-      .ol-control > *:focus,
-      .ol-control > *:hover {
-        background-color: rgba(248, 248, 248, 0.7) !important;
-      }
-      .ol-control {
-        background-color: rgba(255, 255, 255, 0.4) !important;
-        padding: 2px !important;
-      }
-      /* Ensure map takes height within its container */
-      #map {
-        width: 100%;
-        height: 100%; /* Map will take 100% height of its parent */
-        padding: 0;
-        margin: 0;
-      }
-      
+
 
     </style>
 
@@ -80,6 +51,7 @@
       <nav style="display: flex; align-items: center; width: 100%; box-sizing: border-box; padding: 0;">
         <a href="snapshotMaps/1911/index.html" class="header-link">Snapshots</a>
          <a href="Streetcar/index.html" class="header-link">Streetcars</a>
+                  <a href="trade-tyron/index.html" class="header-link">Trade and Tyron</a>
         <a href="thestory.html" class="header-link">The Story</a>
         <a href="Sources.html" class="header-link">Sources</a>
 
@@ -91,7 +63,7 @@
 
     <main class="content-wrapper main-container">
     
-      <div id="year-slider" style="margin-top: 20px;"></div>
+      <div id="year-slider"></div>
         <p style="text-align: center; margin-top: 10px;">
           <span id="slider-value-lower"></span> - <span id="slider-value-upper"></span>
         </p>
@@ -224,6 +196,7 @@
     <script src="styles/Annexation_History_style.js"></script>
     <script src="styles/2025MissingRoads_style.js"></script>
     <script src="layers/MissingRoads.js"></script>
+    <script src="layers/EstimatedOld.js"></script>
     
     <script src="styles/FullRoads_style.js"></script>
     <script src="resources/qgis2web_expressions.js"></script>

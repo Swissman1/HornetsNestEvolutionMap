@@ -23,13 +23,13 @@ var lyr_streetcarstreets = new ol.layer.Vector({
                 interactive: true,
                 title: '<img src="styles/legend/streetcarstreets.png" />1935 streets'
             });
-var format_streetcardisp = new ol.format.GeoJSON();
-var features_streetcardisp = format_streetcardisp.readFeatures(json_streetcardisp, 
+var formatOldTradePaths = new ol.format.GeoJSON();
+var featuresOldTradePaths = formatOldTradePaths.readFeatures(json_streetcardisp, 
             {dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857'});
 var jsonSource_streetcardisp = new ol.source.Vector({
     attributions: ' ',
 });
-jsonSource_streetcardisp.addFeatures(features_streetcardisp);
+jsonSource_streetcardisp.addFeatures(featuresOldTradePaths);
 var lyr_streetcardisp = new ol.layer.Vector({
                 declutter: false,
                 source:jsonSource_streetcardisp, 

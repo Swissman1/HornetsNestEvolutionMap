@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>7-Day Heating Load Forecast MVP</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --card: #1e293b;
+      --text: #f8fafc;
+      --accent: #38bdf8;
+      --heat: #f97316;
+      --border: #334155;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      margin: 0;
+      padding: 24px;
+    }
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    h1 { margin-bottom: 8px; font-size: 1.8rem; }
+    p.subtitle { color: #94a3b8; margin-top: 0; margin-bottom: 24px; }
+    
+    .grid {
+      display: grid;
+      grid-template-columns: 320px 1fr;
+      gap: 24px;
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+    }
+    .control-group {
+      margin-bottom: 20px;
+    }
+    label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    input[type="range"] {
+      width: 100%;
+      accent-color: var(--accent);
+    }
+    .kpi-container {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    .kpi-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      text-align: center;
+    }
+    .kpi-value {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--accent);
+      margin-top: 4px;
+    }
+    .kpi-value.heat { color: var(--heat); }
+    .kpi-label { font-size: 0.8rem; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.05em; }
+    
+    .chart-container {
+      position: relative;
+      height: 380px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>Heating Energy Forecast MVP</h1>
+  <p class="subtitle">Simulating a cold front over 168 hours (7 days)</p>
+
+  <div class="kpi-container">
+    <div class="kpi-card">
+      <div class="kpi-label">7-Day Total Heat Loss</div>
+      <div class="kpi-value heat" id="kpi-hdh">0 HDH</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Est. Electrical Load</div>
+      <div class="kpi-value" id="kpi-kwh">0 kWh</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Est. Heating Cost (@ $0.14/kWh)</div>
+      <div class="kpi-value" id="kpi-cost">$0.00</div>
+    </div>
+  </div>
+
+  <div class="grid">
+    <!-- Controls Sidebar -->
+    <div class="card">
+      <h3>Model Parameters</h3>
+      
+      <div class="control-group">
+        <label>Thermostat Setpoint: <span id="val-setpoint">68°F</span></label>
+        <input type="range" id="input-setpoint" min="60" max="75" value="68" step="1">
+      </div>
+
+      <div class="control-group">
+        <label>Home Heat Loss Factor (K): <span id="val-kfactor">0.18</span></label>
+        <input type="range" id="input-kfactor" min="0.05" max="0.40" value="0.18" step="0.01">
+        <small style="color:#64748b;">kWh loss per Degree-Hour</small>
+      </div>
+
+      <div class="control-group">
+        <label>Base Weather Temp: <span id="val-base-temp">35°F</span></label>
+        <input type="range" id="input-base-temp" min="15" max="80" value="35" step="1">
+      </div>
+
+      <div class="control-group">
+        <label>System Type</label>
+        <select id="input-system" style="width:100%; padding:8px; background:#0f172a; color:#fff; border:1px solid #334155; border-radius:6px;">
+          <option value="ashp">Air-Source Heat Pump (Variable COP)</option>
+          <option value="resistive">Electric Resistance / Strips (COP = 1.0)</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Main Chart -->
+    <div class="card">
+      <div class="chart-container">
+        <canvas id="forecastChart"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // --- 1. Synthetic Weather Generator (168 Hours) ---
+  function generateSyntheticWeather(baseTemp) {
+    const hours = [];
+    const temps = [];
+    
+    for (let h = 0; h < 168; h++) {
+      const day = Math.floor(h / 24) + 1;
+      const hourOfDay = h % 24;
+      
+      // Simulate diurnal swing (coldest at 6am, warmest at 3pm)
+      const diurnalVariation = -9 * Math.cos(((hourOfDay - 3) / 24) * 2 * Math.PI);
+      
+      // Simulate mid-week cold front dip
+      const coldFrontDip = -15 * Math.sin((h / 150) * Math.PI);
+      
+      const temp = Math.round(baseTemp + diurnalVariation + coldFrontDip);
+      
+      hours.push(`D${day} ${hourOfDay}:00`);
+      temps.push(temp);
+    }
+    return { hours, temps };
+  }
+
+  // Simple COP lookup model for standard heat pump
+  function getHeatPumpCOP(outdoorTemp) {
+    if (outdoorTemp >= 60) return 4;
+    if (outdoorTemp <= 10) return 1.0;
+    // Linear approximation between 10°F and 50°F
+    return 1 + ((outdoorTemp - 10) / 50) * (4 - 1.0);
+  }
+
+  // --- 2. Chart Setup ---
+  const ctx = document.getElementById('forecastChart').getContext('2d');
+  const forecastChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: [],
+      datasets: [
+        {
+          label: 'Outdoor Temp (°F)',
+          data: [],
+          borderColor: '#38bdf8',
+          borderWidth: 2,
+          pointRadius: 0,
+          yAxisID: 'yTemp'
+        },
+        {
+          label: 'Hourly Energy (kWh)',
+          data: [],
+          backgroundColor: 'rgba(249, 115, 22, 0.4)',
+          borderColor: '#f97316',
+          borderWidth: 1.5,
+          fill: true,
+          pointRadius: 0,
+          yAxisID: 'yKwh'
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
+      scales: {
+        x: { 
+          grid: { color: '#334155' },
+          ticks: { color: '#94a3b8', maxTicksLimit: 14 } 
+        },
+        yTemp: {
+          type: 'linear',
+          position: 'left',
+          title: { display: true, text: 'Temperature (°F)', color: '#38bdf8' },
+          grid: { color: '#334155' },
+          ticks: { color: '#94a3b8' }
+        },
+        yKwh: {
+          type: 'linear',
+          position: 'right',
+          title: { display: true, text: 'Electrical kWh / hr', color: '#f97316' },
+          grid: { drawOnChartArea: false },
+          ticks: { color: '#94a3b8' }
+        }
+      },
+      plugins: {
+        legend: { labels: { color: '#f8fafc' } }
+      }
+    }
+  });
+
+  // --- 3. Core Engine Calculation ---
+  function recalculate() {
+    const setpoint = parseInt(document.getElementById('input-setpoint').value);
+    const kFactor = parseFloat(document.getElementById('input-kfactor').value);
+    const baseTemp = parseInt(document.getElementById('input-base-temp').value);
+    const systemType = document.getElementById('input-system').value;
+
+    // Update labels
+    document.getElementById('val-setpoint').innerText = `${setpoint}°F`;
+    document.getElementById('val-kfactor').innerText = kFactor.toFixed(2);
+    document.getElementById('val-base-temp').innerText = `${baseTemp}°F`;
+
+    // Generate weather & compute thermal load
+    const { hours, temps } = generateSyntheticWeather(baseTemp);
+    const kwhSeries = [];
+    let totalHDH = 0;
+    let totalKwh = 0;
+
+    for (let i = 0; i < 168; i++) {
+      const tOut = temps[i];
+      const hdh = Math.max(0, setpoint - tOut);
+      totalHDH += hdh;
+
+      // Thermal loss (kWh equivalent) = HDH * K
+      const thermalLossKwh = hdh * kFactor;
+
+      // Convert thermal demand to electrical demand based on heating system
+      let cop = 1.0;
+      if (systemType === 'ashp') {
+        cop = getHeatPumpCOP(tOut);
+      }
+      
+      const electricalKwh = thermalLossKwh / cop;
+      kwhSeries.push(parseFloat(electricalKwh.toFixed(2)));
+      totalKwh += electricalKwh;
+    }
+
+    // Update KPIs
+    document.getElementById('kpi-hdh').innerText = `${Math.round(totalHDH)} HDH`;
+    document.getElementById('kpi-kwh').innerText = `${Math.round(totalKwh)} kWh`;
+    document.getElementById('kpi-cost').innerText = `$${(totalKwh * 0.14).toFixed(2)}`;
+
+    // Update Chart Data
+    forecastChart.data.labels = hours;
+    forecastChart.data.datasets[0].data = temps;
+    forecastChart.data.datasets[1].data = kwhSeries;
+    forecastChart.update();
+  }
+
+  // --- 4. Event Listeners ---
+  ['input-setpoint', 'input-kfactor', 'input-base-temp', 'input-system'].forEach(id => {
+    document.getElementById(id).addEventListener('input', recalculate);
+  });
+
+  // Initial Run
+  recalculate();
+</script>
+</body>
+</html>

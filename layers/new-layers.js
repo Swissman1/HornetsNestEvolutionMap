@@ -7,8 +7,13 @@ var wms_layers = [];
 // Make sure 'map' is globally available or passed in.
 
 var filterMinYear = 1770;
-var filterMaxYear =2025;
+var filterMaxYear =2026;
 
+
+var estimatedOldColors = [  
+    { yearRatio: 0.0, color: [15, 95, 5] },
+  { yearRatio: 0.4, color: [150, 180, 90] },
+  { yearRatio: 1, color: [20, 60, 110] },]
 
 // NEW HELPER: Put this at the top level
 function getFeatureYear(feature, propName) {
@@ -34,7 +39,7 @@ function interpolateColor(color1, color2, factor) {
     }
     return 'rgb(' + result.join(',') + ')';
 }
-function getColorForYear(year, minYear, maxYear) {
+function getRoadColorForYear(year, minYear, maxYear) {
     // Normalize the year to a 0-1 range
     const normalizedYear = (year - minYear) / (maxYear - minYear);
 
@@ -253,7 +258,53 @@ function createDynamicRoadStyle(layerBaseStyle) {
 
         const typeClass = feature.get('Road Type');
         const width = widthMap[typeClass] || 2.9;
-        const color = (featureYear !== null) ? getColorForYear(featureYear, 1770, 2025) : '#333333';
+        const color = (featureYear !== null) ? getRoadColorForYear(featureYear, 1770, 2025) : '#333333';
+
+        const cacheId = `${color}_${width}`;
+
+        if (!styleCache.has(cacheId)) {
+            styleCache.set(cacheId, [
+                new ol.style.Style({
+                    stroke: new ol.style.Stroke({ color: color, width: width, alpha: 0.2 })
+                })
+            ]);
+        }
+        return styleCache.get(cacheId);
+    };
+}
+// This helper function creates a style function for each layer.
+// It wraps your original layer-specific style (e.g., style_Pre1800Roads)
+// and applies visibility rules based on the feature's "Road Type" attribute and the current zoom level.
+function createDynamicEstimateRoadStyle(layerBaseStyle) {
+    // 1. Initialize caches outside the returned rendering loop
+    const styleCache = new Map();
+    
+
+    return function(feature, resolution) {
+        // Ensure 'map' is defined before trying to access its view
+        if (!map) {
+            console.warn("Map object is not defined. Cannot apply zoom-based styling.");
+            // If map is not available, return the base style without zoom/type checks
+            return typeof layerBaseStyle === 'function' ? layerBaseStyle(feature, resolution) : layerBaseStyle;
+        }
+
+        const currentZoom = map.getView().getZoom();
+        
+        // const zoomThreshold = zoomThresholds[roadType] || 12.5;
+        // if (currentZoom < zoomThreshold) return null;
+
+        const featureYear = getFeatureYear(feature, 'First Seen');
+        if (featureYear !== null) {
+            if (featureYear < filterMinYear || featureYear > filterMaxYear) return null;
+
+            const roadRemove = getFeatureYear(feature, 'Last Seen');
+            if (roadRemove !== null && typeof showAllMissingRoads !== 'undefined' && !showAllMissingRoads) {
+                if (roadRemove < filterMinYear || roadRemove < filterMaxYear) return null;
+            }
+        }
+
+        const width =  9.9;
+        const color = (featureYear !== null) ? getRoadColorForYear(featureYear, 1770, 2025) : '#486566';
 
         const cacheId = `${color}_${width}`;
 
@@ -267,7 +318,6 @@ function createDynamicRoadStyle(layerBaseStyle) {
         return styleCache.get(cacheId);
     };
 }
-
 var lyr_OpenStreetmap_0 = new ol.layer.Tile({
     'title': 'Open Street map',
     'opacity': 1.000000,
@@ -343,9 +393,15 @@ var lyr_Annex = createVectorLayer({
     popuplayertitle: 'Annexation History',
     title: 'Annexation History'
 })
+var lyr_Estimated = createVectorLayer({
+    jsonData: json_EstimatedOld,
+    style: createDynamicEstimateRoadStyle(style_FullRoads),
+    popuplayertitle: 'Estimated Road Paths',
+    title: 'Estimated Road Paths'
+})
 var group_Roads = new ol.layer.Group({
     layers: [
-        lyr_Roads, lyr_MissingRoads
+        lyr_Roads, lyr_MissingRoads, lyr_Estimated
 
     ],
     fold: 'open',
@@ -358,7 +414,7 @@ var group_Rail = new ol.layer.Group({
     fold: 'open',
     title: 'Rail'
 }) 
-
+lyr_Estimated.setOpacity(0.4)
 lyr_Annex.setOpacity(0.6)
 lyr_OpenStreetmap_0.setVisible(true);
 lyr_stadia.setVisible(true);
@@ -369,18 +425,23 @@ var layersList = [lyr_stadia,lyr_Counties,lyr_Annex,group_Rail,group_Roads];
 //lyr_Sevensisters.set('fieldAliases', {'Name': 'Name', 'Year': 'Year', });
 //lyr_Pointsofinterest.set('fieldAliases', {'Title': 'Title', 'Desc.': 'Desc.', 'Added by': 'Added by', 'Date': 'Date', 'Source': 'Source', 'id': 'id', });
 lyr_MissingRoads.set('fieldAliases', {'First Seen': 'First Seen', 'Name': 'Name', 'Last Seen': 'Last Seen', 'Road Type': 'Road Type', });
+lyr_Estimated.set('fieldAliases', {'First Seen': 'First Seen', 'Name': 'Name', 'Last Seen': 'Last Seen', 'Road Type': 'Road Type', });
 lyr_Roads.set('fieldAliases', {'First Seen': 'First Seen', 'Name': 'Name', 'Road Type': 'Road Type', });
 lyr_Rail.set('fieldAliases', {'operator':'Operator','First Seen': 'First Seen', 'type':'Type', 'operator': 'Operator' });
 lyr_MissingRail.set('fieldAliases', {'First Seen': 'First Seen', 'Last Seen': 'Last Seen', 'type': 'Type'  });
 lyr_Annex.set('fieldAliases', {'effdate': 'Annexation Date', 'munic_name': 'Name', });
 //lyr_Pointsofinterest.set('fieldImages', {'Title': 'TextEdit', 'Desc.': 'TextEdit', 'Added by': 'TextEdit', 'Date': 'DateTime', 'Source': 'TextEdit', 'id': 'TextEdit', });
 lyr_MissingRoads.set('fieldImages', {'First Seen': 'DateTime', 'Last Seen': 'DateTime', 'Name': 'TextEdit', 'Road Type': '', });
+lyr_Estimated.set('fieldImages', {'First Seen': 'DateTime', 'Last Seen': 'DateTime', 'Name': 'TextEdit', 'Road Type': '', });
 lyr_Roads.set('fieldImages', {'First Seen': 'DateTime', 'Name': 'TextEdit', 'Road Type': 'TextEdit', });
 lyr_MissingRail.set('fieldImages', {'First Seen': 'DateTime',  'Last Seen': 'DateTime', 'type': 'TextEdit', });
 lyr_Rail.set('fieldImages', {'First Seen': 'DateTime',  'operator': 'TextEdit','type': 'TextEdit', });
 lyr_Annex.set('fieldImages',{'munic_name':'TextEdit','effdate': 'DateTime'})
 //lyr_Sevensisters.set('fieldLabels', {'Name': 'inline label - visible with data', 'Year': 'inline label - visible with data', });
 //lyr_Pointsofinterest.set('fieldLabels', {'Title': 'inline label - visible with data', 'Desc.': 'inline label - visible with data', 'Added by': 'inline label - visible with data', 'Date': 'inline label - visible with data', 'Source': 'inline label - visible with data', 'id': 'inline label - visible with data', });
+lyr_Estimated.set('fieldLabels', {'First Seen': 'inline label - visible with data',  'Last Seen': 'inline label - visible with data', 
+    'Name': 'inline label - visible with data' });
+
 lyr_MissingRoads.set('fieldLabels', {'First Seen': 'inline label - visible with data',  'Last Seen': 'inline label - visible with data', 'Name': 'inline label - visible with data','Road Type': 'inline label - visible with data', });
 lyr_Roads.set('fieldLabels', {'First Seen': 'inline label - visible with data', 'Name': 'inline label - visible with data', 'Road Type': 'inline label - visible with data', });
 lyr_MissingRail.set('fieldLabels', {'First Seen': 'inline label - visible with data', 'Last Seen': 'inline label - visible with data', 'type': 'inline label - visible with data' });
@@ -393,3 +454,44 @@ lyr_Roads.on('precompose', function(evt) {
 lyr_Rail.on('precompose', function(evt) {
     evt.context.globalCompositeOperation = 'normal';
 });
+function getEstimatedOldColorForYear(year, minYear, maxYear) {
+    const alpha = 0.1005
+    const normalizedYear = (year - minYear) / (maxYear - minYear);
+    const colorStops = estimatedOldColors.slice().sort((a, b) => a.yearRatio - b.yearRatio);
+
+    if (normalizedYear <= colorStops[0].yearRatio) {
+        const rgb = colorStops[0].color;
+        return `rgba(${rgb[0]}, ${rgb[1]}, ${rgb[2]}, ${alpha})`;
+    }
+
+    if (normalizedYear >= colorStops[colorStops.length - 1].yearRatio) {
+        const rgb = colorStops[colorStops.length - 1].color;
+        return `rgba(${rgb[0]}, ${rgb[1]}, ${rgb[2]}, ${alpha})`;
+    }
+
+    for (let i = 0; i < colorStops.length - 1; i++) {
+        const stop1 = colorStops[i];
+        const stop2 = colorStops[i + 1];
+
+        if (normalizedYear >= stop1.yearRatio && normalizedYear < stop2.yearRatio) {
+            const factor = (normalizedYear - stop1.yearRatio) / (stop2.yearRatio - stop1.yearRatio);
+            const rgb = interpolateColor(stop1.color, stop2.color, factor).match(/\d+/g).map(Number);
+            return `rgba(${rgb[0]}, ${rgb[1]}, ${rgb[2]}, ${alpha})`;
+        }
+    }
+
+    return `rgba(51, 51, 51, ${alpha})`;
+}
+
+function getEstimatedOldRoadStyleForYear(year, minYear, maxYear, baseWidth = 5, alpha = 0.35) {
+    const color = getEstimatedOldColorForYear(year, minYear, maxYear, alpha);
+
+    return new ol.style.Style({
+        stroke: new ol.style.Stroke({
+            color: color,
+            width: baseWidth,
+            lineCap: 'round',
+            lineJoin: 'round'
+        })
+    });
+}
