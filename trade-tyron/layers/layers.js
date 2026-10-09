@@ -19,9 +19,9 @@ var lyrOtherPaths = new ol.layer.Vector({
                 declutter: false,
                 source:jsonSourceOtherPaths, 
                 style: styleOtherPaths,
-                popuplayertitle: '1935 street',
+                popuplayertitle: 'Other estimated paths',
                 interactive: true,
-                title: '<img src="styles/legend/streetcarstreets.png" />1935 streets'
+                title: '<img src="styles/legend/OtherPaths.png" />Other estimated paths'
             });
 var formatOldTradePaths = new ol.format.GeoJSON();
 var featuresOldTradePaths = formatOldTradePaths.readFeatures(jsonOldTradePaths, 
@@ -36,8 +36,7 @@ var lyrOldTradePaths = new ol.layer.Vector({
                 style: styleOldTradePaths,
                 popuplayertitle: 'Trade-Tryon estimates',
                 interactive: true,
-    title: 'Trade and Tryon estimated Routes<br />\
-    <img src="styles/legend/streetcardisp_14.png" /> 1st Ward/Brevard Line<br />' });
+    title: '<img src="styles/legend/OldTradePaths.png" />Trade and Tryon estimated Routes<br/>' });
 
 lyr_OSMStandard.setVisible(true);lyrOtherPaths.setVisible(true);lyrOldTradePaths.setVisible(true);
 var layersList = [lyr_OSMStandard,lyrOtherPaths,lyrOldTradePaths];

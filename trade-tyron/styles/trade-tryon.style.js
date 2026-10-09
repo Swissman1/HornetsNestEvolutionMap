@@ -21,7 +21,7 @@ var styleOldTradePaths = function(feature, resolution){
         labelText = String("");
     }
     var style = [ new ol.style.Style({
-        stroke: new ol.style.Stroke({color: 'rgba(16, 130, 175, 0.5)', lineDash: null, lineCap: 'butt', lineJoin: 'bevel', width: 8.9}),
+        stroke: new ol.style.Stroke({color: 'rgba(16, 132, 177, 0.5)', lineDash: null, lineCap: 'butt', lineJoin: 'bevel', width: 8.9}),
         text: createTextStyle(feature, resolution, labelText, labelFont,
                               labelFill, placement, bufferColor,
                               bufferWidth)

@@ -21,7 +21,7 @@ var styleOtherPaths = function(feature, resolution){
         labelText = String("");
     }
     var style = [ new ol.style.Style({
-        stroke: new ol.style.Stroke({color: 'rgba(109, 200, 132, 0.5)', lineDash: null, lineCap: 'butt', lineJoin: 'bevel', width: 6.5}),
+        stroke: new ol.style.Stroke({color: '#6dc88480', lineDash: null, lineCap: 'butt', lineJoin: 'bevel', width: 6.5}),
         text: createTextStyle(feature, resolution, labelText, labelFont,
                               labelFill, placement, bufferColor,
                               bufferWidth)
