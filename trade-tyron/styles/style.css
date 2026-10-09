@@ -34,14 +34,21 @@ body {
 }
 
 #map {
-  width: 98%;
-  height: 80%;
+  width: 75%;
+  height: 60%;
   align-content: center;
   padding-left: 1%;
   padding-top: 0%;
   margin: 0;
 }
 
+#nations{
+  padding: 10px;
+  width: 44%;
+  height: 85%;
+  border: 3px #000000;
+  border-top: 3px;
+}
 .map-and-description {
   display: flex;
   flex-wrap: nowrap;
@@ -70,6 +77,9 @@ button {
   margin-top: 1%;
   margin-bottom: 0%;
   align-content: center;
+    border-bottom: 2px solid #d3c8b4;
+  padding-bottom: 0.2em;
+  margin-bottom: 1em;
 }
 
 .pop-header {
