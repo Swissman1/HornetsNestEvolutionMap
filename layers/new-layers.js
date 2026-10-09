@@ -45,12 +45,10 @@ function getRoadColorForYear(year, minYear, maxYear) {
 
 
     var colorStops =[
-    { yearRatio: 0.0, color: [10, 8, 0] },     
+    { yearRatio: 0.0, color: [0, 208, 0] },     
   { yearRatio: 0.25, color: [15, 95, 5] },
   { yearRatio: 0.42, color: [20, 60, 110] },
-    { yearRatio: 0.58, color: [154, 5, 50] },
-    { yearRatio: 0.70, color: [195, 110, 60] },
-    {yearRatio:0.83, color:[120,50,190]},
+    { yearRatio: 0.55, color: [154, 5, 50] },
     { yearRatio: 1, color: [240, 240, 40] }
 ];
 
@@ -224,8 +222,8 @@ function createDynamicRoadStyle(layerBaseStyle) {
     
     const zoomThresholds = {
         'Highway': 7, 'Freeway': 8, 'Major Road': 9, 'Trunk Road': 9.0,
-        'Minor Road': 10.75, 'Collecting Residential Road': 11.25,
-        'RAMP': 11.5, 'Neighborhood Road': 12.15
+        'Minor Road': 11, 'Collecting Residential Road': 11.75,
+        'RAMP': 11.8, 'Neighborhood Road': 12.6
     };
 
     const widthMap = {
@@ -266,7 +264,8 @@ function createDynamicRoadStyle(layerBaseStyle) {
             styleCache.set(cacheId, [
                 new ol.style.Style({
                     stroke: new ol.style.Stroke({ color: color, width: width, alpha: 0.2 })
-                })
+                }),
+                new ol.style.Style({stroke:  new ol.style.Stroke({ color: '#4a4a4a', width: 0.3+ width*0.03, alpha: 1 })}),
             ]);
         }
         return styleCache.get(cacheId);

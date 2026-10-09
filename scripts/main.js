@@ -41,7 +41,7 @@
 const minYear = 1760;
 const maxYear = 2026;
 
-var colorStops = [
+var roadColorStops = [
   { yearRatio: 0.0, color: [10, 8, 0] },
   { yearRatio: 0.25, color: [15, 95, 5] },
   { yearRatio: 0.42, color: [20, 60, 110] },
@@ -51,19 +51,58 @@ var colorStops = [
     {yearRatio:0.83, color:[120,50,190]},
   { yearRatio: 1.0, color: [240, 240, 40] }
 ];
+var estimatedOldColors = [  
+    { yearRatio: 0.0, color: [15, 95, 5] },
+  { yearRatio: 0.5, color: [200, 120, 50] },
+  { yearRatio: 1, color: [100, 165, 150] },]
+
+function setCookie(name, value, days = 365) {
+  const date = new Date();
+  date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+  const expires = `; expires=${date.toUTCString()}`;
+  
+  // SameSite=Lax and Secure are good defaults for basic preference cookies
+  document.cookie = `${encodeURIComponent(name)}=${encodeURIComponent(value)}${expires}; path=/; SameSite=Lax`;
+}
+
+
+function getCookie(name) {
+  const nameEQ = encodeURIComponent(name) + "=";
+  const ca = document.cookie.split(';');
+  
+  for (let i = 0; i < ca.length; i++) {
+    let c = ca[i].trim();
+    if (c.indexOf(nameEQ) === 0) {
+      return decodeURIComponent(c.substring(nameEQ.length, c.length));
+    }
+  }
+  return null;
+}
+
+
+function deleteCookie(name) {
+  document.cookie = `${encodeURIComponent(name)}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+}
 
 document.addEventListener('DOMContentLoaded', function() {
     
-  initLegend();
-    //addHamburger();
-    const toggleOpenerButton = document.getElementById('toggle-opener');
-    const openerSection = document.getElementById('opener');
-    const openerContent = document.getElementById('opener-content');
+  const noShowOpenerCookie = getCookie('Opener')
+  initLegend(roadColorStops,'road-color-ramp', 'road-legend-labels',1760,2026);
+  initLegend(estimatedOldColors, 'paths-color-ramp','paths-legend-labels', 1700,1905)
+  //addHamburger();
+  const toggleOpenerButton = document.getElementById('toggle-opener');
+  const openerSection = document.getElementById('opener');
+  const openerContent = document.getElementById('opener-content');
+  if(noShowOpenerCookie){
+    openerSection.classList.add('collapsed')
+    toggleOpenerButton.textContent = 'Show Info'
+  } 
 
     toggleOpenerButton.addEventListener('click', function() {
         openerSection.classList.toggle('collapsed');
         if (openerSection.classList.contains('collapsed')) {
             toggleOpenerButton.textContent = 'Show Info';
+            setCookie('Opener',true,365)
         } else {
             toggleOpenerButton.textContent = 'Hide Info';
         }
@@ -74,9 +113,11 @@ document.addEventListener('DOMContentLoaded', function() {
     // toggleOpenerButton.textContent = 'Show Info';
 });
 
-function initLegend() {
-  const colorRampEl = document.getElementById('color-ramp');
-  const labelsEl = document.getElementById('legend-labels');
+
+
+function initLegend(colorStops,colorRampId, legendId,minYear, maxYear) {
+  const colorRampEl = document.getElementById(colorRampId);
+  const labelsEl = document.getElementById(legendId);
 
   // Build linear-gradient string
   const gradientStops = colorStops.map(stop => {

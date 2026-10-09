@@ -5,7 +5,6 @@ var wms_layers = [];
             'title': 'OSM Standard',
             'opacity': 1.000000,
             
-            
             source: new ol.source.OSM()
         });
 var formatOtherPaths = new ol.format.GeoJSON();

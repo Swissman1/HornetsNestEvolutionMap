@@ -33,7 +33,7 @@ html {
   opacity: 0.5;
 }
 
-.color-ramp {
+.road-color-ramp {
   height: 14px;
   border-radius: 3px;
   border: 1px solid #ccc;
@@ -93,7 +93,7 @@ h2 {
   white-space: nowrap;
 }
 
-.legend-labels {
+.road-legend-labels {
   position: relative;
   height: 12px;
   margin-top: 4px;
