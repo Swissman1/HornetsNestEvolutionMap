@@ -250,6 +250,9 @@ p {
   border-top: 1px solid #d3c8b4;
 }
 
+#home-logo{
+    width: 3em;
+}
 .site-header {
   background-color: #15530d;
   color: #f4f1eb;

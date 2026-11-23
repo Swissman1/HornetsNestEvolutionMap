@@ -1,114 +1,81 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta name="description" content="Revealing the hidden history of Charlotte and Mecklenburg North Carolina through its roads and rail. History in plain sight."/>
-    <meta charset="utf-8" /> 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <title>The Map - The Crossroads of Charlotte</title>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.7.1/nouislider.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.7.1/nouislider.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/wnumb/1.2.0/wNumb.min.js"></script>
-    <script type="application/ld+json">
-    {
-      "@context" : "https://schema.org",
-      "@type" : "WebSite",
-      "name" : "The Crossroads of Charlotte",
-            "datePublished": "2025-05-3T08:00:00+05:00",
-            "dateModified": ""
-      "url" : "https://swissman1.github.io/HornetsNestEvolutionMap/"
-    }
-  </script>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <link rel="icon" href="./images/HNEP Logo.png" type="image/png" />
-    <link rel="stylesheet" href="./resources/ol.css" />
-    <link rel="stylesheet" href="resources/fontawesome-all.min.css" />
-    <link rel="stylesheet" href="./resources/ol-layerswitcher.css" />
-    <link rel="stylesheet" href="./resources/qgis2web.css" />
-
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>About the Crossroads of Charlotte</title>
     <link rel="stylesheet" href="css/style.css" />
-
+        <link rel="icon" href="./images/HNEP Logo.png" type="image/png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Lato:wght@400;700&display=swap"
       rel="stylesheet"
     />
-
-    <script async defer src="https://buttons.github.io/buttons.js"></script>
-
     <style>
-
+      .site-header nav {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        box-sizing: border-box;
+        padding: 0;
+      }
 
     </style>
-
-    <title>The story- The Crossroads of Charlotte</title>
   </head>
   <body>
     <header class="site-header">
-      <nav style="display: flex; align-items: center; width: 100%; box-sizing: border-box; padding: 0;">
-        <a href="snapshotMaps/1911/index.html" class="header-link">Snapshots</a>
-         <a href="Streetcar/index.html" class="header-link">Streetcars</a>
-                  <a href="trade-tyron/index.html" class="header-link">Trade and Tyron</a>
-        <a href="thestory.html" class="header-link">The Story</a>
+      <nav>
+        <a href="./the-map/index.html" class="header-link">The Map</a>
+        <a href="snapshotMaps/1911/index.html" class="header-link">Snapshots</a> 
+                 <a href="Streetcar/index.html" class="header-link">Streetcars</a>   
+                 
+                  <a href="trade-tyron/index.html" class="header-link">Trade and Tyron</a>    
         <a href="Sources.html" class="header-link">Sources</a>
-
-        <div style="flex: 1 1 auto;">
-          <h1 style="text-align: center; margin: 0 auto;">The Crossroads of Charlotte</h1>
-        </div>
+        <div style="flex: 1 1 auto;"><h1>The Crossroads of Charlotte</h1></div>
       </nav>
     </header>
-
     <main class="content-wrapper main-container">
-    
-      <div id="year-slider"></div>
-        <p style="text-align: center; margin-top: 10px;">
-          <span id="slider-value-lower"></span> - <span id="slider-value-upper"></span>
+      <h2>The Crossroads of Charlotte</h2>
+     <p>Welcome! This is strives to be a trove of Charlotte, and regional knowledge. 
+        It's primary focus is on history of the county of Mecklenburg and how it's present and future has been influenced by the past.</p>
+        <p>
+            If you have wondered any of the following, this place is for you!
+            <ul><li>
+                "Why are so few roads on a grid?"
+            </li>
+            <li>"Why are the roads here so confusing?"</li>
+            <li>
+                "How did I get from driving on one street, to another without making any turns?? I'm confused!"
+            </li>
+            <li>
+                "Why do so many roads names contain Ford, Ferry, Sharon or Queens?""
+            </li>
+            <li>"Where is all the Charlotte history at? Did Charlotte just appear out of a vacuum last Thursday?"</li>
+        </ul>
         </p>
-      <section id="map-container" class="map-section">
-        <div id="map">
-          <div id="popup" class="ol-popup">
-            <a href="#" id="popup-closer" class="ol-popup-closer"></a>
-            <div id="popup-content"></div>
-          </div>
-        </div>
-      </section>      
-       
-      <section id="opener" class="opener-section map-overlay">
-        <p id="opener-content">
-          It may appear to many that Charlotte has few
-          historical remnants still standing, and a confusing road network. Dig deeper, and 
-          does have history, it is with us today in the paths and
-          names our roads take. This is owed to the fact that for the first 100
-          years of its existence, it was a small town with a population of ~3000, surrounded by neighboring communities and farms, often organized around
-          a church, with the roads of the day serving to connect them. As
-          Charlotte grew contiually and rapidly starting in the 1880s, in this environment, its roads were forced to work
-          with that backdrop, oriented on incremental evolution, rather than a
-          master plan like other cities such as New York. This leads to a large
-          number of historical easter eggs that are still here today. This map shows the major roads' ages. 
-          <br> <b>You can view different time periods by moving the Sliders above</b> 
-          <br> <a href="thestory.html">This Page</a> has more Information about Charlotte. 
-          if a road isn't on the map, it has not been dated. I will be dating roads over time and adding them.
+        <p>
+            The best place to start is <a href="/trade-tyron/index.html">The story of Trade and Tryon</a> which gives useful backstory to Charlotte's founding story. It also helps you to begin to see why some roads are where they are.
+            Much of our major roads throughout current Charlotte were defined in an era where Charlotte was a small village smaller than even the main uptown, without the design pressures of other east coast cities of the time, and hilly geography.
         </p>
-       
-
-       <button id="toggle-opener" class="opener-toggle">Hide Info</button>
-      </section>
-      <div id="legend-container" class="map-legend">
-  <div class="legend-title">Road Construction Year</div>
-  <div id="road-color-ramp" class="road-color-ramp"></div>
-  <div id="road-legend-labels" class="road-legend-labels"></div>
-    
-  <div class="legend-title">Path Construction Year</div>
-  <div id="paths-color-ramp" class="road-color-ramp"></div>
-  <div id="paths-legend-labels" class="road-legend-labels"></div>
-</div>
-    </main>    
+            <p>
+                Alternately, if reading is more your thing, <a href="thestory.html">The story of Charlotte</a> can give a abbreviated account of the city, which was founded by a man Named Thomas Polk, at the intersection of 2 Native American trading paths. Charlotte saw the first gold rush, ushered in a rail-powered cotton boom, 
+                all before becoming the second financial hub behind NYC, and growing rapidly over 120 years from 35k to 950k!
+            </p>
+            <p>There is also a compendium of links that have been compiled, that were used in the making of the data for this site.</p>
+            <h2>
+                About the author
+            </h2>
+            <br>
+            <p>This project is led by Ben House, a full blooded Charlotte Native. He is a burgeoning historian, focusing on infrastructure's interplay with our living world, and how the quirks and oddities in our built landscape point to threads of our history. He has catalogued the age of nearly every road in Mecklenburg county<a href="./the-map/index.html">("
+                "The Map")</a>  He started Crossroads of Charlotte, orginially as the "Hornet's Nest Evolution Project" in 2024 by just wanting to understand why the roads of Charlotte were so strange. He is a lifelong resident of Charlotte, except for obtaining a Bachelor's in Atmospheric and Computer Science at UNC Asheville. 
+                He hopes to shed light onto the never-ending why, of his often misunderstood hometown, that seems hell-bent to demolish it's past.
+                Contact Ben by email at Ben@crossroadsofcharlotte.org
+            </p>
+    </main>
     <footer class="site-footer">
       <p>
-            <section class="support-section">
+        <section class="support-section">
       <div id="support-text">
         <p>
           The project is ongoing, with new data being pulled in from multiple
@@ -121,10 +88,10 @@
           contributing to the project, whether that be via tracking down
           sources, pulling those into the map, or just suggestions. Get more
           info and reach out on the project's github by "opening an issue"! 
-          <br><br>Or if you want to just be notified when I publish a notable amount of new content, send me an email at <a href="bfhouseiii@gmail.com">bfhouseiii@gmail.com</a>
+          <br><br>Or if you want to just be notified when I publish a notable amount of new content, send me an email at <a href="info@crossroadsofcharlotte.org">info@crossroadsofcharlotte.org</a>
         </p>
         <p>
-          The The Crossroads of Charlotte is a citizen led, Geographic Information Systems (GIS) project dedicated
+          The Crossroads of Charlotte is a citizen led, Geographic Information Systems (GIS) project dedicated
           to digitizing the historical evolution of Mecklenburg County, and
           surrounding areas, via physical infrastructure, primarily roads and
           railways, and other traces left in the present.
@@ -142,7 +109,7 @@
         </p>
 
         <p>
-          Last Update: 11/23/2026 <br />
+          Last Update: 5/29/2025 <br />
 
         </p>
       </div>
@@ -180,42 +147,8 @@
         ></script>
       </div>
     </section>
-
-        &copy; 2025 The Crossroads of Charlotte. Map data generated via QGIS
-        & OpenLayers. Last update: 5/15/2025
+        &copy; 2026 The Crossroads of Charlotte. Map data generated via QGIS & OpenLayers.
       </p>
     </footer>
-
-    <script src="styles/"></script>
-    <script src="./resources/ol.js"></script>
-    <script src="layers/FullRoads.js"></script>
-    <script src="layers/MissingRail.js"></script>
-    <script src="styles/County_style.js"></script>
-    <script src="layers/NC-CountyLines.js"></script>
-    <script src="layers/Railroads.js"></script>
-    <script src="styles/Railroads_style.js"></script>
-    <script src="styles/MissingRail_style.js"></script>
-    <script src="layers/Annexation_History.js"></script>
-    <script src="styles/Annexation_History_style.js"></script>
-    <script src="styles/2025MissingRoads_style.js"></script>
-    <script src="layers/MissingRoads.js"></script>
-    <script src="layers/EstimatedOld.js"></script>
-    
-    <script src="styles/FullRoads_style.js"></script>
-    <script src="resources/qgis2web_expressions.js"></script>
-    <script src="./resources/functions.js"></script>
-    <script src="./resources/ol-layerswitcher.js"></script>
-    <script src="layers/Sevensisters.js"></script>
-
-    <script src="layers/Pointsofinterest.js"></script>
-    <script src="styles/Sevensisters_style.js"></script>
-    <script src="styles/Pointsofinterest_style.js"></script>
-    <script src="layers/new-layers.js"></script>
-    <script src="./resources/Autolinker.min.js"></script>
-    <script src="./resources/qgis2web.js"></script>
-        
-        
-    <script src="./scripts/main.js"></script>
-        
   </body>
 </html>
