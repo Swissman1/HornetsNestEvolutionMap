@@ -246,12 +246,12 @@ p {
   margin-top: 30px;
   padding: 15px;
   font-size: 0.9em;
-  color: #5a4a3e;
+  color: #15530d;
   border-top: 1px solid #d3c8b4;
 }
 
 .site-header {
-  background-color: #5a4a3e;
+  background-color: #15530d;
   color: #f4f1eb;
   padding: 0;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
@@ -259,7 +259,6 @@ p {
 }
 
 .site-header h1 {
-  background-color: #5a4a3e;
   color: #f4f1eb;
   margin-left: 10px;
   font-size: 2.5em;
