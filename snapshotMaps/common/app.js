@@ -19,7 +19,7 @@ async function initEra() {
 
     lastYear = era.lastYear;
     document.title = `${era.title} - The Crossroads of Charlotte`;
-    document.getElementById('year-title').textContent = era.title;
+    document.getElementById('year-title').textContent = `Snapshot: ${era.title}`;
     document.getElementById('pop-stats').textContent = `City population: ${era.cityPop}     County Population: ${era.countyPop}`;
     document.getElementById('era-description').innerHTML = era.description;
 

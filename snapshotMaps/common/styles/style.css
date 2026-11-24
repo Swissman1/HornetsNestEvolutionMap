@@ -48,6 +48,12 @@ html, body {
   margin: 4px 2px;
   cursor: pointer;
 }
+.description{
+    padding: 10px;
+}
+#era-info{
+    padding: 10px
+}
 .year-header{
     margin-top: 1%; 
     margin-bottom: 0%; 
